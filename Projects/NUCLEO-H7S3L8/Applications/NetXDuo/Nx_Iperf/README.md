@@ -1,4 +1,5 @@
-##  <b>Nx_Iperf application description</b>
+
+##  <b>Nx_Iperf Application Description</b>
 
 This application provides an example of Azure RTOS NetXDuo stack usage .
 It shows performance when using different modes : TCP_server, UDP_server, TCP_client and UDP_client.
@@ -59,12 +60,13 @@ void MX_ETH_Init(void)
 
   /* USER CODE END ETH_Init 1 */
   heth.Instance = ETH;
-  heth.Init.MACAddr[0] =   0x00;
-  heth.Init.MACAddr[1] =   0x80;
-  heth.Init.MACAddr[2] =   0xE1;
-  heth.Init.MACAddr[3] =   0x00;
-  heth.Init.MACAddr[4] =   0x00;
-  heth.Init.MACAddr[5] =   0x00;
+  MACAddr[0] = 0x00;
+  MACAddr[1] = 0x80;
+  MACAddr[2] = 0xE1;
+  MACAddr[3] = 0x00;
+  MACAddr[4] = 0x00;
+  MACAddr[5] = 0x00;
+  heth.Init.MACAddr = &MACAddr[0];
 ```
 #### <b>Known limitations</b>
 
@@ -72,8 +74,13 @@ void MX_ETH_Init(void)
 
 ### <b>Notes</b>
 
- 1.  This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed).
-      Note that the boot part is automatically downloaded from the IDE environment via the board boot binary under Binary/Boot_XIP.hex file.
+ 1.  This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed). 
+     Note that the boot part is automatically downloaded from the IDE environment via the board boot binary under Binary/Boot_XIP.hex file.
+
+ 2.  It is recommended to enable the cache and maintain its coherence:
+      - Depending on the use case it is also possible to configure the cache attributes using the MPU.
+      - Please refer to the **AN4838** "Managing memory protection unit (MPU) in STM32 MCUs".
+      - Please refer to the **AN4839** "Level 1 cache on STM32F7 Series and STM32H7 Series"
 
 #### <b>ThreadX usage hints</b>
 
@@ -85,10 +92,10 @@ void MX_ETH_Init(void)
  - Using dynamic memory allocation requires to apply some changes to the linker file.
    ThreadX needs to pass a pointer to the first free memory location in RAM to the tx_application_define() function,
    using the "first_unused_memory" argument.
-   This require changes in the linker files to expose this memory location.
+   This requires changes in the linker files to expose this memory location.
     + For EWARM add the following section into the .icf file:
-    ```
-    place in RAM_region    { last section FREE_MEM };
+     ```
+     place in RAM_region    { last section FREE_MEM };
     ```
     + For MDK-ARM:
     ```
@@ -104,8 +111,8 @@ void MX_ETH_Init(void)
          __RAM_segment_used_end__ = .;
          . = . + 64K;
          . = ALIGN(8);
-       } >RAM_D1 AT> RAM_D1
-	```
+       } >RAM AT> RAM
+    ```
 
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
        In the example above the ThreadX heap size is set to 64KBytes.
@@ -179,8 +186,8 @@ RTOS, Network, ThreadX, NetXDuo, Iperf, UART
 
 ### <b>Hardware and Software environment</b>
 
-  - This application runs on NUCLEO-H7S3L8xx devices
-  - This application has been tested with STMicroelectronics NUCLEO-H7S3L8xx boards Revision MB1737-H7S3L8-B01
+  - This application runs on STM32H7S3L8xx devices
+  - This application has been tested with STMicroelectronics NUCLEO-H7S3L8 boards revision: MB1737-H7S3L8-B02
     and can be easily tailored to any other supported device and development board.
   - This application uses USART3 to display logs, the hyperterminal configuration is as follows:
       - BaudRate = 115200 baud
@@ -193,8 +200,8 @@ RTOS, Network, ThreadX, NetXDuo, Iperf, UART
 
 To configure STM32CubeIDE Debug Configuration, you must do the following :
 
-    1. Add the adequate external loader (MX25UW25645G_STM32H7R38-NUCLEO.stldr file) in Project->Debugger Configuration
-    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration
+    1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup
 
 In order to make the program work, you must do the following :

@@ -82,9 +82,9 @@ VOID USBD_STORAGE_Activate(VOID *storage_instance)
   */
 VOID USBD_STORAGE_Deactivate(VOID *storage_instance)
 {
-  /* USER CODE BEGIN USBD_STORAGE_Activate */
+  /* USER CODE BEGIN USBD_STORAGE_Desactivate */
   UX_PARAMETER_NOT_USED(storage_instance);
-  /* USER CODE END USBD_STORAGE_Activate */
+  /* USER CODE END USBD_STORAGE_Desactivate */
 
   return;
 }
@@ -114,7 +114,7 @@ UINT USBD_STORAGE_Read(VOID *storage_instance, ULONG lun, UCHAR *data_pointer,
   ULONG ReadFlags = 0U;
 
   /* Check if the SD card is present */
-  if (HAL_GPIO_ReadPin(GPIOM, GPIO_PIN_14) == GPIO_PIN_RESET)
+  if (HAL_GPIO_ReadPin(GPIOM, GPIO_PIN_14) != GPIO_PIN_SET)
   {
     /* Check id SD card is ready */
     if(check_sd_status() != HAL_OK)
@@ -167,7 +167,7 @@ UINT USBD_STORAGE_Write(VOID *storage_instance, ULONG lun, UCHAR *data_pointer,
   ULONG WriteFlags = 0U;
 
   /* Check if the SD card is present */
-  if (HAL_GPIO_ReadPin(GPIOM, GPIO_PIN_14) == GPIO_PIN_RESET)
+  if (HAL_GPIO_ReadPin(GPIOM, GPIO_PIN_14) != GPIO_PIN_SET)
   {
     /* Check if SD card is ready */
     if(check_sd_status() != HAL_OK)

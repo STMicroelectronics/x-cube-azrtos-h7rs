@@ -1,9 +1,9 @@
 
-## <b>Ux_Host_CDC_ACM application description </b>
+## <b>Ux_Host_CDC_ACM Application Description </b>
 
 This application provides an example of Azure RTOS USBX stack usage .
 
-The application is designed to behave as  USB CDC_ACM Host, the code provides required requests to properly enumerate
+The application is designed to behave as a USB CDC_ACM Host, the code provides required requests to properly enumerate
 CDC devices, CDC_ACM class APIs to send or receive data and display data on UART HyperTerminal.
 
 The main entry function tx_application_define() is then called by ThreadX during kernel start, at this stage, all USBx resources
@@ -34,7 +34,6 @@ User is familiar with USB 2.0 "Universal Serial BUS" specification and CDC_ACM c
 None
 
 ### <b>Notes</b>
-
  1.  This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed).
       Note that the boot part is automatically downloaded from the IDE environment via the board boot binary under Binary/Boot_XIP.hex file.
 
@@ -67,7 +66,7 @@ None
          __RAM_segment_used_end__ = .;
          . = . + 64K;
          . = ALIGN(8);
-       } >RAM_D1 AT> RAM_D1
+       } >RAM
     ```
 
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
@@ -85,16 +84,16 @@ None
 
 ### <b>Keywords</b>
 
-Connectivity, USBX Host, USBPD, ThreadX, USB, CDC_ACM, UART, USART
+Connectivity, USBX Host, USBPD,  ThreadX, USB, CDC_ACM, UART, USART
 
 ### <b>Hardware and Software environment</b>
 
   - This application runs on STM32H7S7L8xx devices.
-  - This application has been tested with STMicroelectronics STM32H7S78-DK boards revision MB1736-H7S7L8-C01
+  - This application has been tested with STMicroelectronics STM32H7S78-DK boards revision MB1736-H7S7L8-D01
     and can be easily tailored to any other supported device and development board.
   - STM32H7S78-DK set-up:
     - Plug the USB CDC_ACM device into the STM32H7S78-DK board through "TYPE-C" to "Standard A" cable to the connector:
-      - CN18 : to use USB OTG IP in high speed (HS)
+      - CN18 : to use USB High Speed OTG IP.
     - Connect ST-Link cable to the PC USB port to display data on the HyperTerminal.
 
     A virtual COM port will then appear in the HyperTerminal:
@@ -121,16 +120,17 @@ Connectivity, USBX Host, USBPD, ThreadX, USB, CDC_ACM, UART, USART
  To configure STM32CubeIDE Debug Configuration, you must do the following :
 
     1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration
-    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup
-In order to make the program work, you must do the following :
+
+In order to make the program work, you must do the following :
 
  - Open your preferred toolchain
  - Rebuild all files and load your image into target memory
  - Run the application
+
  - Click the user button to send predefined data from the Host board to the CDC device.
 
 ### <b>Notes</b>
-
 - The user has to check the list of the COM ports in Device Manager to find out the number of the COM ports that have been assigned (by OS) to the Stlink VCP.
 - The application uses the external HSE clock as USB source clock.

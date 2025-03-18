@@ -68,15 +68,13 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define VDDA_APPLI 3300
 #define LED_RED_Pin GPIO_PIN_2
 #define LED_RED_GPIO_Port GPIOM
 #define LED_GREEN_Pin GPIO_PIN_1
 #define LED_GREEN_GPIO_Port GPIOO
 
 /* USER CODE BEGIN Private defines */
-#define SD_PRESENT                       1UL
-#define SD_NOT_PRESENT                   0UL
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

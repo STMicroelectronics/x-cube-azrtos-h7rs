@@ -1175,6 +1175,12 @@
                 <name>$PROJ_DIR$\..\..\..\..\..\..\..\Drivers\STM32H7RSxx_HAL_Driver\Src\stm32h7rsxx_hal_gpio.c</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\..\..\..\..\..\..\..\Drivers\STM32H7RSxx_HAL_Driver\Src\stm32h7rsxx_hal_mmc.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\..\..\..\..\Drivers\STM32H7RSxx_HAL_Driver\Src\stm32h7rsxx_hal_mmc_ex.c</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\..\..\..\..\..\..\Drivers\STM32H7RSxx_HAL_Driver\Src\stm32h7rsxx_hal_pwr.c</name>
             </file>
             <file>
@@ -1191,6 +1197,9 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\..\..\..\..\..\Drivers\STM32H7RSxx_HAL_Driver\Src\stm32h7rsxx_hal_sd_ex.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\..\..\..\..\Drivers\STM32H7RSxx_HAL_Driver\Src\stm32h7rsxx_hal_sdio.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\..\..\..\..\..\Drivers\STM32H7RSxx_HAL_Driver\Src\stm32h7rsxx_hal_tim.c</name>

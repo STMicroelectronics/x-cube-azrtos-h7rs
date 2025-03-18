@@ -1,5 +1,5 @@
 
-## <b>Ux_Device_CDC_ECM application description</b>
+## <b>Ux_Device_CDC_ECM Application Description</b>
 
 This application provides an example of Azure RTOS CDC_ECM stack usage on STM32H7S78-DK board, it shows how to run web HTTP server based application stack
 over USB interface. The application is designed to load files and web pages stored in SD card using a web HTTP server through USB interface using CDC_ECM
@@ -66,7 +66,7 @@ Hotplug is not implemented for this example, that is, the SD card is expected to
          __RAM_segment_used_end__ = .;
          . = . + 64K;
          . = ALIGN(8);
-       } >RAM_D1 AT> RAM_D1
+       } >RAM
     ```
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
        In the example above the ThreadX heap size is set to 64KBytes.
@@ -89,13 +89,13 @@ RTOS, ThreadX, USBXDevice, CDC_ECM, Network, NetxDuo, FileX, File ,SDMMC, UART
 ### <b>Hardware and Software environment</b>
 
   - This application runs on STM32H7S7L8xx devices.
-  - This application has been tested with STMicroelectronics STM32H7S78-DK boards revision: MB1736-H7S7L8-C01
+  - This application has been tested with STMicroelectronics STM32H7S78-DK boards revision: MB1736-H7S7L8-D01
     and can be easily tailored to any other supported device and development board.
   - This application uses USART4 to display logs, the hyperterminal configuration is as follows:
       - BaudRate = 115200 baud
       - Word Length = 8 Bits
       - Stop Bit = 1
-      - Parity = none
+      - Parity = None
       - Flow control = None
 
 ### <b>How to use it ?</b>
@@ -103,7 +103,7 @@ RTOS, ThreadX, USBXDevice, CDC_ECM, Network, NetxDuo, FileX, File ,SDMMC, UART
  To configure STM32CubeIDE Debug Configuration, you must do the following :
 
     1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration
-    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup
 
 In order to make the program work, you must do the following :

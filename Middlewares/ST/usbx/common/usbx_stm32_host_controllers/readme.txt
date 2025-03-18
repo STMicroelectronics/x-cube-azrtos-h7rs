@@ -7,6 +7,28 @@
 
   ******************************************************************************
   */
+### V3.0.4 / 10-September-2024 ###
+===============================
+Main changes
+-------------
+- Avoid NULL pointer access during endpoint reset and finish of requested transfer 
+
+### V3.0.3 / 17-May-2024 ###
+===============================
+Main changes
+-------------
+- Reset endpoint channels during disconnect
+- Fix ep0 memory error to double memory free
+
+### V3.0.2 / 05-January-2024 ###
+===============================
+Main changes
+-------------
+- Fix periodic scheduling when FS devices plugged to hub
+
+Dependencies:
+-------------
+- Azure RTOS USBX V6.1.12 or higher
 
 ### V3.0.1 / 14-July-2023 ###
 ===============================

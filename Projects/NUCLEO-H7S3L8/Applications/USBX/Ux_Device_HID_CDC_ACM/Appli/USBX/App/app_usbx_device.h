@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -44,7 +44,7 @@ extern "C" {
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
-#define USBX_DEVICE_MEMORY_STACK_SIZE       10*1024
+#define USBX_DEVICE_MEMORY_STACK_SIZE     12*1024
 
 #define UX_DEVICE_APP_THREAD_STACK_SIZE   1024
 #define UX_DEVICE_APP_THREAD_PRIO         10
@@ -68,7 +68,7 @@ VOID USBX_APP_UART_Init(UART_HandleTypeDef **huart);
 
 /* Private defines -----------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define APP_QUEUE_SIZE                               5
+
 /* USER CODE END PD */
 
 #ifndef UX_DEVICE_APP_THREAD_NAME

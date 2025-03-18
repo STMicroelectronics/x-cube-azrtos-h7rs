@@ -27,7 +27,7 @@ vertical-align: middle;
 <body>
 <div class="row">
 <section id="nx_webserver-application-description" class="col-sm-12 col-lg-8">
-<h2><b>Nx_WebServer application description</b></h2>
+<h2><b>Nx_WebServer Application Description</b></h2>
 <p>This application provides an example of Azure RTOS NetX Duo stack
 usage on STM32H7S78-DK board, it shows how to develop Web HTTP server
 based application. The application is designed to load files and
@@ -87,14 +87,14 @@ threadx and netxduo.</li>
 </ul>
 <h4 id="error-behaviors"><b>Error behaviors</b></h4>
 <p>If the WEB HTTP server is not successfully started, the green LED
-stays OFF. In case of other errors, the Web HTTP server does not operate
-as designed (Files stored in the SD card are not loaded in the web
-browser).</p>
+stays OFF and the red LED toggles every 1 second. In case of other
+errors, the Web HTTP server does not operate as designed
+(Files stored in the SD card are not loaded in the web browser).</p>
 <h4 id="assumptions-if-any"><b>Assumptions if any</b></h4>
 <p>The uSD card must be plugged before starting the application. The
 board must be in a DHCP Ethernet network.</p>
 <h4 id="known-limitations"><b>Known limitations</b></h4>
-<p>Hotplug is not implemented for, this example, that is, the SD card is
+<p>Hotplug is not implemented for this example, that is, the SD card is
 expected to be inserted before application running.</p>
 <h3 id="notes"><b>Notes</b></h3>
 <ol type="1">
@@ -160,14 +160,14 @@ the “USE_DYNAMIC_MEMORY_ALLOCATION” flag.</li>
 </ul>
 <h4 id="filexlevelx-usage-hints"><b>FileX/LevelX usage hints</b></h4>
 <ul>
-<li>FileX sd driver is using the DMA, thus the DTCM (0x20000000) memory
+<li>FileX SD driver is using the DMA, thus the DTCM (0x20000000) memory
 should not be used by the application, as it is not accessible by the SD
 DMA.</li>
 <li>When calling the fx_media_format() API, it is highly recommended to
 understand all the parameters used by the API to correctly generate a
 valid filesystem.</li>
 <li>FileX is using data buffers, passed as arguments to fx_media_open(),
-fx_media_read() and fx_media_write() API it is recommended that these
+fx_media_read() and fx_media_write() APIs it is recommended that these
 buffers are multiple of sector size and “32 bytes” aligned to avoid
 cache maintenance issues.</li>
 </ul>
@@ -245,7 +245,7 @@ environment</b></h3>
 <ul>
 <li>This application runs on STM32H7S7L8xx devices.</li>
 <li>This application has been tested with STMicroelectronics
-STM32H7S78-DK boards revision: MB1736-H7S7L8-C01 and can be easily
+STM32H7S78-DK boards revision: MB1736-H7S7L8-D01 and can be easily
 tailored to any other supported device and development board.</li>
 <li>This application uses UART4 to display logs, the hyperterminal
 configuration is as follows:
@@ -256,12 +256,13 @@ configuration is as follows:
 <li>Parity = None</li>
 <li>Flow control = None</li>
 </ul></li>
+<li>On STM32H7S78-DK board, the JP6 pin [2-3] must be ON.</li>
 </ul>
 <h3 id="how-to-use-it"><b>How to use it ?</b></h3>
 <p>To configure STM32CubeIDE Debug Configuration, you must do the
 following :</p>
 <pre><code>1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project-&gt;Debugger Configuration
-2. Add in the startup the Boot_XIP.elf in Project-&gt;Debugger Configuration
+2. Add in the startup the Boot_XIP.elf in Project-&gt;Debugger Configuration and uncheck the "Load Symbols" option
 3. Move up the application in the startup</code></pre>
 <p>In order to make the program work, you must do the following :</p>
 <ul>

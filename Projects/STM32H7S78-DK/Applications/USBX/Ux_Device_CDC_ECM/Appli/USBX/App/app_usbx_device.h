@@ -34,7 +34,6 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 #include "usb_otg.h"
 #include "ux_dcd_stm32.h"
-#include "ux_device_stack.h"
 #include "ux_network_driver.h"
 /* USER CODE END Includes */
 
@@ -67,7 +66,7 @@ void USBX_APP_Device_Init(void);
 
 /* Private defines -----------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define APP_QUEUE_SIZE 5
+#define APP_QUEUE_SIZE                               5
 /* USER CODE END PD */
 
 #ifndef UX_DEVICE_APP_THREAD_NAME

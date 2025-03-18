@@ -111,7 +111,7 @@ void MainThread_Entry(ULONG thread_input)
       for (i=0; i<10; i++)
       {
       /* Toggle LED to indicate status*/
-      HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+      HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
       App_Delay(50);
       }
     }
@@ -145,7 +145,7 @@ void MX_ThreadX_Init(void)
 void App_ThreadX_LowPower_Enter(void)
 {
   /* USER CODE BEGIN  App_ThreadX_LowPower_Enter */
-  HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
   /* Enter to the stop mode */
   HAL_PWR_EnterSTOPMode(PWR_MAINREGULATOR_ON, PWR_STOPENTRY_WFI);
   /* USER CODE END  App_ThreadX_LowPower_Enter */
@@ -159,7 +159,7 @@ void App_ThreadX_LowPower_Enter(void)
 void App_ThreadX_LowPower_Exit(void)
 {
   /* USER CODE BEGIN  App_ThreadX_LowPower_Exit */
-  HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
   /* Reconfigure the system clock*/
   SystemClock_Restore();
   /* USER CODE END  App_ThreadX_LowPower_Exit */
@@ -175,9 +175,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   if (GPIO_Pin == GPIO_PIN_13)
   {
-      /* Put the semaphore to release the MainThread and specify ceiling to 1 to avoid 
+      /* Put the semaphore to release the MainThread and specify ceiling to 1 to avoid
       multiple semaphore puts by successively clicking on the user button */
-      tx_semaphore_ceiling_put(&tx_app_semaphore,1); 
+      tx_semaphore_ceiling_put(&tx_app_semaphore,1);
   }
 }
 /**
@@ -198,7 +198,7 @@ void App_Delay(ULONG Delay)
   */
 void SystemClock_Restore(void)
 {
-    RCC_ClkInitTypeDef RCC_ClkInitStruct;
+  RCC_ClkInitTypeDef RCC_ClkInitStruct;
   uint32_t tickstart;
 
   /* Reconfigure the main internal regulator output voltage to highest level */

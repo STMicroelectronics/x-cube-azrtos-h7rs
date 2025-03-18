@@ -5,7 +5,7 @@
 define symbol __ICFEDIT_intvec_start__     = 0x70000000;
 /*-Memory Regions-*/
 define symbol __ICFEDIT_region_ROM_start__ = 0x70000000;
-define symbol __ICFEDIT_region_ROM_end__   = 0x7FFFFFFF;
+define symbol __ICFEDIT_region_ROM_end__   = 0x77FFFFFF;
 define symbol __ICFEDIT_region_RAM_start__ = 0x24000000;
 define symbol __ICFEDIT_region_RAM_end__   = 0x24071FFF;
 define symbol __ICFEDIT_region_UXDATA_start__  = 0x24035000;
@@ -25,7 +25,13 @@ define symbol __region_SRAMAHB_end__   = 0x30007FFF;
 define symbol __region_BKPSRAM_start__ = 0x38800000;
 define symbol __region_BKPSRAM_end__   = 0x38800FFF;
 define symbol __region_EXTRAM_start__ = 0x90000000;
-define symbol __region_EXTRAM_end__   = 0x9FFFFFFF;
+define symbol __region_EXTRAM_end__   = 0x91FFFFFF;
+
+export symbol __ICFEDIT_region_ROM_start__;
+export symbol __ICFEDIT_region_ROM_end__;
+
+export symbol __region_EXTRAM_start__;
+export symbol __region_EXTRAM_end__;
 
 define memory mem with size = 4G;
 define region ROM_region      = mem:[from __ICFEDIT_region_ROM_start__ to __ICFEDIT_region_ROM_end__];

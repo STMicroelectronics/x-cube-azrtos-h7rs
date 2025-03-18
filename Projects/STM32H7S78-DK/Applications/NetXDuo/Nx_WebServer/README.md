@@ -1,4 +1,5 @@
-## <b>Nx_WebServer application description</b>
+
+## <b>Nx_WebServer Application Description</b>
 
 This application provides an example of Azure RTOS NetX Duo stack usage on STM32H7S78-DK board, it shows how to develop Web HTTP server based application.
 The application is designed to load files and dyncamic web pages stored in SD card using a Web HTTP server, the code provides all required features to build a compliant Web HTTP Server.
@@ -42,7 +43,7 @@ The **LedThread**, once resumed from the dashboard:
 
 #### <b>Error behaviors</b>
 
-If the WEB HTTP server is not successfully started, the green LED stays OFF.
+If the WEB HTTP server is not successfully started, the green LED stays OFF and the red LED toggles every 1 second.
 In case of other errors, the Web HTTP server does not operate as designed (Files stored in the SD card are not loaded in the web browser).
 
 #### <b>Assumptions if any</b>
@@ -52,7 +53,7 @@ The board must be in a DHCP Ethernet network.
 
 #### <b>Known limitations</b>
 
-Hotplug is not implemented for, this example, that is, the SD card is expected to be inserted before application running.
+Hotplug is not implemented for this example, that is, the SD card is expected to be inserted before application running.
 
 ### <b>Notes</b>
 
@@ -72,16 +73,16 @@ Hotplug is not implemented for, this example, that is, the SD card is expected t
    This requires changes in the linker files to expose this memory location.
     + For EWARM add the following section into the .icf file:
      ```
-	 place in RAM_region    { last section FREE_MEM };
-	 ```
+     place in RAM_region    { last section FREE_MEM };
+     ```
     + For MDK-ARM:
-	```
+    ```
     either define the RW_IRAM1 region in the ".sct" file
     or modify the line below in "tx_initialize_low_level.S to match the memory region being used
         LDR r1, =|Image$$RW_IRAM1$$ZI$$Limit|
-	```
+    ```
     + For STM32CubeIDE add the following section into the .ld file:
-	```
+    ```
     ._threadx_heap :
       {
          . = ALIGN(8);
@@ -89,7 +90,7 @@ Hotplug is not implemented for, this example, that is, the SD card is expected t
          . = . + 64K;
          . = ALIGN(8);
        } >RAM AT> RAM
-	```
+    ```
 
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
        In the example above the ThreadX heap size is set to 64KBytes.
@@ -101,9 +102,9 @@ Hotplug is not implemented for, this example, that is, the SD card is expected t
 
 #### <b>FileX/LevelX usage hints</b>
 
-- FileX sd driver is using the DMA, thus the DTCM (0x20000000) memory should not be used by the application, as it is not accessible by the SD DMA.
+- FileX SD driver is using the DMA, thus the DTCM (0x20000000) memory should not be used by the application, as it is not accessible by the SD DMA.
 - When calling the fx_media_format() API, it is highly recommended to understand all the parameters used by the API to correctly generate a valid filesystem.
-- FileX is using data buffers, passed as arguments to fx_media_open(), fx_media_read() and fx_media_write() API it is recommended that these buffers are multiple of sector size and "32 bytes" aligned to avoid cache maintenance issues.
+- FileX is using data buffers, passed as arguments to fx_media_open(), fx_media_read() and fx_media_write() APIs, it is recommended that these buffers are multiple of sector size and "32 bytes" aligned to avoid cache maintenance issues.
 
 #### <b>NetX Duo usage hints</b>
 
@@ -146,6 +147,7 @@ Hotplug is not implemented for, this example, that is, the SD card is expected t
   This section is then used in the <code> app_azure_rtos.c</code> file to force the <code>nx_byte_pool_buffer</code> allocation.
 
 ```
+
 /* USER CODE BEGIN NX_Pool_Buffer */
 
 #if defined ( __ICCARM__ ) /* IAR Compiler */
@@ -171,7 +173,7 @@ RTOS, ThreadX, Network, NetxDuo, Web HTTP Server, FileX, File ,SDMMC, UART
 ### <b>Hardware and Software environment</b>
 
   - This application runs on STM32H7S7L8xx devices.
-  - This application has been tested with STMicroelectronics STM32H7S78-DK boards revision: MB1736-H7S7L8-C01
+  - This application has been tested with STMicroelectronics STM32H7S78-DK boards revision: MB1736-H7S7L8-D01
     and can be easily tailored to any other supported device and development board.
   - This application uses UART4 to display logs, the hyperterminal configuration is as follows:
       - BaudRate = 115200 baud
@@ -180,10 +182,12 @@ RTOS, ThreadX, Network, NetxDuo, Web HTTP Server, FileX, File ,SDMMC, UART
       - Parity = None
       - Flow control = None
 
+  - On STM32H7S78-DK board, the JP6 pin [2-3] must be ON.
+
 ### <b>How to use it ?</b>
 
 To configure STM32CubeIDE Debug Configuration, you must do the following :
-    1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration
+    1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration and uncheck the "Load Symbols" option
     2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration
     3. Move up the application in the startup
 

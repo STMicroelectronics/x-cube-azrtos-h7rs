@@ -27,11 +27,11 @@ vertical-align: middle;
 <body>
 <div class="row">
 <section id="ux_device_hid_cdc_acm-application-description" class="col-sm-12 col-lg-8">
-<h2><b>Ux_Device_HID_CDC_ACM application description</b></h2>
+<h2><b>Ux_Device_HID_CDC_ACM Application Description</b></h2>
 <p>This application provides an example of Azure RTOS USBX stack usage
 on NUCLEO-H7S3L8 board, it shows how to develop a composite USB device
 communication class “HID” and “CDC_ACM” based application.</p>
-<p>The application is designed to emulate an USB HID mouse device and
+<p>The application is designed to emulate a USB HID mouse device and
 USB-to-UART bridge following the Virtual COM Port (VCP) implementations,
 the code provides all required device descriptors framework and
 associated to both classes descriptor report to build a composite
@@ -44,7 +44,7 @@ priorities :</p>
 <li><p>app_ux_device_thread_entry (Prio : 10; PreemptionPrio : 10) used
 to initialize USB_OTG HAL PCD driver and start the device.</p></li>
 <li><p>usbx_cdc_acm_read_thread_entry (Prio : 20; PreemptionPrio : 20)
-used to Read the received data from Virtual COM Port.</p></li>
+used to read the received data from Virtual COM Port.</p></li>
 <li><p>usbx_cdc_acm_write_thread_entry (Prio : 20; PreemptionPrio : 20)
 used to send the received data over UART .</p></li>
 <li><p>usbx_hid_thread_entry (Prio : 20; PreemptionPrio : 20) used to
@@ -75,8 +75,8 @@ parameters: When control setup is received, the corresponding request is
 executed in USBD_CDC_ACM_ParameterChange.</p></li>
 </ul>
 <p>In CDC_ACM application, two requests are implemented:</p>
-<pre><code>- Set line: set the bit rate, number of Stop bits, parity, and number of data bits
-- Get line: get the bit rate, number of Stop bits, parity, and number of data bits
+<pre><code>- Set line: set the bit rate, number of stop bits, parity, and number of data bits
+- Get line: get the bit rate, number of stop bits, parity, and number of data bits
 The other requests (send break, control line state) are not implemented.</code></pre>
 <ul>
 <li>1 x Interrupt IN endpoint for setting the HID position: When the
@@ -90,7 +90,7 @@ one PDO at 5V.</p>
 <ul>
 <li><p>Receiving data over UART is handled by interrupt while
 transmitting is handled by DMA allowing hence the application to receive
-data at the same time it is transmitting another data (full- duplex
+data at the same time it is transmitting another data (full-duplex
 feature).</p></li>
 <li><p>The support of the VCP interface is managed through the ST
 Virtual COM Port driver available for download from www.st.com.</p></li>
@@ -100,20 +100,21 @@ been assigned (by OS) to the VCP interface.</p></li>
 </ul>
 <h4 id="expected-success-behavior"><b>Expected success behavior</b></h4>
 <p>When plugged to PC host, the NUCLEO-H7S3L8 must be properly
-enumerated a composite device as an HID ,USB Serial device and an STlink
-Com port. During the enumeration phase, the device must provide host
-with the requested descriptors (Device descriptor, configuration
+enumerated a composite device as an HID, USB Serial device and an STlink
+COM port. During the enumeration phase, the device must provide host
+with the requested descriptors (device descriptor, configuration
 descriptor, string descriptors). Those descriptors are used by host
 driver to identify the device capabilities. Once NUCLEO-H7S3L8 USB
-device successfully completed the enumeration phase. Connect USB cable
-to Host , Open two hyperterminals (USB com port and UART com port) to
-send/receive data to/from host to/from device. When USER_Button is
-pressed, the device sneds a HID report. Each report sent should move the
-PC host machine mouse cursor by one step.</p>
+device successfully completed the enumeration phase:</p>
+<li>Connect USB cableto Host , Open two hyperterminals
+(USB com port and UART com port) to send/receive data to/from host to/from device.</li>
+<li>When USER_Button is pressed, the device sneds an HID report.
+Each report sent should move the PC host machine mouse cursor by one step.</li>
 <h4 id="error-behaviors"><b>Error behaviors</b></h4>
 <p>Host PC shows that USB device does not operate as designed
-(enumeration failed, for example PC Cursor doesn’t move or Com port
+(enumeration failed, for example PC cursor doesn’t move or COM port
 enumeration failed).</p>
+<p>The LED_RED is toggling to indicate any error that has occurred.</p>
 <h4 id="assumptions-if-any"><b>Assumptions if any</b></h4>
 <p>User is familiar with USB 2.0 “Universal Serial BUS” specification
 and CDC_ACM class specification.</p>
@@ -168,7 +169,7 @@ or modify the line below in &quot;tx_initialize_low_level.S to match the memory 
      __RAM_segment_used_end__ = .;
      . = . + 64K;
      . = ALIGN(8);
-   } &gt;RAM_D1 AT&gt; RAM_D1</code></pre>
+   } &gt;RAM AT&gt; RAM</code></pre>
 <pre><code>The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
 In the example above the ThreadX heap size is set to 64KBytes.
 The ._threadx_heap must be located between the .bss and the ._user_heap_stack sections in the linker script.
@@ -193,11 +194,11 @@ HID, VCP, USART, DMA, Mouse.</p>
 <h3 id="hardware-and-software-environment"><b>Hardware and Software
 environment</b></h3>
 <ul>
-<li>This example runs on STM32H7S3L8xx devices</li>
-<li>This example has been tested with STMicroelectronics NUCLEO-H7S3L8
-boards Revision MB1737-H7S3L8-B01 and can be easily tailored to any
+<li>This application runs on STM32H7S3L8xx devices</li>
+<li>This application has been tested with STMicroelectronics NUCLEO-H7S3L8
+boards revision MB1737-H7S3L8-B02 and can be easily tailored to any
 other supported device and development board.</li>
-<li>NUCLEO-H7S3L8 Set-up</li>
+<li>NUCLEO-H7S3L8 set-up:</li>
 <li>Connect the NUCLEO-H7S3L8 board CN1 to the PC through “TYPE-C” to
 “Standard A” cable.</li>
 <li>For VCP the configuration is dynamic for example it can be :
@@ -228,8 +229,8 @@ shall be set to 9600.</li>
 <h3 id="how-to-use-it"><b>How to use it ?</b></h3>
 <p>To configure STM32CubeIDE Debug Configuration, you must do the
 following :</p>
-<pre><code>1. Add the adequate external loader (MX25UW25645G_STM32H7R38-NUCLEO.stldr file) in Project-&gt;Debugger Configuration
-2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration
+<pre><code>1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project-&gt;Debugger Configuration
+2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the "Load Symbols" option
 3. Move up the application in the startup</code></pre>
 <p>In order to make the program work, you must do the following :</p>
 <ul>

@@ -10,13 +10,13 @@
       <TargetName>Nx_UDP_Echo_Server_Appli</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6190000::V6.19::ARMCLANG</pCCUsed>
+      <pCCUsed>6210000::V6.21::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32H7S3L8Hx</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32H7Rx-7Sx_DFP.0.1.0</PackID>
+          <PackID>Keil.STM32H7RSxx_DFP.1.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000-0x2000FFFF) IRAM2(0x24000000-0x24071BFF) IROM(0x8000000-0x800FFFF) CLOCK(12000000) FPU3(DFPU) CPUTYPE("Cortex-M7") ELITTLE TZ</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -81,7 +81,7 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
+            <RunUserProg2>1</RunUserProg2>
             <UserProg1Name></UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -276,7 +276,7 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x8000000</StartAddress>
+                <StartAddress>0x70000000</StartAddress>
                 <Size>0x10000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32H7S3xx,TX_INCLUDE_USER_DEFINE_FILE,NX_INCLUDE_USER_DEFINE_FILE</Define>
               <Undefine></Undefine>
-              <IncludePath>../../Appli/Core/Inc;../../Appli/AZURE_RTOS/App;../../Appli/NetXDuo/App;../../Appli/NetXDuo/Target;../../../../../../../Drivers/BSP/Components/lan8742/;../../../../../../../Middlewares/ST/netxduo/common/drivers/ethernet/;../../../../../../../Middlewares/ST/netxduo/addons/dhcp/;../../../../../../../Middlewares/ST/netxduo/common/inc/;../../../../../../../Middlewares/ST/netxduo/ports/cortex_m7/ac5/inc/;../../../../../../../Middlewares/ST/netxduo/common/drivers/ethernet/;../../../../../../../Middlewares/ST/threadx/common/inc/;../../../../../../../Middlewares/ST/threadx/ports/cortex_m7/ac6/inc/;../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc;../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc/Legacy;../../../../../../../Drivers/CMSIS/Device/ST/STM32H7RSxx/Include;../../../../../../../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../../Appli/Core/Inc;../../Appli/AZURE_RTOS/App;../../Appli/NetXDuo/App;../../Appli/NetXDuo/Target;../../../../../../../Drivers/BSP/Components/lan8742/;../../../../../../../Middlewares/ST/netxduo/common/drivers/ethernet/;../../../../../../../Middlewares/ST/netxduo/addons/dhcp/;../../../../../../../Middlewares/ST/netxduo/common/inc/;../../../../../../../Middlewares/ST/netxduo/ports/cortex_m7/ac5/inc/;../../../../../../../Middlewares/ST/threadx/common/inc/;../../../../../../../Middlewares/ST/threadx/ports/cortex_m7/ac6/inc/;../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc;../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc/Legacy;../../../../../../../Drivers/CMSIS/Device/ST/STM32H7RSxx/Include;../../../../../../../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -371,7 +371,7 @@
             <TextAddressRange></TextAddressRange>
             <DataAddressRange></DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>.\Nx_UDP_Echo_Server.sct</ScatterFile>
+            <ScatterFile>stm32h7rsxx_ROMxspi2.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc>--diag_suppress L6312,L6314,L6329W</Misc>
@@ -470,6 +470,16 @@
           <GroupName>Drivers/STM32H7RSxx_HAL_Driver</GroupName>
           <Files>
             <File>
+              <FileName>stm32h7rsxx_hal_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32h7rsxx_hal_tim_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_tim_ex.c</FilePath>
+            </File>
+            <File>
               <FileName>stm32h7rsxx_hal_cortex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_cortex.c</FilePath>
@@ -538,16 +548,6 @@
               <FileName>stm32h7rsxx_hal_eth_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_eth_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7rsxx_hal_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7rsxx_hal_tim_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_tim_ex.c</FilePath>
             </File>
             <File>
               <FileName>stm32h7rsxx_hal_uart.c</FileName>
@@ -3865,6 +3865,41 @@
               <FilePath>../../../../../../../Middlewares/ST/netxduo/common/src/nx_udp_socket_driver_packet_receive.c</FilePath>
             </File>
             <File>
+              <FileName>nxe_udp_socket_vlan_priority_set.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../Middlewares/ST/netxduo/common/src/nxe_udp_socket_vlan_priority_set.c</FilePath>
+            </File>
+            <File>
+              <FileName>nxe_tcp_socket_vlan_priority_set.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../Middlewares/ST/netxduo/common/src/nxe_tcp_socket_vlan_priority_set.c</FilePath>
+            </File>
+            <File>
+              <FileName>nxe_packet_vlan_priority_set.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../Middlewares/ST/netxduo/common/src/nxe_packet_vlan_priority_set.c</FilePath>
+            </File>
+            <File>
+              <FileName>nx_udp_socket_vlan_priority_set.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../Middlewares/ST/netxduo/common/src/nx_udp_socket_vlan_priority_set.c</FilePath>
+            </File>
+            <File>
+              <FileName>nx_tcp_socket_vlan_priority_set.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../Middlewares/ST/netxduo/common/src/nx_tcp_socket_vlan_priority_set.c</FilePath>
+            </File>
+            <File>
+              <FileName>nx_packet_vlan_priority_set.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../Middlewares/ST/netxduo/common/src/nx_packet_vlan_priority_set.c</FilePath>
+            </File>
+            <File>
+              <FileName>nx_link.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../Middlewares/ST/netxduo/common/src/nx_link.c</FilePath>
+            </File>
+            <File>
               <FileName>nx_nd_cache_add.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../../../../../../Middlewares/ST/netxduo/common/src/nx_nd_cache_add.c</FilePath>
@@ -3921,8 +3956,8 @@
   <RTE>
     <apis/>
     <components>
-      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.6.0" condition="ARMv6_7_8-M Device">
-        <package name="CMSIS" schemaVersion="1.7.7" url="http://www.keil.com/pack/" vendor="ARM" version="5.9.0"/>
+      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="6.1.0" condition="ARMv6_7_8-M Device">
+        <package name="CMSIS" schemaVersion="1.7.36" url="https://www.keil.com/pack/" vendor="ARM" version="6.1.0"/>
         <targetInfos>
           <targetInfo name="Nx_UDP_Echo_Server_Appli"/>
         </targetInfos>

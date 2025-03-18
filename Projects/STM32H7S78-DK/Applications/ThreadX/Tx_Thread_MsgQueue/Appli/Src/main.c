@@ -1,7 +1,7 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file    ThreadX/Tx_Thread_MsgQueue/Src/main.c
+  * @file    ThreadX/Tx_Thread_MsgQueue/Appli/Src/main.c
   * @author  MCD Application Team
   * @brief   Main program body
   ******************************************************************************
@@ -191,8 +191,9 @@ static void MX_UART4_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-/* USER CODE BEGIN MX_GPIO_Init_1 */
-/* USER CODE END MX_GPIO_Init_1 */
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+
+  /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOB_CLK_ENABLE();
@@ -220,8 +221,9 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(LED_GREEN_GPIO_Port, &GPIO_InitStruct);
 
-/* USER CODE BEGIN MX_GPIO_Init_2 */
-/* USER CODE END MX_GPIO_Init_2 */
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+
+  /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
@@ -229,15 +231,15 @@ static void MX_GPIO_Init(void)
 #if defined(__ICCARM__)
 size_t __write(int file, unsigned char const *ptr, size_t len)
 {
- size_t idx;
- unsigned char const *pdata = ptr;
+  size_t idx;
+  unsigned char const *pdata = ptr;
 
- for (idx = 0; idx < len; idx++)
- {
- iar_fputc((int)*pdata);
- pdata++;
- }
- return len;
+  for (idx = 0; idx < len; idx++)
+  {
+    iar_fputc((int)*pdata);
+    pdata++;
+  }
+  return len;
 }
 #endif /* __ICCARM__ */
 
@@ -249,7 +251,7 @@ size_t __write(int file, unsigned char const *ptr, size_t len)
 PUTCHAR_PROTOTYPE
 {
   /* Place your implementation of fputc here */
-  /* e.g. write a character to the USART4 and Loop until the end of transmission */
+  /* e.g. write a character to the UART4 and Loop until the end of transmission */
   HAL_UART_Transmit(&huart4, (uint8_t *)&ch, 1, 0xFFFF);
 
   return ch;
@@ -314,7 +316,7 @@ static void MPU_Config(void)
   * @note   This function is called  when TIM6 interrupt took place, inside
   * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
   * a global variable "uwTick" used as application time base.
-  * @param  htim : TIM handle
+  * @param  htim TIM handle
   * @retval None
   */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)

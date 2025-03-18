@@ -174,7 +174,7 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
     return NX_NOT_ENABLED;
   }
 
-  /* create the UDP server thread */
+  /* Create the UDP server thread */
   ret = tx_thread_create(&AppUDPThread, "App UDP Thread", App_UDP_Thread_Entry, 0, pointer, Nx_IP_INSTANCE_THREAD_SIZE,
                         NX_APP_INSTANCE_PRIORITY, NX_APP_INSTANCE_PRIORITY, TX_NO_TIME_SLICE, TX_DONT_START);
 
@@ -229,7 +229,7 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
     return TX_POOL_ERROR;
   }
 
-  /* create the Link thread */
+  /* Create the Link thread */
   ret = tx_thread_create(&AppLinkThread, "App Link Thread", App_Link_Thread_Entry, 0, pointer, NX_APP_THREAD_STACK_SIZE,
                          LINK_PRIORITY, LINK_PRIORITY, TX_NO_TIME_SLICE, TX_AUTO_START);
 
@@ -251,11 +251,18 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
 static VOID ip_address_change_notify_callback(NX_IP *ip_instance, VOID *ptr)
 {
   /* USER CODE BEGIN ip_address_change_notify_callback */
-
+  /* Release the semaphore as soon as an IP address is available */
+  if (nx_ip_address_get(&NetXDuoEthIpInstance, &IpAddress, &NetMask) != NX_SUCCESS)
+  {
+    /* USER CODE BEGIN IP address change callback error */
+    Error_Handler();
+    /* USER CODE END IP address change callback error */
+  }
+  if(IpAddress != NULL_ADDRESS)
+  {
+    tx_semaphore_put(&DHCPSemaphore);
+  }
   /* USER CODE END ip_address_change_notify_callback */
-
-  /* release the semaphore as soon as an IP address is available */
-  tx_semaphore_put(&DHCPSemaphore);
 }
 
 /**
@@ -292,9 +299,9 @@ static VOID nx_app_thread_entry (ULONG thread_input)
     Error_Handler();
     /* USER CODE END DHCP client start error */
   }
-
+  printf("Looking for DHCP server ..\n");
   /* wait until an IP address is ready */
-  if(tx_semaphore_get(&DHCPSemaphore, NX_APP_DEFAULT_TIMEOUT) != TX_SUCCESS)
+  if(tx_semaphore_get(&DHCPSemaphore, TX_WAIT_FOREVER) != TX_SUCCESS)
   {
     /* USER CODE BEGIN DHCPSemaphore get error */
     Error_Handler();
@@ -302,20 +309,12 @@ static VOID nx_app_thread_entry (ULONG thread_input)
   }
 
   /* USER CODE BEGIN Nx_App_Thread_Entry 2 */
-  /* get IP address */
-  ret = nx_ip_address_get(&NetXDuoEthIpInstance, &IpAddress, &NetMask);
-
   PRINT_IP_ADDRESS(IpAddress);
-
-  if (ret != NX_SUCCESS)
-  {
-    Error_Handler();
-  }
 
   /* Now the network is correctly initialized, start the UDP server thread */
   tx_thread_resume(&AppUDPThread);
 
-  /* this thread is not needed any more, we relinquish it */
+  /* This thread is not needed any more, we relinquish it */
   tx_thread_relinquish();
   /* USER CODE END Nx_App_Thread_Entry 2 */
 
@@ -331,7 +330,7 @@ static VOID App_UDP_Thread_Entry(ULONG thread_input)
   ULONG source_ip_address;
   NX_PACKET *data_packet;
 
-  /* create the UDP socket */
+  /* Create the UDP socket */
   ret = nx_udp_socket_create(&NetXDuoEthIpInstance, &UDPSocket, "UDP Server Socket", NX_IP_NORMAL, NX_FRAGMENT_OKAY, NX_IP_TIME_TO_LIVE, QUEUE_MAX_SIZE);
 
   if (ret != NX_SUCCESS)
@@ -339,7 +338,7 @@ static VOID App_UDP_Thread_Entry(ULONG thread_input)
      Error_Handler();
   }
 
-  /* bind the socket indefinitely on the required port */
+  /* Bind the socket indefinitely on the required port */
   ret = nx_udp_socket_bind(&UDPSocket, DEFAULT_PORT, TX_WAIT_FOREVER);
 
   if (ret != NX_SUCCESS)
@@ -355,30 +354,30 @@ static VOID App_UDP_Thread_Entry(ULONG thread_input)
   {
     TX_MEMSET(data_buffer, '\0', sizeof(data_buffer));
 
-    /* wait for data for 1 sec */
+    /* Wait for data for 1 sec */
     ret = nx_udp_socket_receive(&UDPSocket, &data_packet, 100);
 
     if (ret == NX_SUCCESS)
     {
-      /* data is available, read it into the data buffer */
+      /* Data is available, read it into the data buffer */
       nx_packet_data_retrieve(data_packet, data_buffer, &bytes_read);
 
-      /* get info about the client address and port */
+      /* Get info about the client address and port */
       nx_udp_source_extract(data_packet, &source_ip_address, &source_port);
 
-      /* print the client address, the remote port and the received data */
+      /* Print the client address, the remote port and the received data */
       PRINT_DATA(source_ip_address, source_port, data_buffer);
 
-      /* resend the same packet to the client */
+      /* Resend the same packet to the client */
       ret =  nx_udp_socket_send(&UDPSocket, data_packet, source_ip_address, source_port);
 
-      /* toggle the green led to monitor visually the traffic */
-      HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+      /* Toggle the green led to monitor visually the traffic */
+      HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
     }
     else
     {
-        /* the server is in idle state, toggle the green led */
-        HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+        /* The server is in idle state, toggle the green led */
+        HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
     }
   }
 }
@@ -395,7 +394,7 @@ static VOID App_Link_Thread_Entry(ULONG thread_input)
 
   while(1)
   {
-    /* Get Physical Link status. */
+    /* Send request to check if the Ethernet cable is connected. */
     status = nx_ip_interface_status_check(&NetXDuoEthIpInstance, 0, NX_IP_LINK_ENABLED,
                                       &actual_status, 10);
 
@@ -404,25 +403,42 @@ static VOID App_Link_Thread_Entry(ULONG thread_input)
       if(linkdown == 1)
       {
         linkdown = 0;
+
+        /* The network cable is connected. */
+        printf("The network cable is connected.\n");
+
+        /* Send request to enable PHY Link. */
+        nx_ip_driver_direct_command(&NetXDuoEthIpInstance, NX_LINK_ENABLE,
+                                      &actual_status);
+
+        /* Send request to check if an address is resolved. */
         status = nx_ip_interface_status_check(&NetXDuoEthIpInstance, 0, NX_IP_ADDRESS_RESOLVED,
                                       &actual_status, 10);
         if(status == NX_SUCCESS)
         {
-          /* The network cable is connected again. */
-          printf("The network cable is connected again.\n");
-          /* Print UDP Echo Server is available again. */
-          printf("UDP Echo Server is available again.\n");
+          /* Stop DHCP */
+          nx_dhcp_stop(&DHCPClient);
+
+          /* Reinitialize DHCP */
+          nx_dhcp_reinitialize(&DHCPClient);
+
+          /* Start DHCP */
+          nx_dhcp_start(&DHCPClient);
+
+          /* Wait until an IP address is ready */
+          if(tx_semaphore_get(&DHCPSemaphore, TX_WAIT_FOREVER) != TX_SUCCESS)
+          {
+            /* USER CODE BEGIN DHCPSemaphore get error */
+            Error_Handler();
+            /* USER CODE END DHCPSemaphore get error */
+          }
+
+          PRINT_IP_ADDRESS(IpAddress);
         }
         else
         {
-          /* The network cable is connected. */
-          printf("The network cable is connected.\n");
-          /* Send command to Enable Nx driver. */
-          nx_ip_driver_direct_command(&NetXDuoEthIpInstance, NX_LINK_ENABLE,
-                                      &actual_status);
-          /* Restart DHCP Client. */
-          nx_dhcp_stop(&DHCPClient);
-          nx_dhcp_start(&DHCPClient);
+          /* Set the DHCP Client's remaining lease time to 0 seconds to trigger an immediate renewal request for a DHCP address. */
+          nx_dhcp_client_update_time_remaining(&DHCPClient, 0);
         }
       }
     }
@@ -433,6 +449,8 @@ static VOID App_Link_Thread_Entry(ULONG thread_input)
         linkdown = 1;
         /* The network cable is not connected. */
         printf("The network cable is not connected.\n");
+        nx_ip_driver_direct_command(&NetXDuoEthIpInstance, NX_LINK_DISABLE,
+                                      &actual_status);
       }
     }
 

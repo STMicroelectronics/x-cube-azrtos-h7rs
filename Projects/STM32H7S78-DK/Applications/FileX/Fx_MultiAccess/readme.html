@@ -27,7 +27,7 @@ vertical-align: middle;
 <body>
 <div class="row">
 <section id="fx_multiaccess-application-description" class="col-sm-12 col-lg-8">
-<h2><b>Fx_MultiAccess application description</b></h2>
+<h2><b>Fx_MultiAccess Application Description</b></h2>
 <p>This application provides an example of Azure RTOS FileX stack usage
 on STM32H7S78-DK board, it demonstrates the FileX’s concurrent file
 access capabilities. The application is designed to execute file
@@ -46,11 +46,11 @@ and read operations for file fx_file_one.</li>
 <li>fx_thread_two (Prio : 10; PreemptionPrio : 10) used to create, write
 and read operations for file fx_file_two.</li>
 </ul>
-<p><b>Note</b></p>
+<h4 id="Notes"><b>Notes</b></h4>
 <p>A FAT32 compatible SD card is expected to be used with
 this example. The program will start file operations without formatting
 the media, so all user related files are kept.</p>
-<p>This application runs from the external Flash memory. It is launched
+<p>This application runs from the external flash memory. It is launched
 from a first boot stage and inherits from this boot project
 configuration (caches, MPU regions [region 0 and 1], system clock at 600
 MHz and external memory interface at the highest speed). Note that the
@@ -123,7 +123,7 @@ or modify the line below in &quot;tx_initialize_low_level.S to match the memory 
      __RAM_segment_used_end__ = .;
      . = . + 64K;
      . = ALIGN(8);
-   } &gt;RAM_D1 AT&gt; RAM_D1</code></pre>
+   } &gt;RAM AT&gt; RAM</code></pre>
 <pre><code>The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
 In the example above the ThreadX heap size is set to 64KBytes.
 The ._threadx_heap must be located between the .bss and the ._user_heap_stack sections in the linker script.
@@ -152,16 +152,16 @@ cache maintenance issues.</li>
 <h3 id="hardware-and-software-environment"><b>Hardware and Software
 environment</b></h3>
 <ul>
-<li>This example runs on STM32H7S7L8xx devices.</li>
-<li>This example has been tested with STMicroelectronics STM32H7S78-DK
-boards revision: MB1736-H7S7L8-C01 and can be easily tailored to any
+<li>This application runs on STM32H7S7L8xx devices.</li>
+<li>This application has been tested with STMicroelectronics STM32H7S78-DK
+boards revision: MB1736-H7S7L8-D01 and can be easily tailored to any
 other supported device and development board.</li>
 </ul>
 <h3 id="how-to-use-it"><b>How to use it ?</b></h3>
 <p>To configure STM32CubeIDE Debug Configuration, you must do the
 following :</p>
 <pre><code>1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project-&gt;Debugger Configuration
-2. Add in the startup the Boot_XIP.elf in Project-&gt;Debugger Configuration
+2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the "Load Symbols" option
 3. Move up the application in the startup</code></pre>
 <p>In order to make the program work, you must do the following :</p>
 <ul>

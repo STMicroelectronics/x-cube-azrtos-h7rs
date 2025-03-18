@@ -26,6 +26,8 @@
 		<nature>com.st.stm32cube.ide.mcu.MCUCubeProjectNature</nature>
 		<nature>com.st.stm32cube.ide.mcu.MCUAdvancedStructureProjectNature</nature>
 		<nature>com.st.stm32cube.ide.mcu.MCUAppliProjectNature</nature>
+		<nature>com.st.stm32cube.ide.mcu.MCUMultiLinkerEnabledProjectNature</nature>
+		<nature>com.st.stm32cube.ide.mcu.MCUBootModeEnabledProjectNature</nature>
 		<nature>com.st.stm32cube.ide.mcu.MCUNonSecureProjectNature</nature>
 		<nature>com.st.stm32cube.ide.mcu.MCUSingleCpuProjectNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
@@ -103,6 +105,16 @@
 			<locationURI>PARENT-7-PROJECT_LOC/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_i2c_ex.c</locationURI>
 		</link>
 		<link>
+			<name>Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_mmc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_mmc.c</locationURI>
+		</link>
+		<link>
+			<name>Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_mmc_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_mmc_ex.c</locationURI>
+		</link>
+		<link>
 			<name>Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_pcd.c</name>
 			<type>1</type>
 			<locationURI>PARENT-7-PROJECT_LOC/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_pcd.c</locationURI>
@@ -143,6 +155,11 @@
 			<locationURI>PARENT-7-PROJECT_LOC/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_sd_ex.c</locationURI>
 		</link>
 		<link>
+			<name>Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_sdio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_sdio.c</locationURI>
+		</link>
+		<link>
 			<name>Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_smbus.c</name>
 			<type>1</type>
 			<locationURI>PARENT-7-PROJECT_LOC/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_smbus.c</locationURI>
@@ -161,6 +178,16 @@
 			<name>Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_tim_ex.c</name>
 			<type>1</type>
 			<locationURI>PARENT-7-PROJECT_LOC/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_tim_ex.c</locationURI>
+		</link>
+		<link>
+			<name>Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_uart.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_uart.c</locationURI>
+		</link>
+		<link>
+			<name>Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_uart_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_uart_ex.c</locationURI>
 		</link>
 		<link>
 			<name>Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_ll_dlyb.c</name>
@@ -1313,6 +1340,16 @@
 			<locationURI>PARENT-7-PROJECT_LOC/Middlewares/ST/usbx/common/core/src/ux_utility_memory_allocate_mulv_safe.c</locationURI>
 		</link>
 		<link>
+			<name>Middlewares/USBX/USB/USBX/CoreSystem/ux_utility_memory_byte_pool_create.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/Middlewares/ST/usbx/common/core/src/ux_utility_memory_byte_pool_create.c</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/USBX/USB/USBX/CoreSystem/ux_utility_memory_byte_pool_search.c</name>
+			<type>1</type>
+			<locationURI>PARENT-7-PROJECT_LOC/Middlewares/ST/usbx/common/core/src/ux_utility_memory_byte_pool_search.c</locationURI>
+		</link>
+		<link>
 			<name>Middlewares/USBX/USB/USBX/CoreSystem/ux_utility_memory_compare.c</name>
 			<type>1</type>
 			<locationURI>PARENT-7-PROJECT_LOC/Middlewares/ST/usbx/common/core/src/ux_utility_memory_compare.c</locationURI>
@@ -1326,11 +1363,6 @@
 			<name>Middlewares/USBX/USB/USBX/CoreSystem/ux_utility_memory_free.c</name>
 			<type>1</type>
 			<locationURI>PARENT-7-PROJECT_LOC/Middlewares/ST/usbx/common/core/src/ux_utility_memory_free.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/USBX/USB/USBX/CoreSystem/ux_utility_memory_free_block_best_get.c</name>
-			<type>1</type>
-			<locationURI>PARENT-7-PROJECT_LOC/Middlewares/ST/usbx/common/core/src/ux_utility_memory_free_block_best_get.c</locationURI>
 		</link>
 		<link>
 			<name>Middlewares/USBX/USB/USBX/CoreSystem/ux_utility_memory_set.c</name>

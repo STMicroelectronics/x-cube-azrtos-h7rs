@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -23,7 +23,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -34,6 +33,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
+#define APP_QUEUE_SIZE             5
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -52,16 +52,21 @@ static UX_SLAVE_CLASS_CDC_ACM_PARAMETER cdc_acm_parameter;
 static TX_THREAD ux_device_app_thread;
 
 /* USER CODE BEGIN PV */
-TX_QUEUE                         ux_app_MsgQueue;
 static TX_THREAD ux_hid_thread;
 static TX_THREAD ux_cdc_read_thread;
 static TX_THREAD ux_cdc_write_thread;
 TX_EVENT_FLAGS_GROUP EventFlag;
 extern uint8_t User_Button_State;
+
+/* ux app msg queue */
+TX_QUEUE                         ux_app_MsgQueue;
+extern PCD_HandleTypeDef         hpcd_USB_OTG_HS;
 #if defined ( __ICCARM__ ) /* IAR Compiler */
   #pragma data_alignment=4
+
 #endif /* defined ( __ICCARM__ ) */
-__ALIGN_BEGIN USB_MODE_STATE                  USB_Device_State_Msg   __ALIGN_END;
+__ALIGN_BEGIN USB_MODE_STATE                            USB_Device_State_Msg __ALIGN_END;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -269,20 +274,22 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
   {
     return TX_GROUP_ERROR;
   }
-
   /* Allocate Memory for the Queue */
-  if (tx_byte_allocate(byte_pool, (VOID **) &pointer, APP_QUEUE_SIZE*sizeof(ULONG),
+  if (tx_byte_allocate(byte_pool, (VOID **) &pointer,
+                       APP_QUEUE_SIZE*sizeof(ULONG),
                        TX_NO_WAIT) != TX_SUCCESS)
   {
-    return TX_POOL_ERROR;
+    ret = TX_POOL_ERROR;
   }
 
   /* Create the MsgQueue */
-  if (tx_queue_create(&ux_app_MsgQueue, "Message Queue app", TX_1_ULONG,
-                      pointer, APP_QUEUE_SIZE * sizeof(ULONG)) != TX_SUCCESS)
+  if (tx_queue_create(&ux_app_MsgQueue, "Message Queue app",
+                      TX_1_ULONG, pointer,
+                      APP_QUEUE_SIZE*sizeof(ULONG)) != TX_SUCCESS)
   {
-    return TX_QUEUE_ERROR;
+    ret = TX_QUEUE_ERROR;
   }
+
   /* USER CODE END MX_USBX_Device_Init1 */
 
   return ret;
@@ -330,6 +337,7 @@ static VOID app_ux_device_thread_entry(ULONG thread_input)
       Error_Handler();
     }
   }
+
   /* USER CODE END app_ux_device_thread_entry */
 }
 

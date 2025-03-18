@@ -60,8 +60,7 @@ static void MPU_Config(void);
 #if defined(__ICCARM__)
 /* New definition from EWARM V9, compatible with EWARM8 */
 int iar_fputc(int ch);
-#define PUTCHAR_PROTOTYPE int iar_fputc(int ch)
-
+#define PUTCHAR_PROTOTYPE  int iar_fputc(int ch)
 #elif defined ( __CC_ARM ) || defined(__ARMCC_VERSION)
 /* ARM Compiler 5/6*/
 #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
@@ -140,7 +139,13 @@ int main(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+/**
+  * @brief  Retargets the C library __write function to the IAR function iar_fputc.
+  * @param  file: file descriptor.
+  * @param  ptr: pointer to the buffer where the data is stored.
+  * @param  len: length of the data to write in bytes.
+  * @retval length of the written data in bytes.
+  */
 #if defined(__ICCARM__)
 size_t __write(int file, unsigned char const *ptr, size_t len)
 {
@@ -164,12 +169,11 @@ size_t __write(int file, unsigned char const *ptr, size_t len)
 PUTCHAR_PROTOTYPE
 {
   /* Place your implementation of fputc here */
-  /* e.g. write a character to the UART4 and Loop until the end of transmission */
+  /* e.g. write a character to the USART4 and Loop until the end of transmission */
   HAL_UART_Transmit(&huart4, (uint8_t *)&ch, 1, 0xFFFF);
 
   return ch;
 }
-
 /* USER CODE END 4 */
 
  /* MPU Configuration */
@@ -240,7 +244,7 @@ static void MPU_Config(void)
   * @note   This function is called  when TIM6 interrupt took place, inside
   * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
   * a global variable "uwTick" used as application time base.
-  * @param  htim : TIM handle
+  * @param  htim TIM handle
   * @retval None
   */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)

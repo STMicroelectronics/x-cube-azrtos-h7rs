@@ -27,7 +27,7 @@ vertical-align: middle;
 <body>
 <div class="row">
 <section id="ux_host_dualclass-application-description" class="col-sm-12 col-lg-8">
-<h2><b>Ux_Host_DualClass application description</b></h2>
+<h2><b>Ux_Host_DualClass Application Description</b></h2>
 <p>This application provides an example of Azure RTOS USBX stack usage.
 It shows how to develop USB Host Human Interface “HID” and Mass Storage
 “MSC” able to enumerate and communicates with:</p>
@@ -49,7 +49,7 @@ ThreadX during kernel start, at this stage, all USBx resources are
 initialized, the MSC and the HID class drivers are registered. The
 application creates four threads:</p>
 <ul>
-<li>usbx_app_thread_entry (Priority : 10; Preemption threshold : 10)
+<li>app_ux_host_thread_entry (Priority : 10; Preemption threshold : 10)
 used to initialize USB OTG HAL HCD driver, start the host and proceed to
 file operations or HID reports once the device is properly
 enumerated.</li>
@@ -155,7 +155,7 @@ or modify the line below in &quot;tx_initialize_low_level.S to match the memory 
      __RAM_segment_used_end__ = .;
      . = . + 64K;
      . = ALIGN(8);
-   } &gt;RAM_D1 AT&gt; RAM_D1</code></pre>
+   } &gt;RAM AT&gt; RAM</code></pre>
 <pre><code>The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
 In the example above the ThreadX heap size is set to 64KBytes.
 The ._threadx_heap must be located between the .bss and the ._user_heap_stack sections in the linker script.
@@ -182,7 +182,7 @@ environment</b></h3>
 <ul>
 <li><p>This application runs on STM32H7S7L8xx devices.</p></li>
 <li><p>This application has been tested with STMicroelectronics
-STM32H7S78-DK boards revision: MB1736-H7S7L8-C01 and can be easily
+STM32H7S78-DK boards revision: MB1736-H7S7L8-D01 and can be easily
 tailored to any other supported device and development board.</p></li>
 <li><p>STM32H7S78-DK Set-up</p>
 <ul>
@@ -211,7 +211,7 @@ HyperTerminal.</li>
 <p>To configure STM32CubeIDE Debug Configuration, you must do the
 following :</p>
 <pre><code>1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project-&gt;Debugger Configuration
-2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration
+2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the "Load Symbols" option
 3. Move up the application in the startup</code></pre>
 <p>In order to make the program work, you must do the following :</p>
 <ul>

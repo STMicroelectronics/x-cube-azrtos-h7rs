@@ -44,7 +44,6 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
 extern UX_HOST_CLASS_HID_KEYBOARD *keyboard;
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/

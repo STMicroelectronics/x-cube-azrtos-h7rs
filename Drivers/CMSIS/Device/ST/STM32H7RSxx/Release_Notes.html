@@ -46,14 +46,27 @@
 <div class="col-sm-12 col-lg-8">
 <h1 id="update-history">Update History</h1>
 <div class="collapse">
-<input type="checkbox" id="collapse-section1" checked aria-hidden="true"> <label for="collapse-section1" aria-hidden="true"><strong>V1.0.0 / 28-February-2024</strong></label>
+<input type="checkbox" id="collapse-section3" checked aria-hidden="true"> <label for="collapse-section3" aria-hidden="true"><strong>V1.2.0 / 05-February-2025</strong></label>
 <div>
-<h2 id="first-release">First release</h2>
-<h3 id="first-official-release-of-stm32h7rsxx-firmware-package-supporting-stm32h7rsxx-devices">First official Release of <strong>STM32H7RSxx</strong> Firmware package supporting <strong>STM32H7RSxx</strong> devices</h3>
+<h2 id="main-changes">Main Changes</h2>
+<h3 id="maintenance-release-of-stm32h7rsxx-firmware-package-supporting-stm32h7rsxx-devices">Maintenance Release of <strong>STM32H7RSxx</strong> Firmware package supporting <strong>STM32H7RSxx</strong> devices</h3>
 <h2 id="contents">Contents</h2>
 <ul>
-<li>Support of STM32H7Rx/Sx devices</li>
+<li>Update CMSIS devices to include latest corrections:</li>
 </ul>
+<p><strong>Bug fixes</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Headline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Remove flash size data register</td>
+</tr>
+</tbody>
+</table>
 <p><br />
 </p>
 <p>Notes: linker file mapping vs HW boards</p>
@@ -83,8 +96,8 @@
 <h2 id="development-toolchains-and-compilers">Development Toolchains and Compilers</h2>
 <ul>
 <li>IAR Embedded Workbench for ARM (EWARM) toolchain V9.20.1</li>
-<li>RealView Microcontroller Development Kit (MDK-ARM) toolchain V5.38a</li>
-<li>STM32CubeIDE V1.15.0 (GCC12)</li>
+<li>RealView Microcontroller Development Kit (MDK-ARM) toolchain <strong>V5.39</strong></li>
+<li>STM32CubeIDE <strong>V1.18.0</strong> (GCC13)</li>
 </ul>
 <p><br />
 </p>
@@ -103,6 +116,167 @@
 <li>None</li>
 </ul>
 <h2 id="notes">Notes</h2>
+<ul>
+<li>None</li>
+</ul>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section2" aria-hidden="true"> <label for="collapse-section2" aria-hidden="true"><strong>V1.1.0 / 05-June-2024</strong></label>
+<div>
+<h2 id="main-changes-1">Main Changes</h2>
+<h3 id="maintenance-release-of-stm32h7rsxx-firmware-package-supporting-stm32h7rsxx-devices-1">Maintenance Release of <strong>STM32H7RSxx</strong> Firmware package supporting <strong>STM32H7RSxx</strong> devices</h3>
+<h2 id="contents-1">Contents</h2>
+<ul>
+<li>Update CMSIS devices to include latest corrections:</li>
+</ul>
+<p><strong>New features</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Headline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Add linker files for OPENBL ExtMemLoader generation</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Bug fixes</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Headline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Correct overlap between BOOT RAM and LRUN RAM for execution in linker files</td>
+</tr>
+<tr class="even">
+<td>Correct XSPI Fifo size to 32 (instead of 64)</td>
+</tr>
+<tr class="odd">
+<td>Add missing opening parenthesis to the USB_OTG_GCCFG_FSVMINUS_Msk macro definition</td>
+</tr>
+<tr class="even">
+<td>Add USART_CR1_M_MSK and USART_CR1_M_Pos definitions</td>
+</tr>
+</tbody>
+</table>
+<p><br />
+</p>
+<p>Notes: linker file mapping vs HW boards</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Board</th>
+<th>Internal Flash (boot)</th>
+<th style="text-align: left;">External memories (Appli)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">STM32H7S78-DK</td>
+<td>stm32h7s7xx_flash.*</td>
+<td style="text-align: left;">stm32h7rsxx_RAMxspi1_ROMxspi2.*</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NUCLEO-H7S3L8</td>
+<td>stm32h7s3xx_flash.*</td>
+<td style="text-align: left;">stm32h7rsxx_ROMxspi2.*</td>
+</tr>
+</tbody>
+</table>
+<p><br />
+</p>
+<h2 id="development-toolchains-and-compilers-1">Development Toolchains and Compilers</h2>
+<ul>
+<li>IAR Embedded Workbench for ARM (EWARM) toolchain V9.20.1</li>
+<li>RealView Microcontroller Development Kit (MDK-ARM) toolchain <strong>V5.39</strong></li>
+<li>STM32CubeIDE <strong>V1.16.0</strong> (GCC12)</li>
+</ul>
+<p><br />
+</p>
+<h2 id="supported-devices-and-boards-1">Supported Devices and boards</h2>
+<ul>
+<li>STM32H7R3xx/STM32H7R7xx/STM32H7S3xx/STM32H7S7xx devices</li>
+</ul>
+<p><br />
+</p>
+<h2 id="known-limitations-1">Known Limitations</h2>
+<ul>
+<li>None</li>
+</ul>
+<h2 id="dependencies-1">Dependencies</h2>
+<ul>
+<li>None</li>
+</ul>
+<h2 id="notes-1">Notes</h2>
+<ul>
+<li>None</li>
+</ul>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section1" aria-hidden="true"> <label for="collapse-section1" aria-hidden="true"><strong>V1.0.0 / 28-February-2024</strong></label>
+<div>
+<h2 id="first-release">First release</h2>
+<h3 id="first-official-release-of-stm32h7rsxx-firmware-package-supporting-stm32h7rsxx-devices">First official Release of <strong>STM32H7RSxx</strong> Firmware package supporting <strong>STM32H7RSxx</strong> devices</h3>
+<h2 id="contents-2">Contents</h2>
+<ul>
+<li>Support of STM32H7Rx/Sx devices</li>
+</ul>
+<p><br />
+</p>
+<p>Notes: linker file mapping vs HW boards</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Board</th>
+<th>Internal Flash (boot)</th>
+<th style="text-align: left;">External memories (Appli)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">STM32H7S78-DK</td>
+<td>stm32h7s7xx_flash.*</td>
+<td style="text-align: left;">stm32h7rsxx_RAMxspi1_ROMxspi2.*</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NUCLEO-H7S3L8</td>
+<td>stm32h7s3xx_flash.*</td>
+<td style="text-align: left;">stm32h7rsxx_ROMxspi2.*</td>
+</tr>
+</tbody>
+</table>
+<p><br />
+</p>
+<h2 id="development-toolchains-and-compilers-2">Development Toolchains and Compilers</h2>
+<ul>
+<li>IAR Embedded Workbench for ARM (EWARM) toolchain V9.20.1</li>
+<li>RealView Microcontroller Development Kit (MDK-ARM) toolchain V5.38a</li>
+<li>STM32CubeIDE V1.15.0 (GCC12)</li>
+</ul>
+<p><br />
+</p>
+<h2 id="supported-devices-and-boards-2">Supported Devices and boards</h2>
+<ul>
+<li>STM32H7R3xx/STM32H7R7xx/STM32H7S3xx/STM32H7S7xx devices</li>
+</ul>
+<p><br />
+</p>
+<h2 id="known-limitations-2">Known Limitations</h2>
+<ul>
+<li>None</li>
+</ul>
+<h2 id="dependencies-2">Dependencies</h2>
+<ul>
+<li>None</li>
+</ul>
+<h2 id="notes-2">Notes</h2>
 <ul>
 <li>None</li>
 </ul>

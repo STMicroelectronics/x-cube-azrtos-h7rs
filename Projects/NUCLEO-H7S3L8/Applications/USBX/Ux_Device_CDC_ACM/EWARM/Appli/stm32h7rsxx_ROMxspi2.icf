@@ -12,8 +12,8 @@ define symbol __ICFEDIT_region_UXDATA_start__  = 0x24035000;
 define symbol __ICFEDIT_region_UXDATA_end__   = 0x24035FFF;
 define symbol __ICFEDIT_region_UXDATA_POOL_start__  = 0x24036000;
 define symbol __ICFEDIT_region_UXDATA_POOL_end__   = 0x24045FFF;
-define symbol __ICFEDIT_region_UXDATA_POOL_SERVER_start__  = 0x24046000;
-define symbol __ICFEDIT_region_UXDATA_POOL_SERVER_end__   = __ICFEDIT_region_RAM_end__;
+define symbol __ICFEDIT_region_UXDATA_POOL_APP_start__  = 0x24046000;
+define symbol __ICFEDIT_region_UXDATA_POOL_APP_end__   = __ICFEDIT_region_RAM_end__;
 
 /*-Sizes-*/
 define symbol __ICFEDIT_size_cstack__ = 0x400;
@@ -41,7 +41,7 @@ define region SRAMAHB_region  = mem:[from __region_SRAMAHB_start__ to __region_S
 define region BKPSRAM_region  = mem:[from __region_BKPSRAM_start__ to __region_BKPSRAM_end__];
 define region UXApp_region = mem:[from __ICFEDIT_region_UXDATA_start__ to __ICFEDIT_region_UXDATA_end__];
 define region UXApp_region_pool = mem:[from __ICFEDIT_region_UXDATA_POOL_start__ to __ICFEDIT_region_UXDATA_POOL_end__];
-define region UXApp_region_pool_app = mem:[from __ICFEDIT_region_UXDATA_POOL_SERVER_start__ to __ICFEDIT_region_UXDATA_POOL_SERVER_end__];
+define region UXApp_region_pool_app = mem:[from __ICFEDIT_region_UXDATA_POOL_APP_start__ to __ICFEDIT_region_UXDATA_POOL_APP_end__];
 
 define block CSTACK    with alignment = 8, size = __ICFEDIT_size_cstack__   { };
 define block HEAP      with alignment = 8, size = __ICFEDIT_size_heap__     { };

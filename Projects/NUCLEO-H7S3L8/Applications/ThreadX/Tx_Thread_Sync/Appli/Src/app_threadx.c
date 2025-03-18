@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "stdio.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,6 +46,7 @@ TX_THREAD tx_app_thread;
 /* USER CODE BEGIN PV */
 TX_THREAD ThreadTwo;
 APP_SYNC_TYPE SyncObject;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -128,7 +129,7 @@ void ThreadOne_Entry(ULONG thread_input)
       printf("** ThreadOne : SyncObject acquired ** \n");
 
       /*sync object acquired, toggle the LED_GREEN each 500ms for 5s */
-      Led_Toggle(LED1_GPIO_Port, LED1_Pin, 10);
+      Led_Toggle(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 10);
       /*release the sync object */
       APP_SYNC_PUT(&SyncObject);
 
@@ -187,7 +188,7 @@ void ThreadTwo_Entry(ULONG thread_input)
       printf("** ThreadTwo : SyncObject acquired ** \n");
 
       /*Sync object acquired toggle the LED_RED each 500ms for 5s*/
-      Led_Toggle(LED2_GPIO_Port, LED2_Pin, 10);
+      Led_Toggle(LED_RED_GPIO_Port, LED_RED_Pin, 10);
       /*release the sync object*/
       APP_SYNC_PUT(&SyncObject);
 

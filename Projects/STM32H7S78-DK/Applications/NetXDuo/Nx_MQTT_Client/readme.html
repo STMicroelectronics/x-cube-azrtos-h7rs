@@ -27,7 +27,7 @@ vertical-align: middle;
 <body>
 <div class="row">
 <section id="nx_mqtt_client-application-description" class="col-sm-12 col-lg-8">
-<h2><b>Nx_MQTT_Client application description</b></h2>
+<h2><b>Nx_MQTT_Client Application Description</b></h2>
 <p>This application provides an example of Azure RTOS NetX/NetXDuo stack
 usage. It shows how to exchange data between client and server using
 MQTT protocol in an encrypted mode supporting TLS v1.2.</p>
@@ -71,7 +71,7 @@ IP_ADDRESS(1, 1, 1, 1)) in app_netxduo.h.</li>
 <li><p>Connects mqtt_client to the online MQTT broker; connection with
 server will be secure and a <strong>tls_setup_callback</strong> will set
 TLS parameters. By default MQTT_PORT for encrypted mode is 8883.</p>
-<pre><code>  refer to note 4 below, to know how to setup an x509 certificate.</code></pre></li>
+<pre><code>  refer to note 3 below, to know how to setup an x509 certificate.</code></pre></li>
 <li><p>mqtt_client subscribes on a predefined topic TOPIC_NAME
 “Temperature” with a Quality Of Service QOS0.</p></li>
 <li><p>Depending on the number of message “NB_MESSAGE” defined by user,
@@ -101,7 +101,7 @@ messages.</li>
 <h4 id="error-behaviors"><b> Error behaviors</b></h4>
 <ul>
 <li>The red LED is toggling to indicate any error that has
-occurred.</li>
+occurred while the Green LED switch off.</li>
 </ul>
 <h4 id="assumptions-if-any"><b> Assumptions if any</b></h4>
 <ul>
@@ -125,12 +125,12 @@ issues.</li>
 
   /* USER CODE END ETH_Init 1 */
   heth.Instance = ETH;
-  heth.Init.MACAddr[0] =   0x00;
-  heth.Init.MACAddr[1] =   0x80;
-  heth.Init.MACAddr[2] =   0xE1;
-  heth.Init.MACAddr[3] =   0x00;
-  heth.Init.MACAddr[4] =   0x00;
-  heth.Init.MACAddr[5] =   0x00;</code></pre>
+  MACAddr[0] =   0x00;
+  MACAddr[1] =   0x80;
+  MACAddr[2] =   0xE1;
+  MACAddr[3] =   0x00;
+  MACAddr[4] =   0x00;
+  MACAddr[5] =   0x00;</code></pre>
 <h4 id="known-limitations"><b>Known limitations</b></h4>
 <ul>
 <li><p>Default NX_DNS_MAX_RETRIES value in “nx_user.h” may not work with
@@ -214,7 +214,7 @@ or modify the line below in &quot;tx_initialize_low_level.S to match the memory 
      __RAM_segment_used_end__ = .;
      . = . + 64K;
      . = ALIGN(8);
-   } &gt;RAM_D1 AT&gt; RAM_D1</code></pre>
+   } &gt;RAM AT&gt; RAM</code></pre>
 <pre><code>The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
 In the example above the ThreadX heap size is set to 64KBytes.
 The ._threadx_heap must be located between the .bss and the ._user_heap_stack sections in the linker script.
@@ -235,7 +235,7 @@ always ensure data coherency between the CPU and ETH DMA.</li>
 <li>Depending on the application scenario, the total TX and RX
 descriptors may need to be increased by updating respectively the
 “ETH_TX_DESC_CNT” and “ETH_RX_DESC_CNT” in the “stm32h7rsxx_hal_conf.h”,
-to guarantee the application correct behaviour, but this will cost extra
+to guarantee the application's correct behavior, but this will cost extra
 memory to allocate.</li>
 <li>The NetXDuo application needs to allocate the <b> <i> NX_PACKET </i>
 </b> pool in a dedicated section that is configured as “Cacheable
@@ -246,8 +246,8 @@ different IDEs.
 </ul>
 <pre><code>define symbol __ICFEDIT_region_NXDATA_start__  = 0x24020100;
 define symbol __ICFEDIT_region_NXDATA_end__   = 0x2403FFFF;
-define region NXAppPool_region  = mem:[from __ICFEDIT_region_NXDATA_start__ to __ICFEDIT_region_NXDATA_end__];
-place in NXAppPool_region { section .NXAppPoolSection};</code></pre>
+define region NXApp_region  = mem:[from __ICFEDIT_region_NXDATA_start__ to __ICFEDIT_region_NXDATA_end__];
+place in NXApp_region { section .NetXPoolSection};</code></pre>
 <ul>
 <li>For MDK-ARM</li>
 </ul>
@@ -287,7 +287,7 @@ environment</b></h3>
 <ul>
 <li>This application runs on STM32H7S7L8xx devices.</li>
 <li>This application has been tested with STMicroelectronics
-STM32H7S78-DK boards revision: MB1736-H7S7L8-C01 and can be easily
+STM32H7S78-DK boards revision: MB1736-H7S7L8-D01 and can be easily
 tailored to any other supported device and development board.</li>
 <li>This application uses UART4 to display logs, the hyperterminal
 configuration is as follows:
@@ -295,15 +295,16 @@ configuration is as follows:
 <li>BaudRate = 115200 baud</li>
 <li>Word Length = 8 Bits</li>
 <li>Stop Bit = 1</li>
-<li>Parity = none</li>
+<li>Parity = None</li>
 <li>Flow control = None</li>
 </ul></li>
+<li>On STM32H7S78-DK board, the JP6 pin [2-3] must be ON.</li>
 </ul>
 <h3 id="how-to-use-it"><b>How to use it ?</b></h3>
 <p>To configure STM32CubeIDE Debug Configuration, you must do the
 following :</p>
 <pre><code>1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project-&gt;Debugger Configuration
-2. Add in the startup the Boot_XIP.elf in Project-&gt;Debugger Configuration
+2. Add in the startup the Boot_XIP.elf in Project-&gt;Debugger Configuration and uncheck the "Load Symbols" option
 3. Move up the application in the startup</code></pre>
 <p>In order to make the program work, you must do the following :</p>
 <ul>

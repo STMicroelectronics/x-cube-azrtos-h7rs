@@ -1,5 +1,5 @@
 
-## <b>Fx_MultiAccess application description</b>
+## <b>Fx_MultiAccess Application Description</b>
 
 This application provides an example of Azure RTOS FileX stack usage on STM32H7S78-DK board, it demonstrates the FileX's concurrent file access capabilities. The application is designed to execute file operations on the SD card device, the code provides all required software code for handling SD card I/O operations.
 
@@ -9,10 +9,10 @@ The application starts by calling the ThreadX's initialization routine which cre
   - fx_thread_one  (Prio : 10; PreemptionPrio : 10) used to create, write and read operations for file fx_file_one.
   - fx_thread_two  (Prio : 10; PreemptionPrio : 10) used to create, write and read operations for file fx_file_two.
 
-<b>Note</b>:
+### <b>Notes</b>
 A FAT32 compatible SD card is expected to be used with this example. The program will start file operations without formatting the media, so all user related files are kept.
 
-This application runs from the external Flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed).
+This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed).
 Note that the boot part is automatically downloaded from the IDE environment via the board boot binary under Binary/Boot_XIP.hex file.
 
 #### <b>Expected success behavior</b>
@@ -65,7 +65,7 @@ None
          __RAM_segment_used_end__ = .;
          . = . + 64K;
          . = ALIGN(8);
-       } >RAM_D1 AT> RAM_D1
+       } >RAM AT> RAM
     ```
 
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
@@ -89,8 +89,8 @@ RTOS, ThreadX, FileX, File system, SDMMC, SDIO, FAT32
 
 ### <b>Hardware and Software environment</b>
 
-  - This example runs on STM32H7S7L8xx devices.
-  - This example has been tested with STMicroelectronics STM32H7S78-DK boards revision: MB1736-H7S7L8-C01
+  - This application runs on STM32H7S7L8xx devices.
+  - This application has been tested with STMicroelectronics STM32H7S78-DK boards revision: MB1736-H7S7L8-D01
     and can be easily tailored to any other supported device and development board.
 
 ### <b>How to use it ?</b>
@@ -98,7 +98,7 @@ RTOS, ThreadX, FileX, File system, SDMMC, SDIO, FAT32
 To configure STM32CubeIDE Debug Configuration, you must do the following :
 
     1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration
-    2. Add in the startup the Boot_XIP.elf in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup
 
 In order to make the program work, you must do the following :

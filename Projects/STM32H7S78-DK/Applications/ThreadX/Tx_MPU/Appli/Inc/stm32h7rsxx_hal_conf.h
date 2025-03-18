@@ -218,6 +218,7 @@
 #define USE_HAL_RTC_REGISTER_CALLBACKS        0U
 #define USE_HAL_SAI_REGISTER_CALLBACKS        0U
 #define USE_HAL_SD_REGISTER_CALLBACKS         0U
+#define USE_HAL_SDIO_REGISTER_CALLBACKS       0U
 #define USE_HAL_SDRAM_REGISTER_CALLBACKS      0U
 #define USE_HAL_SMARTCARD_REGISTER_CALLBACKS  0U
 #define USE_HAL_SMBUS_REGISTER_CALLBACKS      0U
@@ -235,11 +236,19 @@
 /* CRC FEATURE: Use to activate CRC feature inside HAL SPI Driver
 * Activated: CRC code is present inside driver
 * Deactivated: CRC code cleaned from driver
-  */
+*/
 
 #define USE_SPI_CRC                   1U
 
 /* ################## CRYP peripheral configuration ########################## */
+
+/**
+  * @brief  For code optimization purpose, uncomment and set to "1U" the USE_HAL_CRYP_ONLY or USE_HAL_SAES_ONLY,
+  *         to use only one peripheral. Both defines cannot be set to "1U" at the same time.
+  */
+
+/* #define USE_HAL_CRYP_ONLY       1U */
+/* #define USE_HAL_SAES_ONLY       0U */
 
 #define USE_HAL_CRYP_SUSPEND_RESUME   0U
 
@@ -250,6 +259,11 @@
 /* ################## SDMMC peripheral configuration ######################### */
 
 #define USE_SD_TRANSCEIVER            0U
+
+/* ################## SDIO peripheral configuration ######################### */
+
+#define USE_SDIO_TRANSCEIVER          0U
+#define SDIO_MAX_IO_NUMBER            7U
 
 /* Includes ------------------------------------------------------------------*/
 /**
@@ -431,6 +445,10 @@
 #ifdef HAL_SD_MODULE_ENABLED
   #include "stm32h7rsxx_hal_sd.h"
 #endif /* HAL_SD_MODULE_ENABLED */
+
+#ifdef HAL_SDIO_MODULE_ENABLED
+#include "stm32h7rsxx_hal_sdio.h"
+#endif /* HAL_SDIO_MODULE_ENABLED */
 
 #ifdef HAL_SDRAM_MODULE_ENABLED
   #include "stm32h7rsxx_hal_sdram.h"

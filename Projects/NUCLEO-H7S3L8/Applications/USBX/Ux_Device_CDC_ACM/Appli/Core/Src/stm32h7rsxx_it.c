@@ -77,7 +77,7 @@ void NMI_Handler(void)
 
   /* USER CODE END NonMaskableInt_IRQn 0 */
   /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
-  while (1)
+   while (1)
   {
   }
   /* USER CODE END NonMaskableInt_IRQn 1 */
@@ -185,7 +185,6 @@ void GPDMA1_Channel1_IRQHandler(void)
   /* USER CODE BEGIN GPDMA1_Channel1_IRQn 0 */
 
   /* USER CODE END GPDMA1_Channel1_IRQn 0 */
-
   /* USER CODE BEGIN GPDMA1_Channel1_IRQn 1 */
 
   /* USER CODE END GPDMA1_Channel1_IRQn 1 */
@@ -199,7 +198,6 @@ void GPDMA1_Channel2_IRQHandler(void)
   /* USER CODE BEGIN GPDMA1_Channel2_IRQn 0 */
 
   /* USER CODE END GPDMA1_Channel2_IRQn 0 */
-
   /* USER CODE BEGIN GPDMA1_Channel2_IRQn 1 */
 
   /* USER CODE END GPDMA1_Channel2_IRQn 1 */
@@ -263,5 +261,23 @@ void UCPD1_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
+#if defined(TCPP0203_SUPPORT)
+/**
+  * @brief  This function handles external line interrupt request.
+  *         (Associated to FLGn line in case of TCPP0203 management)
+  * @retval None
+  */
+void EXTI8_IRQHandler(void)
+{
+  /* Manage Flags */
+  if (LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_8) != RESET)
+  {
+    /* Call BSP USBPD PWR callback */
+    BSP_USBPD_PWR_EventCallback(USBPD_PWR_TYPE_C_PORT_1);
 
+    /* Clear Flag */
+    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_8);
+  }
+}
+#endif /* TCPP0203_SUPPORT */
 /* USER CODE END 1 */

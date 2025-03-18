@@ -42,11 +42,31 @@
 #define DEBUG_PARAM_DATA(_STR_)
 #define DEBUG_PARAM_INT(_INT_ )
 #define DEBUG_PARAM_END()
+#define DEBUG_AUTOPOLLING(_DR_,_MVAL_,_MMASK_)
+#define STR_PHY_LINK(_PHY_)
 #else
 /**
   * @brief trace header macro
   */
 #define DEBUG_PARAM_BEGIN()     EXTMEM_MACRO_DEBUG("\t\tSALXSPI::");
+
+const uint8_t phylink_string[][17] = {"PHY_LINK_1S1S1S",
+                                      "PHY_LINK_1S1S2S",
+                                      "PHY_LINK_1S2S2S",
+                                      "PHY_LINK_1S1D1D",
+                                      "PHY_LINK_4S4S4S",
+                                      "PHY_LINK_4S4D4D",
+                                      "PHY_LINK_4D4D4D",
+                                      "PHY_LINK_1S8S8S",
+                                      "PHY_LINK_8S8D8D",
+                                      "PHY_LINK_8D8D8D",
+                                      "PHY_LINK_RAM8"
+#if defined(HAL_XSPI_DATA_16_LINES)									  
+                                      ,"PHY_LINK_RAM16"
+#endif /* defined(HAL_XSPI_DATA_16_LINES) */
+									  };
+
+#define STR_PHY_LINK(_PHY_)  phylink_string[_PHY_]
 
 /**
   * @brief trace data string macro
@@ -66,11 +86,52 @@
   */
 #define DEBUG_PARAM_END()       EXTMEM_MACRO_DEBUG("\n");
 
-#endif /* EXTMEM_SFDP_DEBUG */
+#if EXTMEM_SAL_XSPI_DEBUG_LEVEL == 2
+#define DEBUG_AUTOPOLLING(_DR_,_MVAL_,_MMASK_)                                               \
+  {                                                                                          \
+    char str[50];                                                                            \
+    (void)snprintf(str, sizeof(str),"DR:0x%x::Ma:0x%x::MM:0x%x\n\r", _DR_, _MVAL_, _MMASK_); \
+    DEBUG_PARAM_BEGIN()                                                                      \
+    DEBUG_PARAM_DATA(str)                                                                    \
+    DEBUG_PARAM_END()                                                                        \
+  }
+#else
+#define DEBUG_AUTOPOLLING(_DR_,_MVAL_,_MMASK_)
+#endif /* EXTMEM_SAL_XSPI_DEBUG_LEVEL == 2 */
+#endif /* EXTMEM_SAL_XSPI_DEBUG_LEVEL == 0 || !defined(EXTMEM_MACRO_DEBUG) */
+
+/**
+  * @brief default SAL timeout (100 ms)
+  */
+
+#define SAL_XSPI_TIMEOUT_DEFAULT_VALUE (100U) 
 
 /**
   * @}
   */
+
+#if defined (USE_HAL_XSPI_REGISTER_CALLBACKS) && (USE_HAL_XSPI_REGISTER_CALLBACKS == 1U)
+/** @defgroup SAL_XSPI_Private_Transfer SAL XSPI Dma transfer management definition
+  * @{
+  */
+/**
+  * @brief state of the transfer status
+  */
+typedef enum {
+  SALXSPI_TRANSFER_NONE, /*!< */
+  SALXSPI_TRANSFER_OK,
+  SALXSPI_TRANSFER_ERROR
+}SAL_XSPI_TRANSFER_STATUS;
+
+/**
+  * @brief variable of the transfer status
+  */
+volatile SAL_XSPI_TRANSFER_STATUS salXSPI_status = SALXSPI_TRANSFER_NONE;
+
+/**
+  * @}
+  */
+#endif /* (USE_HAL_XSPI_REGISTER_CALLBACKS) && (USE_HAL_XSPI_REGISTER_CALLBACKS == 1U) */
 
 /* Private typedefs ---------------------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -78,6 +139,12 @@
   * @{
   */
 uint16_t XSPI_FormatCommand(uint8_t CommandExtension, uint32_t InstructionWidth, uint8_t Command);
+HAL_StatusTypeDef XSPI_Transmit(SAL_XSPI_ObjectTypeDef *SalXspi, const uint8_t *Data);
+HAL_StatusTypeDef XSPI_Receive(SAL_XSPI_ObjectTypeDef *SalXspi,  uint8_t *Data);
+#if defined (USE_HAL_XSPI_REGISTER_CALLBACKS) && (USE_HAL_XSPI_REGISTER_CALLBACKS == 1U)
+void SAL_XSPI_ErrorCallback(struct __XSPI_HandleTypeDef *hxspi);
+void SAL_XSPI_CompleteCallback(struct __XSPI_HandleTypeDef *hxspi);
+#endif /* (USE_HAL_XSPI_REGISTER_CALLBACKS) && (USE_HAL_XSPI_REGISTER_CALLBACKS == 1U) */
 
 /**
   * @}
@@ -162,22 +229,34 @@ HAL_StatusTypeDef SAL_XSPI_Init(SAL_XSPI_ObjectTypeDef *SalXspi, void *HALHandle
   SalXspi->hxspi = (XSPI_HandleTypeDef *)HALHandle;
   SalXspi->Commandbase = s_commandbase;
   SalXspi->CommandExtension = 0;
+  SalXspi->PhyLink = PHY_LINK_1S1S1S;
+
+#if defined (USE_HAL_XSPI_REGISTER_CALLBACKS) && (USE_HAL_XSPI_REGISTER_CALLBACKS == 1U)
+  /* set completion call back */
+  HAL_XSPI_RegisterCallback(SalXspi->hxspi,HAL_XSPI_RX_CPLT_CB_ID, SAL_XSPI_CompleteCallback);
+  HAL_XSPI_RegisterCallback(SalXspi->hxspi,HAL_XSPI_TX_CPLT_CB_ID, SAL_XSPI_CompleteCallback);
+  /* set the error callback */
+  HAL_XSPI_RegisterCallback(SalXspi->hxspi,HAL_XSPI_ERROR_CB_ID, SAL_XSPI_ErrorCallback);
+#endif /* (USE_HAL_XSPI_REGISTER_CALLBACKS) && (USE_HAL_XSPI_REGISTER_CALLBACKS == 1U) */
+
   return HAL_OK;
 }
 
-HAL_StatusTypeDef SAL_XSPI_MemoryConfig(SAL_XSPI_ObjectTypeDef *SalXspi, SAL_XSPI_MemParamTypeTypeDef ParmetersType, void *ParamVal)
+HAL_StatusTypeDef SAL_XSPI_MemoryConfig(SAL_XSPI_ObjectTypeDef *SalXspi, SAL_XSPI_MemParamTypeTypeDef ParametersType, void *ParamVal)
 {
   HAL_StatusTypeDef retr = HAL_OK;
   XSPI_RegularCmdTypeDef s_commandbase = SalXspi->Commandbase;
 
-  switch (ParmetersType) {
+  switch (ParametersType) {
   case PARAM_PHY_LINK:{
-    SAL_XSPI_PhysicalLinkTypeDef PhyLink = *((SAL_XSPI_PhysicalLinkTypeDef *)ParamVal);
-    DEBUG_PARAM_BEGIN(); DEBUG_PARAM_DATA("::PARAM_PHY_LINK::");
-    switch (PhyLink)
+    SalXspi->PhyLink = *((SAL_XSPI_PhysicalLinkTypeDef *)ParamVal);
+    DEBUG_PARAM_BEGIN(); DEBUG_PARAM_DATA("::PARAM_PHY_LINK::");DEBUG_PARAM_DATA(STR_PHY_LINK(SalXspi->PhyLink));
+    switch (SalXspi->PhyLink)
     {
+    case PHY_LINK_1S1D1D:
+    case PHY_LINK_1S2S2S:
+    case PHY_LINK_1S1S2S:
     case PHY_LINK_1S1S1S: {
-      DEBUG_PARAM_DATA("PHY_LINK_1S1S1S");
       s_commandbase.InstructionMode = HAL_XSPI_INSTRUCTION_1_LINE;
       s_commandbase.InstructionWidth = HAL_XSPI_INSTRUCTION_8_BITS;
       s_commandbase.InstructionDTRMode = HAL_XSPI_INSTRUCTION_DTR_DISABLE;
@@ -190,64 +269,22 @@ HAL_StatusTypeDef SAL_XSPI_MemoryConfig(SAL_XSPI_ObjectTypeDef *SalXspi, SAL_XSP
       s_commandbase.DQSMode = HAL_XSPI_DQS_DISABLE;
       break;
     }
-    case PHY_LINK_1S2S2S: {
-      DEBUG_PARAM_DATA("PHY_LINK_1S2S2S");
-      s_commandbase.InstructionMode = HAL_XSPI_INSTRUCTION_1_LINE;
-      s_commandbase.InstructionWidth = HAL_XSPI_INSTRUCTION_8_BITS;
-      s_commandbase.InstructionDTRMode = HAL_XSPI_INSTRUCTION_DTR_DISABLE;
-      s_commandbase.AddressMode = HAL_XSPI_ADDRESS_2_LINES;
-      s_commandbase.AddressWidth = HAL_XSPI_ADDRESS_24_BITS;
-      s_commandbase.AddressDTRMode = HAL_XSPI_ADDRESS_DTR_DISABLE;
-      s_commandbase.DataMode = HAL_XSPI_DATA_2_LINES;
-      s_commandbase.DataDTRMode = HAL_XSPI_DATA_DTR_DISABLE;
-      s_commandbase.DummyCycles = 2;
-      s_commandbase.DQSMode = HAL_XSPI_DQS_DISABLE;
-      break;
-    }
-    case PHY_LINK_2S2S2S: {
-      DEBUG_PARAM_DATA("PHY_LINK_2S2S2S");
-      s_commandbase.InstructionMode = HAL_XSPI_INSTRUCTION_2_LINES;
-      s_commandbase.InstructionWidth = HAL_XSPI_INSTRUCTION_8_BITS;
-      s_commandbase.InstructionDTRMode = HAL_XSPI_INSTRUCTION_DTR_DISABLE;
-      s_commandbase.AddressMode = HAL_XSPI_ADDRESS_2_LINES;
-      s_commandbase.AddressWidth = HAL_XSPI_ADDRESS_24_BITS;
-      s_commandbase.AddressDTRMode = HAL_XSPI_ADDRESS_DTR_DISABLE;
-      s_commandbase.DataMode = HAL_XSPI_DATA_2_LINES;
-      s_commandbase.DataDTRMode = HAL_XSPI_DATA_DTR_DISABLE;
-      s_commandbase.DummyCycles = 6;
-      s_commandbase.DQSMode = HAL_XSPI_DQS_DISABLE;
-      break;
-    }
+
+    case PHY_LINK_4S4D4D:
     case PHY_LINK_4S4S4S: {
-        DEBUG_PARAM_DATA("PHY_LINK_4S4S4S");
-        s_commandbase.InstructionMode = HAL_XSPI_INSTRUCTION_4_LINES;
-        s_commandbase.InstructionWidth = HAL_XSPI_INSTRUCTION_8_BITS;
-        s_commandbase.InstructionDTRMode = HAL_XSPI_INSTRUCTION_DTR_DISABLE;
-        s_commandbase.AddressMode = HAL_XSPI_ADDRESS_4_LINES;
-        s_commandbase.AddressDTRMode = HAL_XSPI_ADDRESS_DTR_DISABLE;
-        s_commandbase.AddressWidth = HAL_XSPI_ADDRESS_24_BITS;
-        s_commandbase.DataMode = HAL_XSPI_DATA_4_LINES;
-        s_commandbase.DataDTRMode = HAL_XSPI_DATA_DTR_DISABLE;
-        s_commandbase.DummyCycles = 6;
-        s_commandbase.DQSMode = HAL_XSPI_DQS_DISABLE;
-        break;
-      }
-    case PHY_LINK_4S4D4D: {
-      DEBUG_PARAM_DATA("PHY_LINK_4S4D4D");
       s_commandbase.InstructionMode = HAL_XSPI_INSTRUCTION_4_LINES;
       s_commandbase.InstructionWidth = HAL_XSPI_INSTRUCTION_8_BITS;
       s_commandbase.InstructionDTRMode = HAL_XSPI_INSTRUCTION_DTR_DISABLE;
       s_commandbase.AddressMode = HAL_XSPI_ADDRESS_4_LINES;
+      s_commandbase.AddressDTRMode = HAL_XSPI_ADDRESS_DTR_DISABLE;
       s_commandbase.AddressWidth = HAL_XSPI_ADDRESS_24_BITS;
-      s_commandbase.AddressDTRMode = HAL_XSPI_ADDRESS_DTR_ENABLE;
       s_commandbase.DataMode = HAL_XSPI_DATA_4_LINES;
-      s_commandbase.DataDTRMode = HAL_XSPI_DATA_DTR_ENABLE;
+      s_commandbase.DataDTRMode = HAL_XSPI_DATA_DTR_DISABLE;
       s_commandbase.DummyCycles = 6;
       s_commandbase.DQSMode = HAL_XSPI_DQS_DISABLE;
       break;
-    }
+      }
     case PHY_LINK_4D4D4D: {
-      DEBUG_PARAM_DATA("PHY_LINK_4D4D4D");
       s_commandbase.InstructionMode = HAL_XSPI_INSTRUCTION_4_LINES;
       s_commandbase.InstructionWidth = HAL_XSPI_INSTRUCTION_8_BITS;
       s_commandbase.InstructionDTRMode = HAL_XSPI_INSTRUCTION_DTR_ENABLE;
@@ -261,7 +298,6 @@ HAL_StatusTypeDef SAL_XSPI_MemoryConfig(SAL_XSPI_ObjectTypeDef *SalXspi, SAL_XSP
       break;
     }
     case PHY_LINK_1S8S8S: {
-      DEBUG_PARAM_DATA("PHY_LINK_1S8S8S");
       s_commandbase.InstructionMode = HAL_XSPI_INSTRUCTION_1_LINE;
       s_commandbase.InstructionWidth = HAL_XSPI_INSTRUCTION_8_BITS;
       s_commandbase.InstructionDTRMode = HAL_XSPI_INSTRUCTION_DTR_DISABLE;
@@ -275,7 +311,6 @@ HAL_StatusTypeDef SAL_XSPI_MemoryConfig(SAL_XSPI_ObjectTypeDef *SalXspi, SAL_XSP
       break;
     }
     case PHY_LINK_8S8D8D: {
-      DEBUG_PARAM_DATA("PHY_LINK_8S8D8D");
       s_commandbase.InstructionMode = HAL_XSPI_INSTRUCTION_8_LINES;
       s_commandbase.InstructionWidth = HAL_XSPI_INSTRUCTION_8_BITS;
       s_commandbase.InstructionDTRMode = HAL_XSPI_INSTRUCTION_DTR_DISABLE;
@@ -288,9 +323,8 @@ HAL_StatusTypeDef SAL_XSPI_MemoryConfig(SAL_XSPI_ObjectTypeDef *SalXspi, SAL_XSP
       s_commandbase.DQSMode = HAL_XSPI_DQS_ENABLE;
       break;
     }
-    
+
     case PHY_LINK_8D8D8D: {
-      DEBUG_PARAM_DATA("PHY_LINK_8D8D8D");
       s_commandbase.InstructionMode = HAL_XSPI_INSTRUCTION_8_LINES;
       s_commandbase.InstructionWidth = HAL_XSPI_INSTRUCTION_16_BITS;
       s_commandbase.InstructionDTRMode = HAL_XSPI_INSTRUCTION_DTR_ENABLE;
@@ -304,7 +338,6 @@ HAL_StatusTypeDef SAL_XSPI_MemoryConfig(SAL_XSPI_ObjectTypeDef *SalXspi, SAL_XSP
       break;
     }
     case PHY_LINK_RAM8:{
-      DEBUG_PARAM_DATA("PHY_LINK_RAM8");
       s_commandbase.InstructionMode    = HAL_XSPI_INSTRUCTION_8_LINES;
       s_commandbase.InstructionWidth   = HAL_XSPI_INSTRUCTION_8_BITS;
       s_commandbase.InstructionDTRMode = HAL_XSPI_INSTRUCTION_DTR_DISABLE;
@@ -320,7 +353,6 @@ HAL_StatusTypeDef SAL_XSPI_MemoryConfig(SAL_XSPI_ObjectTypeDef *SalXspi, SAL_XSP
     }
 #if defined(HAL_XSPI_DATA_16_LINES)
     case PHY_LINK_RAM16 :{
-      DEBUG_PARAM_DATA("PHY_LINK_RAM16");
       s_commandbase.InstructionMode    = HAL_XSPI_INSTRUCTION_8_LINES;
       s_commandbase.InstructionWidth   = HAL_XSPI_INSTRUCTION_8_BITS;
       s_commandbase.InstructionDTRMode = HAL_XSPI_INSTRUCTION_DTR_DISABLE;
@@ -372,19 +404,19 @@ HAL_StatusTypeDef SAL_XSPI_GetSFDP(SAL_XSPI_ObjectTypeDef *SalXspi, uint32_t Add
 {
   HAL_StatusTypeDef retr;
   XSPI_RegularCmdTypeDef s_command = SalXspi->Commandbase;
-  
+
   /* Initialize the read ID command */
   s_command.Instruction = XSPI_FormatCommand(SalXspi->CommandExtension, s_command.InstructionWidth, 0x5A);
 
   s_command.Address     = Address;
   s_command.DataLength  = DataSize;
-  s_command.DummyCycles = SalXspi->SFDPDummyCycle;   
-  
+  s_command.DummyCycles = SalXspi->SFDPDummyCycle;
+
   if (s_command.AddressMode == HAL_XSPI_ADDRESS_1_LINE)
   {
     s_command.AddressWidth = HAL_XSPI_ADDRESS_24_BITS;
   }
-  
+
   if (s_command.DataDTRMode == HAL_XSPI_DATA_DTR_ENABLE)
   {
     s_command.DQSMode = HAL_XSPI_DQS_ENABLE;
@@ -393,16 +425,16 @@ HAL_StatusTypeDef SAL_XSPI_GetSFDP(SAL_XSPI_ObjectTypeDef *SalXspi, uint32_t Add
   {
     s_command.DQSMode = HAL_XSPI_DQS_DISABLE;
   }
-  
+
   /* Configure the command */
-  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
   if ( retr  != HAL_OK)
   {
     goto error;
   }
 
   /* Reception of the data */
-  retr = HAL_XSPI_Receive(SalXspi->hxspi, Data, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+  retr = HAL_XSPI_Receive(SalXspi->hxspi, Data, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
 
 error:
   if (retr != HAL_OK )
@@ -423,7 +455,7 @@ HAL_StatusTypeDef SAL_XSPI_GetId(SAL_XSPI_ObjectTypeDef *SalXspi, uint8_t *Data,
 
   s_command.DataLength  = DataSize;
   s_command.AddressMode = HAL_XSPI_ADDRESS_NONE;
-  
+
   if  (s_command.InstructionMode == HAL_XSPI_INSTRUCTION_1_LINE)
   {
     s_command.DummyCycles       = 0;
@@ -438,14 +470,14 @@ HAL_StatusTypeDef SAL_XSPI_GetId(SAL_XSPI_ObjectTypeDef *SalXspi, uint8_t *Data,
   }
 
   /* Configure the command */
-  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
   if ( retr  != HAL_OK)
   {
     goto error;
   }
 
   /* Reception of the data */
-  retr = HAL_XSPI_Receive(SalXspi->hxspi, Data, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+  retr = HAL_XSPI_Receive(SalXspi->hxspi, Data, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
 
 error:
   if (retr != HAL_OK )
@@ -466,20 +498,40 @@ HAL_StatusTypeDef SAL_XSPI_Read(SAL_XSPI_ObjectTypeDef *SalXspi, uint8_t Command
 
   s_command.Address           = Address;
   s_command.DataLength        = DataSize;
-  
+
+  /* DTR management for single/dual/quad */
+  switch(SalXspi->PhyLink)
+  {
+   case PHY_LINK_4S4D4D :{
+     s_command.AddressDTRMode = HAL_XSPI_ADDRESS_DTR_ENABLE;
+     s_command.DataDTRMode    = HAL_XSPI_DATA_DTR_ENABLE;
+     s_command.DummyCycles = SalXspi->DTRDummyCycle;
+   break;
+   }
+   case PHY_LINK_1S2S2S :{
+     s_command.AddressMode = HAL_XSPI_ADDRESS_2_LINES;
+     s_command.DataMode = HAL_XSPI_DATA_2_LINES;
+   break;
+   }
+   case PHY_LINK_1S1S2S :{
+     s_command.DataMode = HAL_XSPI_DATA_2_LINES;
+   break;
+   }
+   default :{
+     /* keep default parameters */
+   break;
+   }
+  }
+
   /* Configure the command */
-  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
   if ( retr  != HAL_OK)
   {
     goto error;
   }
 
-  /* Reception of the data */
-  retr = HAL_XSPI_Receive(SalXspi->hxspi, Data, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
-  if ( retr  != HAL_OK)
-  {
-    goto error;
-  }
+  /* read the data */
+  retr = XSPI_Receive(SalXspi, Data);
 
 error:
   if (retr != HAL_OK )
@@ -488,7 +540,7 @@ error:
     (void)HAL_XSPI_Abort(SalXspi->hxspi);
   }
   return retr;
-  }
+}
 
 HAL_StatusTypeDef SAL_XSPI_Write(SAL_XSPI_ObjectTypeDef *SalXspi, uint8_t Command, uint32_t Address, const uint8_t *Data, uint32_t DataSize)
 {
@@ -502,20 +554,16 @@ HAL_StatusTypeDef SAL_XSPI_Write(SAL_XSPI_ObjectTypeDef *SalXspi, uint8_t Comman
   s_command.DataLength        = DataSize;
   s_command.DummyCycles       = 0u;
   s_command.DQSMode           = HAL_XSPI_DQS_DISABLE;
-  
+
   /* Configure the command */
-  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
   if (HAL_OK != retr)
   {
     goto error;
   }
 
   /* transmit data */
-  retr = HAL_XSPI_Transmit(SalXspi->hxspi, Data, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
-  if (HAL_OK != retr)
-  {
-    goto error;
-  }
+  retr = XSPI_Transmit(SalXspi, Data);
 
 error:
   if (retr != HAL_OK )
@@ -544,9 +592,9 @@ HAL_StatusTypeDef SAL_XSPI_CommandSendAddress(SAL_XSPI_ObjectTypeDef *SalXspi, u
   s_command.DummyCycles       = 0U;
   s_command.DataMode          = HAL_XSPI_DATA_NONE;
   s_command.DQSMode           = HAL_XSPI_DQS_DISABLE;
-  
+
   /* Send the command */
-  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
   if (retr != HAL_OK )
   {
     /* abort any ongoing transaction for the next action */
@@ -568,18 +616,18 @@ HAL_StatusTypeDef SAL_XSPI_CommandSendData(SAL_XSPI_ObjectTypeDef *SalXspi, uint
   s_command.DummyCycles        = 0U;
   s_command.DataLength         = DataSize;
   s_command.DQSMode            = HAL_XSPI_DQS_DISABLE;
-  
+
   if (DataSize == 0u)
   {
     s_command.DataMode         = HAL_XSPI_DATA_NONE;
   }
 
   /* Send the command */
-  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
 
   if (( retr == HAL_OK) && (DataSize != 0u))
   {
-    retr = HAL_XSPI_Transmit(SalXspi->hxspi, Data, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+    retr = HAL_XSPI_Transmit(SalXspi->hxspi, Data, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
   }
 
   if (retr != HAL_OK )
@@ -603,19 +651,19 @@ HAL_StatusTypeDef SAL_XSPI_SendReadCommand(SAL_XSPI_ObjectTypeDef *SalXspi, uint
   s_command.DummyCycles        = 0u;
   s_command.DataLength         = DataSize;
   s_command.DQSMode            = HAL_XSPI_DQS_DISABLE;
-  
+
   if (DataSize == 0u)
   {
     s_command.DataMode         = HAL_XSPI_DATA_NONE;
   }
 
   /* Send the command */
-  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
 
   if (( retr == HAL_OK) && (DataSize != 0u))
   {
     /* Get the data */
-    retr = HAL_XSPI_Receive(SalXspi->hxspi, Data, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+    retr = HAL_XSPI_Receive(SalXspi->hxspi, Data, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
   }
 
   if (retr != HAL_OK )
@@ -641,12 +689,12 @@ HAL_StatusTypeDef SAL_XSPI_CommandSendReadAddress(SAL_XSPI_ObjectTypeDef *SalXsp
   s_command.DQSMode            = HAL_XSPI_DQS_DISABLE;
 
   /* Send the command */
-  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
 
-  if ( retr == HAL_OK) 
+  if ( retr == HAL_OK)
   {
     /* Get the data */
-    retr = HAL_XSPI_Receive(SalXspi->hxspi, Data, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+    retr = HAL_XSPI_Receive(SalXspi->hxspi, Data, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
   }
 
   if (retr != HAL_OK )
@@ -674,7 +722,7 @@ HAL_StatusTypeDef SAL_XSPI_CheckStatusRegister(SAL_XSPI_ObjectTypeDef *SalXspi, 
 
   s_command.DataLength     = 1u;
   s_command.DQSMode        = HAL_XSPI_DQS_DISABLE;
-  
+
   if (s_command.InstructionMode == HAL_XSPI_INSTRUCTION_1_LINE)
   {
     // patch cypress to force 1 line on status read
@@ -683,24 +731,20 @@ HAL_StatusTypeDef SAL_XSPI_CheckStatusRegister(SAL_XSPI_ObjectTypeDef *SalXspi, 
     s_command.DummyCycles = 0u;
   }
 
-  /* @ is used only in 8 LINES format */  
-  if (s_command.DataMode == HAL_XSPI_DATA_8_LINES) 
+  /* @ is used only in 8 LINES format */
+  if (s_command.DataMode == HAL_XSPI_DATA_8_LINES)
   {
     s_command.AddressMode    = HAL_XSPI_ADDRESS_8_LINES;
     s_command.AddressWidth   = HAL_XSPI_ADDRESS_32_BITS;
     s_command.Address        = Address;
   }
-  
-  if (Address != 0xFF)
-  {
-    s_command.AddressMode    = HAL_XSPI_ADDRESS_NONE;
-  }
-  
+
   /* Send the command */
-  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
   if ( retr == HAL_OK)
   {
     retr = HAL_XSPI_AutoPolling(SalXspi->hxspi, &s_config, Timeout);
+    DEBUG_AUTOPOLLING(SalXspi->hxspi->Instance->DR, s_config.MatchValue, s_config.MatchMask)
   }
 
   if (retr != HAL_OK )
@@ -722,7 +766,7 @@ HAL_StatusTypeDef SAL_XSPI_ConfigureWrappMode(SAL_XSPI_ObjectTypeDef *SalXspi, u
   s_command.Instruction = XSPI_FormatCommand(SalXspi->CommandExtension, s_command.InstructionWidth, WrapCommand);
   s_command.DummyCycles = WrapDummy;
   /* Configure the read command */
-  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
   if ( retr  != HAL_OK)
   {
     goto error;
@@ -750,7 +794,7 @@ HAL_StatusTypeDef SAL_XSPI_EnableMapMode(SAL_XSPI_ObjectTypeDef *SalXspi, uint8_
   s_command.Instruction = XSPI_FormatCommand(SalXspi->CommandExtension, s_command.InstructionWidth, CommandRead);
   s_command.DummyCycles = DummyRead;
   /* Configure the read command */
-  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
   if ( retr  != HAL_OK)
   {
     goto error;
@@ -761,7 +805,7 @@ HAL_StatusTypeDef SAL_XSPI_EnableMapMode(SAL_XSPI_ObjectTypeDef *SalXspi, uint8_
   s_command.Instruction = XSPI_FormatCommand(SalXspi->CommandExtension, s_command.InstructionWidth, CommandWrite);
   s_command.DummyCycles = DummyWrite;
   /* Configure the read command */
-  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+  retr = HAL_XSPI_Command(SalXspi->hxspi, &s_command, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
   if ( retr  != HAL_OK)
   {
     goto error;
@@ -792,10 +836,10 @@ HAL_StatusTypeDef SAL_XSPI_DisableMapMode(SAL_XSPI_ObjectTypeDef *SalXspi)
 HAL_StatusTypeDef SAL_XSPI_UpdateMemoryType(SAL_XSPI_ObjectTypeDef *SalXspi, SAL_XSPI_DataOrderTypeDef DataOrder)
 {
 HAL_StatusTypeDef retr = HAL_OK;
-  
+
   /* read the memory type value */
-  uint32_t memorytype = READ_REG(SalXspi->hxspi->Instance->DCR1) & XSPI_DCR1_MTYP; 
-  
+  uint32_t memorytype = READ_REG(SalXspi->hxspi->Instance->DCR1) & XSPI_DCR1_MTYP;
+
   switch(DataOrder)
   {
   case SAL_XSPI_ORDERINVERTED :
@@ -817,6 +861,11 @@ HAL_StatusTypeDef retr = HAL_OK;
   return retr;
 }
 
+HAL_StatusTypeDef SAL_XSPI_Abort(SAL_XSPI_ObjectTypeDef *SalXspi)
+{
+  return HAL_XSPI_Abort(SalXspi->hxspi);
+}
+
 /**
   * @}
   */
@@ -825,7 +874,7 @@ HAL_StatusTypeDef retr = HAL_OK;
   * @{
   */
 /**
-  * @brief this function return a formatted command
+  * @brief This function return a formatted command
   *
   * @param CommandExtension type of the command extension 0: the complement  1 : the same
   * @param InstructionWidth instruction width
@@ -858,6 +907,112 @@ uint16_t XSPI_FormatCommand(uint8_t CommandExtension, uint32_t InstructionWidth,
   return retr;
 }
 
+/**
+  * @brief This function trasnmits the data
+  *
+  * @param SalXspi handle on the XSPI IP
+  * @param Data data pointer
+  * @return none
+  */
+HAL_StatusTypeDef XSPI_Transmit(SAL_XSPI_ObjectTypeDef *SalXspi, const uint8_t *Data)
+{
+HAL_StatusTypeDef retr;
+
+#if defined (USE_HAL_XSPI_REGISTER_CALLBACKS) && (USE_HAL_XSPI_REGISTER_CALLBACKS == 1U)
+  if (SalXspi->hxspi->hdmatx == NULL)
+#endif /* (USE_HAL_XSPI_REGISTER_CALLBACKS) && (USE_HAL_XSPI_REGISTER_CALLBACKS == 1U) */
+  {
+    /* transmit data */
+    retr = HAL_XSPI_Transmit(SalXspi->hxspi, Data, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+  }
+#if defined (USE_HAL_XSPI_REGISTER_CALLBACKS) && (USE_HAL_XSPI_REGISTER_CALLBACKS == 1U)
+  else
+  {
+    /* set completion call back */
+    salXSPI_status = SALXSPI_TRANSFER_NONE;
+
+    /* Reception of the data */
+    retr = HAL_XSPI_Transmit_DMA(SalXspi->hxspi, (uint8_t *)Data);
+
+    if (retr ==  HAL_OK)
+    {
+      /* wait data completion */
+      while(salXSPI_status == SALXSPI_TRANSFER_NONE);
+      if (salXSPI_status == SALXSPI_TRANSFER_ERROR)
+      {
+        retr = HAL_ERROR;
+      }
+    }
+  }
+#endif /* (USE_HAL_XSPI_REGISTER_CALLBACKS) && (USE_HAL_XSPI_REGISTER_CALLBACKS == 1U) */
+
+  return retr;
+}
+
+/**
+  * @brief this is called to start the data transfer in polling mode or DMA
+  *
+  * @param SalXspi handle on the XSPI IP
+  * @param Data data pointer
+  * @return none
+  */
+HAL_StatusTypeDef XSPI_Receive(SAL_XSPI_ObjectTypeDef *SalXspi,  uint8_t *Data)
+{
+HAL_StatusTypeDef retr;
+
+#if defined (USE_HAL_XSPI_REGISTER_CALLBACKS) && (USE_HAL_XSPI_REGISTER_CALLBACKS == 1U)
+  if (SalXspi->hxspi->hdmarx == NULL)
+#endif /* (USE_HAL_XSPI_REGISTER_CALLBACKS) && (USE_HAL_XSPI_REGISTER_CALLBACKS == 1U) */
+  {
+    /* Reception of the data */
+    retr = HAL_XSPI_Receive(SalXspi->hxspi, Data, SAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+  }
+#if defined (USE_HAL_XSPI_REGISTER_CALLBACKS) && (USE_HAL_XSPI_REGISTER_CALLBACKS == 1U)
+  else
+  {
+    /* set completion call back */
+    salXSPI_status = SALXSPI_TRANSFER_NONE;
+
+    /* Reception of the data */
+    retr = HAL_XSPI_Receive_DMA(SalXspi->hxspi, Data);
+
+    if (retr ==  HAL_OK)
+    {
+      /* wait data completion */
+      while(salXSPI_status == SALXSPI_TRANSFER_NONE);
+      if (salXSPI_status == SALXSPI_TRANSFER_ERROR)
+      {
+        retr = HAL_ERROR;
+      }
+    }
+  }
+#endif /* (USE_HAL_XSPI_REGISTER_CALLBACKS) && (USE_HAL_XSPI_REGISTER_CALLBACKS == 1U) */
+  return retr;
+}
+
+#if defined (USE_HAL_XSPI_REGISTER_CALLBACKS) && (USE_HAL_XSPI_REGISTER_CALLBACKS == 1U)
+/**
+  * @brief this is called when a DMA transfer error occurs
+  *
+  * @param hxspi handle on the XSPI IP
+  * @return none
+  */
+void SAL_XSPI_ErrorCallback(struct __XSPI_HandleTypeDef *hxspi)
+{
+  salXSPI_status = SALXSPI_TRANSFER_ERROR;
+}
+
+/**
+  * @brief this is called when a DMA transfer is complete
+  *
+  * @param hxspi handle on the XSPI IP
+  * @return none
+  */
+void SAL_XSPI_CompleteCallback(struct __XSPI_HandleTypeDef *hxspi)
+{
+  salXSPI_status = SALXSPI_TRANSFER_OK;
+}
+#endif /* (USE_HAL_XSPI_REGISTER_CALLBACKS) && (USE_HAL_XSPI_REGISTER_CALLBACKS == 1U) */
 /**
   * @}
   */

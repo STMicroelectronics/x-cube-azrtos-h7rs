@@ -32,6 +32,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -57,10 +58,10 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define LED2_Pin GPIO_PIN_7
-#define LED2_GPIO_Port GPIOB
-#define LED1_Pin GPIO_PIN_10
-#define LED1_GPIO_Port GPIOD
+#define LED_RED_Pin GPIO_PIN_7
+#define LED_RED_GPIO_Port GPIOB
+#define LED_GREEN_Pin GPIO_PIN_10
+#define LED_GREEN_GPIO_Port GPIOD
 
 /* USER CODE BEGIN Private defines */
 

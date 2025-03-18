@@ -1,5 +1,5 @@
 
-## <b>Nx_SNTP_Client application description</b>
+## <b>Nx_SNTP_Client Application Description</b>
 
 This application provides an example of Azure RTOS NetX/NetXDuo stack usage.
 
@@ -40,7 +40,7 @@ The **AppSNTPThread**, once started:
 
 #### <b>Error behaviors</b>
 
-+ The red LED is toggling to indicate any error that has occurred.
++ The red LED is toggling to indicate any error that has occurred while the LED_GREEN switch off.
 
 #### <b>Assumptions if any</b>
 
@@ -60,12 +60,12 @@ void MX_ETH_Init(void)
 
   /* USER CODE END ETH_Init 1 */
   heth.Instance = ETH;
-  heth.Init.MACAddr[0] =   0x00;
-  heth.Init.MACAddr[1] =   0x80;
-  heth.Init.MACAddr[2] =   0xE1;
-  heth.Init.MACAddr[3] =   0x00;
-  heth.Init.MACAddr[4] =   0x00;
-  heth.Init.MACAddr[5] =   0x00;
+  MACAddr[0] =   0x00;
+  MACAddr[1] =   0x80;
+  MACAddr[2] =   0xE1;
+  MACAddr[3] =   0x00;
+  MACAddr[4] =   0x00;
+  MACAddr[5] =   0x00;
 
 ```
 
@@ -78,7 +78,7 @@ default NX_SNTP_CLIENT_MAX_ROOT_DISPERSION and NX_SNTP_CLIENT_MIN_SERVER_STRATUM
 
 ### <b>Notes</b>
 
- 1.  This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed). 
+ 1.  This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed).
       Note that the boot part is automatically downloaded from the IDE environment via the board boot binary under Binary/Boot_XIP.hex file.
 
  2.  It is recommended to enable the cache and maintain its coherence:
@@ -115,7 +115,7 @@ default NX_SNTP_CLIENT_MAX_ROOT_DISPERSION and NX_SNTP_CLIENT_MIN_SERVER_STRATUM
          __RAM_segment_used_end__ = .;
          . = . + 64K;
          . = ALIGN(8);
-       } >RAM_D1 AT> RAM_D1
+       } >RAM AT> RAM
     ```
 
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
@@ -130,14 +130,14 @@ default NX_SNTP_CLIENT_MAX_ROOT_DISPERSION and NX_SNTP_CLIENT_MIN_SERVER_STRATUM
 
 - The ETH TX And RX descriptors are accessed by the CPU and the ETH DMA IP, thus they should not be allocated into the DTCM RAM "0x20000000".
 - Make sure to allocate them into a "Non-Cacheable" memory region to always ensure data coherency between the CPU and ETH DMA.
-- Depending on the application scenario, the total TX and RX descriptors may need to be increased by updating respectively  the "ETH_TX_DESC_CNT" and "ETH_RX_DESC_CNT" in the "stm32h7rsxx_hal_conf.h", to guarantee the application correct behaviour, but this will cost extra memory to allocate.
+- Depending on the application scenario, the total TX and RX descriptors may need to be increased by updating respectively  the "ETH_TX_DESC_CNT" and "ETH_RX_DESC_CNT" in the "stm32h7rsxx_hal_conf.h", to guarantee the application's correct behavior, but this will cost extra memory to allocate.
 - The NetXDuo application needs to allocate the <b> <i> NX_PACKET </i> </b> pool in a dedicated section that is configured as "Cacheable Write-through". Below is an example of the declaration section for different IDEs.
    + For EWARM ".icf" file
    ```
    define symbol __ICFEDIT_region_NXDATA_start__  = 0x24020100;
    define symbol __ICFEDIT_region_NXDATA_end__   = 0x2403FFFF;
-   define region NXAppPool_region  = mem:[from __ICFEDIT_region_NXDATA_start__ to __ICFEDIT_region_NXDATA_end__];
-   place in NXAppPool_region { section .NXAppPoolSection};
+   define region NXApp_region  = mem:[from __ICFEDIT_region_NXDATA_start__ to __ICFEDIT_region_NXDATA_end__];
+   place in NXApp_region { section .NetXPoolSection};
    ```
    + For MDK-ARM
    ```
@@ -152,9 +152,8 @@ default NX_SNTP_CLIENT_MAX_ROOT_DISPERSION and NX_SNTP_CLIENT_MIN_SERVER_STRATUM
     *(.NetXPoolSection)
    } >RAM
    ```
-
   This section is then used in the <code> app_azure_rtos.c</code> file to force the <code>nx_byte_pool_buffer</code> allocation.
-  
+
 ```
 /* USER CODE BEGIN NX_Pool_Buffer */
 
@@ -179,10 +178,10 @@ For more details about the MPU configuration please refer to the [AN4838](https:
 
 RTOS, Network, ThreadX, NetXDuo, SNTP, UART
 
-### Hardware and Software environment</b>
+### <b>Hardware and Software environment</b>
 
-  - This application runs on NUCLEO-H7S3L8xx devices
-  - This application has been tested with STMicroelectronics NUCLEO-H7S3L8 boards revision MB1737-H7S3L8-B01
+  - This application runs on STM32H7S3L8xx devices
+  - This application has been tested with STMicroelectronics NUCLEO-H7S3L8 boards revision MB1737-H7S3L8-B02
     and can be easily tailored to any other supported device and development board.
   - This application uses USART3 to display logs, the hyperterminal configuration is as follows:
       - BaudRate = 115200 baud
@@ -196,7 +195,7 @@ RTOS, Network, ThreadX, NetXDuo, SNTP, UART
 To configure STM32CubeIDE Debug Configuration, you must do the following :
 
     1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project->Debugger Configuration
-    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup
 
 In order to make the program work, you must do the following :

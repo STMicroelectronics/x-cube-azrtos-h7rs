@@ -51,12 +51,14 @@ static UX_SLAVE_CLASS_CDC_ECM_PARAMETER cdc_ecm_parameter;
 static TX_THREAD ux_device_app_thread;
 
 /* USER CODE BEGIN PV */
-TX_QUEUE ux_app_MsgQueue;
+/* ux app msg queue */
+TX_QUEUE     ux_app_MsgQueue;
 extern PCD_HandleTypeDef hpcd_USB_OTG_HS;
 #if defined ( __ICCARM__ ) /* IAR Compiler */
-#pragma data_alignment=4
+  #pragma data_alignment=4
 #endif /* defined ( __ICCARM__ ) */
-__ALIGN_BEGIN USB_MODE_STATE USB_Device_State_Msg __ALIGN_END;
+__ALIGN_BEGIN USB_MODE_STATE                  USB_Device_State_Msg   __ALIGN_END;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -211,17 +213,19 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
   /* USER CODE BEGIN MX_USBX_Device_Init1 */
 
   /* Allocate Memory for the Queue */
-  if (tx_byte_allocate(byte_pool, (VOID **) &pointer, APP_QUEUE_SIZE*sizeof(ULONG),
+  if (tx_byte_allocate(byte_pool, (VOID **) &pointer,
+                       APP_QUEUE_SIZE*sizeof(ULONG),
                        TX_NO_WAIT) != TX_SUCCESS)
   {
-    ret = TX_POOL_ERROR;
+    return TX_POOL_ERROR;
   }
 
   /* Create the MsgQueue */
-  if (tx_queue_create(&ux_app_MsgQueue, "Message Queue app", TX_1_ULONG,
-                      pointer, APP_QUEUE_SIZE*sizeof(ULONG)) != TX_SUCCESS)
+  if (tx_queue_create(&ux_app_MsgQueue, "Message Queue app",
+                      TX_1_ULONG, pointer,
+                      APP_QUEUE_SIZE*sizeof(ULONG)) != TX_SUCCESS)
   {
-    ret = TX_QUEUE_ERROR;
+    return TX_QUEUE_ERROR;
   }
 
   /* USER CODE END MX_USBX_Device_Init1 */

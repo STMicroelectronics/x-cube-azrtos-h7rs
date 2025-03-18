@@ -48,6 +48,7 @@ extern "C" {
 #define UX_HOST_APP_MEM_POOL_SIZE                1024 * 28
 
 #define USBPD_APP_MEM_POOL_SIZE                  6144
+
 /* USER CODE BEGIN EC */
 
 /* USER CODE END EC */

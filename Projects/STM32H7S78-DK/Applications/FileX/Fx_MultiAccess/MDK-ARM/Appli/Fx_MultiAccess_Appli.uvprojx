@@ -10,13 +10,13 @@
       <TargetName>Fx_MultiAccess_Appli</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6190000::V6.19::ARMCLANG</pCCUsed>
+      <pCCUsed>6210000::V6.21::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32H7S7L8HxH</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32H7Rx-7Sx_DFP.0.1.0</PackID>
+          <PackID>Keil.STM32H7RSxx_DFP.1.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000-0x2000FFFF) IRAM2(0x24000000-0x24071BFF) IROM(0x8000000-0x800FFFF) CLOCK(12000000) FPU3(DFPU) CPUTYPE("Cortex-M7") ELITTLE TZ</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -371,7 +371,7 @@
             <TextAddressRange></TextAddressRange>
             <DataAddressRange></DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>.\Fx_MultiAccess_Appli.sct</ScatterFile>
+            <ScatterFile>.\stm32h7rsxx_RAMxspi1_ROMxspi2.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc>--diag_suppress L6312,L6314,L6329W</Misc>
@@ -470,6 +470,16 @@
           <GroupName>Drivers/STM32H7RSxx_HAL_Driver</GroupName>
           <Files>
             <File>
+              <FileName>stm32h7rsxx_hal_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32h7rsxx_hal_tim_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_tim_ex.c</FilePath>
+            </File>
+            <File>
               <FileName>stm32h7rsxx_hal_cortex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_cortex.c</FilePath>
@@ -483,6 +493,31 @@
               <FileName>stm32h7rsxx_ll_dlyb.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_ll_dlyb.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32h7rsxx_hal_sd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_sd.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32h7rsxx_hal_sd_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_sd_ex.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32h7rsxx_hal_mmc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_mmc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32h7rsxx_hal_mmc_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_mmc_ex.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32h7rsxx_hal_sdio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_sdio.c</FilePath>
             </File>
             <File>
               <FileName>stm32h7rsxx_hal_rcc.c</FileName>
@@ -538,26 +573,6 @@
               <FileName>stm32h7rsxx_hal_exti.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_exti.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7rsxx_hal_sd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_sd.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7rsxx_hal_sd_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_sd_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7rsxx_hal_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7rsxx_hal_tim_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_tim_ex.c</FilePath>
             </File>
           </Files>
         </Group>

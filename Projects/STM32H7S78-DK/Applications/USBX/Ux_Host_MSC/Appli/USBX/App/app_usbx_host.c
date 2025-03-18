@@ -33,7 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define APP_QUEUE_SIZE                               1
+#define APP_QUEUE_SIZE 1
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -48,14 +48,15 @@ static TX_THREAD ux_host_app_thread;
 /* USER CODE BEGIN PV */
 TX_THREAD                   msc_app_thread;
 UX_HOST_CLASS_STORAGE       *storage;
-TX_QUEUE ux_app_MsgQueue_UCPD;
 UX_HOST_CLASS_STORAGE_MEDIA *storage_media;
 FX_MEDIA                    *media;
 TX_EVENT_FLAGS_GROUP        ux_app_EventFlag;
+TX_QUEUE                    ux_app_MsgQueue_UCPD;
 #if defined ( __ICCARM__ ) /* IAR Compiler */
   #pragma data_alignment=4
 #endif /* defined ( __ICCARM__ ) */
 __ALIGN_BEGIN USB_MODE_STATE USB_Host_State_Msg __ALIGN_END;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -63,7 +64,6 @@ static VOID app_ux_host_thread_entry(ULONG thread_input);
 static UINT ux_host_event_callback(ULONG event, UX_HOST_CLASS *current_class, VOID *current_instance);
 static VOID ux_host_error_callback(UINT system_level, UINT system_context, UINT error_code);
 /* USER CODE BEGIN PFP */
-
 extern HCD_HandleTypeDef hhcd_USB_OTG_HS;
 /* USER CODE END PFP */
 
@@ -141,7 +141,7 @@ UINT MX_USBX_Host_Init(VOID *memory_ptr)
 
   /* USER CODE BEGIN MX_USBX_Host_Init1 */
 
-  /* Allocate the stack for storrage app thread  */
+  /* Allocate the stack for storage app thread  */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer,
                        UX_HOST_APP_THREAD_STACK_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
@@ -156,7 +156,7 @@ UINT MX_USBX_Host_Init(VOID *memory_ptr)
     return TX_THREAD_ERROR;
   }
 
-   /* Allocate Memory for the ux_app_Queue_UCPD  */
+  /* Allocate Memory for the ux_app_Queue_UCPD  */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer,
                        APP_QUEUE_SIZE * sizeof(ULONG), TX_NO_WAIT) != TX_SUCCESS)
   {
@@ -169,6 +169,7 @@ UINT MX_USBX_Host_Init(VOID *memory_ptr)
   {
     return TX_QUEUE_ERROR;
   }
+
   /* Create the event flags group */
   if (tx_event_flags_create(&ux_app_EventFlag, "Event Flag") != TX_SUCCESS)
   {
@@ -194,7 +195,7 @@ static VOID app_ux_host_thread_entry(ULONG thread_input)
 
   while (1)
   {
-    /* wait for message queue from callback event */
+    /* Wait for message queue from callback event */
     if(tx_queue_receive(&ux_app_MsgQueue_UCPD, &USB_Host_State_Msg, TX_WAIT_FOREVER)!= TX_SUCCESS)
     {
      Error_Handler();

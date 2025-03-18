@@ -23,6 +23,7 @@
 #include "gpdma.h"
 #include "i2c.h"
 #include "ucpd.h"
+#include "usart.h"
 #include "gpio.h"
 #include "usbpd.h"
 
@@ -38,7 +39,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -104,6 +104,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_GPDMA1_Init();
+  MX_USART3_UART_Init();
   MX_UCPD1_Init();
   MX_ADC1_Init();
   MX_I2C2_Init();
@@ -200,7 +201,7 @@ static void MPU_Config(void)
   * @note   This function is called  when TIM6 interrupt took place, inside
   * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
   * a global variable "uwTick" used as application time base.
-  * @param  htim : TIM handle
+  * @param  htim TIM handle
   * @retval None
   */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)

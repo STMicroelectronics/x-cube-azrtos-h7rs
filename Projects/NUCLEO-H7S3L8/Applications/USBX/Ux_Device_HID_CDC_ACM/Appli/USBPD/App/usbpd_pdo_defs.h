@@ -18,8 +18,8 @@
   */
 /* USER CODE END Header */
 
-#ifndef __USBPD_PDO_DEF_H_
-#define __USBPD_PDO_DEF_H_
+#ifndef __USBPD_PDO_DEF_H
+#define __USBPD_PDO_DEF_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -50,7 +50,6 @@
   * @brief  USBPD Port PDO Structure definition
   *
   */
-
 /* USER CODE END typedef */
 
 /* Exported define -----------------------------------------------------------*/
@@ -77,7 +76,6 @@
 /* Exported variables --------------------------------------------------------*/
 
 /* USER CODE BEGIN variables */
-
 /* USER CODE END variables */
 
 #ifndef __USBPD_PWR_IF_C
@@ -147,4 +145,4 @@ uint32_t PORT0_PDO_ListSNK[USBPD_MAX_NB_PDO] =
 }
 #endif
 
-#endif /* __USBPD_PDO_DEF_H_ */
+#endif /* __USBPD_PDO_DEF_H */

@@ -52,8 +52,8 @@ CARD_STATUS_CONNECTED           = 77
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-#define MEDIA_OPENED                     0UL
 #define MEDIA_CLOSED                     1UL
+#define MEDIA_OPENED                     0UL
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -62,7 +62,6 @@ TX_THREAD       fx_app_thread;
 
 /* Buffer for FileX FX_MEDIA sector cache. */
 ALIGN_32BYTES (uint32_t fx_sd_media_memory[FX_STM32_SD_DEFAULT_SECTOR_SIZE / sizeof(uint32_t)]);
-
 /* Define FileX global data structures.  */
 FX_MEDIA        sdio_disk;
 
@@ -72,7 +71,6 @@ static UINT media_status;
 FX_FILE         fx_file;
 /* Define ThreadX global data structures.  */
 TX_QUEUE        tx_msg_queue;
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -118,7 +116,7 @@ UINT MX_FileX_Init(VOID *memory_ptr)
                          FX_APP_THREAD_PRIO, FX_APP_PREEMPTION_THRESHOLD, FX_APP_THREAD_TIME_SLICE, FX_APP_THREAD_AUTO_START);
 
   /* Check main thread creation */
-  if (ret != FX_SUCCESS)
+  if (ret != TX_SUCCESS)
   {
     return TX_THREAD_ERROR;
   }
@@ -127,6 +125,11 @@ UINT MX_FileX_Init(VOID *memory_ptr)
   /* Create the message queue */
   tx_queue_create(&tx_msg_queue, "sd_event_queue", 1, pointer, DEFAULT_QUEUE_LENGTH * sizeof(ULONG));
 
+  /* Check msg queue creation */
+  if (ret != TX_SUCCESS)
+  {
+    return TX_QUEUE_ERROR;
+  }
   /* USER CODE END MX_FileX_Init */
 
   /* Initialize FileX.  */
@@ -169,7 +172,7 @@ void fx_app_thread_entry(ULONG thread_input)
 
   /* USER CODE BEGIN fx_app_thread_entry 1 */
   fx_media_close_notify_set(&sdio_disk, media_close_callback);
-	
+
   if(SD_IsDetected(FX_STM32_SD_INSTANCE) == HAL_OK)
   {
     /* SD card is already inserted, place the info into the queue */

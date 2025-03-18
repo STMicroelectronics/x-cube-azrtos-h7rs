@@ -92,6 +92,29 @@ XSPI_NOR_Ctx_t Xspi_Nor_Ctx[XSPI_NOR_INSTANCES_NUMBER] = {{
   */
 
 /* Private constants --------------------------------------------------------*/
+/** @defgroup STM32H7S78_DK_XSPI_NOR_Private_Constants XSPI_NOR Private Constants
+  * @{
+  */
+#if (DUMMY_CYCLES_READ_OCTAL == 20U)
+#define XSPI_NOR_MAX_FREQ 133000000U /* Fmax of memory is 133 MHz */
+#elif (DUMMY_CYCLES_READ_OCTAL == 18U)
+#define XSPI_NOR_MAX_FREQ 133000000U /* Fmax of memory is 133 MHz */
+#elif (DUMMY_CYCLES_READ_OCTAL == 16U)
+#define XSPI_NOR_MAX_FREQ 133000000U /* Fmax of memory is 133 MHz */
+#elif (DUMMY_CYCLES_READ_OCTAL == 14U)
+#define XSPI_NOR_MAX_FREQ 133000000U /* Fmax of memory is 133 MHz */
+#elif (DUMMY_CYCLES_READ_OCTAL == 12U)
+#define XSPI_NOR_MAX_FREQ 104000000U /* Fmax of memory is 104 MHz */
+#elif (DUMMY_CYCLES_READ_OCTAL == 10U)
+#define XSPI_NOR_MAX_FREQ 104000000U /* Fmax of memory is 104 MHz */
+#elif (DUMMY_CYCLES_READ_OCTAL == 8U)
+#define XSPI_NOR_MAX_FREQ 84000000U /* Fmax of memory is 84 MHz */
+#elif (DUMMY_CYCLES_READ_OCTAL == 6U)
+#define XSPI_NOR_MAX_FREQ 66000000U /* Fmax of memory is 66 MHz */
+#endif /* DUMMY_CYCLES_READ_OCTAL */
+/**
+  * @}
+  */
 /* Private variables ---------------------------------------------------------*/
 /** @defgroup STM32H7RSXX_NUCLEO_XSPI_NOR_Private_Variables XSPI_NOR Private Variables
   * @{
@@ -135,6 +158,7 @@ int32_t BSP_XSPI_NOR_Init(uint32_t Instance, BSP_XSPI_NOR_Init_t *Init)
   int32_t ret;
   BSP_XSPI_NOR_Info_t pInfo;
   MX_XSPI_InitTypeDef xspi_init;
+  uint32_t xspi_clk;
 
   /* Check if the instance is supported */
   if (Instance >= XSPI_NOR_INSTANCES_NUMBER)
@@ -164,7 +188,12 @@ int32_t BSP_XSPI_NOR_Init(uint32_t Instance, BSP_XSPI_NOR_Init_t *Init)
       (void)MX25UW25645G_GetFlashInfo(&pInfo);
 
       /* Fill config structure */
-      xspi_init.ClockPrescaler = 3;
+      xspi_clk = HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_XSPI2);
+      xspi_init.ClockPrescaler = (xspi_clk / XSPI_NOR_MAX_FREQ);
+      if ((xspi_clk % XSPI_NOR_MAX_FREQ) == 0U)
+      {
+        xspi_init.ClockPrescaler = xspi_init.ClockPrescaler - 1U;
+      }
       xspi_init.MemorySize     = (uint32_t)POSITION_VAL((uint32_t)pInfo.FlashSize);
       xspi_init.SampleShifting = HAL_XSPI_SAMPLE_SHIFT_NONE;
       xspi_init.TransferRate   = (uint32_t) Init->TransferRate;
@@ -691,7 +720,7 @@ int32_t BSP_XSPI_NOR_EnableMemoryMappedMode(uint32_t Instance)
   {
     if (Xspi_Nor_Ctx[Instance].TransferRate == BSP_XSPI_NOR_STR_TRANSFER)
     {
-      if (MX25UW25645G_EnableMemoryMappedModeSTR(&hxspi_nor[Instance], Xspi_Nor_Ctx[Instance].InterfaceMode,
+      if (MX25UW25645G_EnableSTRMemoryMappedMode(&hxspi_nor[Instance], Xspi_Nor_Ctx[Instance].InterfaceMode,
                                                  MX25UW25645G_4BYTES_SIZE) != MX25UW25645G_OK)
       {
         ret = BSP_ERROR_COMPONENT_FAILURE;
@@ -703,7 +732,7 @@ int32_t BSP_XSPI_NOR_EnableMemoryMappedMode(uint32_t Instance)
     }
     else
     {
-      if (MX25UW25645G_EnableMemoryMappedModeDTR(&hxspi_nor[Instance],
+      if (MX25UW25645G_EnableDTRMemoryMappedMode(&hxspi_nor[Instance],
                                                  Xspi_Nor_Ctx[Instance].InterfaceMode) != MX25UW25645G_OK)
       {
         ret = BSP_ERROR_COMPONENT_FAILURE;
@@ -994,8 +1023,8 @@ int32_t BSP_XSPI_NOR_LeaveDeepPowerDown(uint32_t Instance)
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
-  else if (MX25UW25645G_NoOperation(&hxspi_nor[Instance], Xspi_Nor_Ctx[Instance].InterfaceMode,
-                                    Xspi_Nor_Ctx[Instance].TransferRate) != MX25UW25645G_OK)
+  else if (MX25UW25645G_ReleaseFromPowerDown(&hxspi_nor[Instance], Xspi_Nor_Ctx[Instance].InterfaceMode,
+                                             Xspi_Nor_Ctx[Instance].TransferRate) != MX25UW25645G_OK)
   {
     ret = BSP_ERROR_COMPONENT_FAILURE;
   }

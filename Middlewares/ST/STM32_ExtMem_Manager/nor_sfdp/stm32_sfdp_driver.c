@@ -54,6 +54,10 @@
  */
 #define DRIVER_DEFAULT_TIMEOUT 300
 
+/**
+ * @brief default clock value to read SFDP data
+ */
+#define DRIVER_SFDP_DEFAULT_CLOCK 50000000u
 
 /**
  * @brief DEBUG macro
@@ -70,7 +74,7 @@
            }
 
 /**
- * @brief debug macro for lowlevel
+ * @brief debug macro for low level
  */
 #if EXTMEM_DRIVER_NOR_SFDP_DEBUG_LEVEL > 2
 #define DEBUG_DRIVER(_STR_)  {                     \
@@ -85,13 +89,13 @@
 /**
  * @brief debug macro for an integer
  */
-#define DEBUG_ID(_ID_)  {                                            \
-                           char StrID[40];                           \
-                           EXTMEM_MACRO_DEBUG("\tSFDP:: Flash ID("); \
-                           (void)sprintf(StrID, "0x%x:0x%x:0x%x",    \
-                                   _ID_[0],_ID_[1],_ID_[2]);         \
-                           EXTMEM_MACRO_DEBUG(StrID);                \
-                           EXTMEM_MACRO_DEBUG(")\n");                \
+#define DEBUG_ID(_ID_)  {                                              \
+                           char StrID[40];                             \
+                           EXTMEM_MACRO_DEBUG("\tSFDP:: Flash ID(");   \
+                           (void)sprintf(StrID, "0x%x:0x%x:0x%x:0x%x", \
+                                   _ID_[0],_ID_[1],_ID_[2], _ID_[3]);  \
+                           EXTMEM_MACRO_DEBUG(StrID);                  \
+                           EXTMEM_MACRO_DEBUG(")\n");                  \
                         }
 
 
@@ -117,8 +121,7 @@
 /** @defgroup DRIVER_SFDP_Private_Functions DRIVER SFDP Private Functions
   * @{
   */
-static EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef driver_check_FlagBUSY(EXTMEM_DRIVER_NOR_SFDP_ObjectTypeDef *SFDPObject, uint32_t timeout);
-static EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef driver_set_FlagWEL(EXTMEM_DRIVER_NOR_SFDP_ObjectTypeDef *SFDPObject, uint32_t timeout);
+static EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef driver_set_FlagWEL(EXTMEM_DRIVER_NOR_SFDP_ObjectTypeDef *SFDPObject, uint32_t Timeout);
 __weak void EXTMEM_MemCopy( uint32_t* destination_Address, const uint8_t* ptrData, uint32_t DataSize);
 
 /**
@@ -129,16 +132,17 @@ __weak void EXTMEM_MemCopy( uint32_t* destination_Address, const uint8_t* ptrDat
   * @{
   */
 
-EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef EXTMEM_DRIVER_NOR_SFDP_Init(void *IP, EXTMEM_LinkConfig_TypeDef Config, uint32_t ClockInput, EXTMEM_DRIVER_NOR_SFDP_ObjectTypeDef *SFDPObject)
+EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef EXTMEM_DRIVER_NOR_SFDP_Init(void *Peripheral, EXTMEM_LinkConfig_TypeDef Config, uint32_t ClockInput, EXTMEM_DRIVER_NOR_SFDP_ObjectTypeDef *SFDPObject)
 {
   EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef retr = EXTMEM_DRIVER_NOR_SFDP_OK;
   SFPD_HeaderTypeDef JEDEC_SFDP_Header;
+  uint8_t FreqUpdate = 0u;
   uint8_t DataID[6];
   uint32_t ClockOut;
 
   /* reset data of SFDPObject to zero */
   SFDP_DEBUG_STR("1 - reset data SFDPObject to zero")
-  (void)memset(SFDPObject, 0x0, sizeof(EXTMEM_DRIVER_NOR_SFDP_ObjectTypeDef));
+  (void)memset((void *)&SFDPObject->sfpd_private, 0x0, sizeof(SFDPObject->sfpd_private));
 
   /* initialize the SFDPObject */
   SFDP_DEBUG_STR("2 - initialize the SFDPObject")
@@ -146,22 +150,22 @@ EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef EXTMEM_DRIVER_NOR_SFDP_Init(void *IP, EXTME
   SFDPObject->sfpd_private.DriverInfo.SpiPhyLink = PHY_LINK_1S1S1S;
   SFDPObject->sfpd_private.DriverInfo.ClockIn = ClockInput;
   SAL_XSPI_SET_SFDPDUMMYCYLE(SFDPObject->sfpd_private.SALObject, 8);
- 
+
   /* set memory speed to 50Mhz maximum */
   SFDP_DEBUG_STR("3 - set memory link and speed to 50Mhz maximum")
-  (void)SAL_XSPI_Init(&SFDPObject->sfpd_private.SALObject, IP);
-  (void)SAL_XSPI_SetClock(&SFDPObject->sfpd_private.SALObject, ClockInput, 50000000u, &ClockOut);
+  (void)SAL_XSPI_Init(&SFDPObject->sfpd_private.SALObject, Peripheral);
+  (void)SAL_XSPI_SetClock(&SFDPObject->sfpd_private.SALObject, ClockInput, DRIVER_SFDP_DEFAULT_CLOCK, &ClockOut);
 
   /* Abort any ongoing XSPI action */
   (void)SAL_XSPI_DisableMapMode(&SFDPObject->sfpd_private.SALObject);
 
-  /* analyse the SFPD structure to get driver information */
-  SFDP_DEBUG_STR("4 - analyse the SFPD structure to get driver information")
+  /* analyze the SFPD structure to get driver information */
+  SFDP_DEBUG_STR("4 - analyze the SFPD structure to get driver information")
   if(EXTMEM_SFDP_OK != SFDP_GetHeader(SFDPObject, &JEDEC_SFDP_Header))
   {
     /*
      *  for the future, we can try to get SFDP by using different mode
-     *  the SFDP read is only perform in 1S1S1S mode
+     *  the SFDP read is only performed in 1S1S1S mode
      */
     SFDP_DEBUG_STR("ERROR::EXTMEM_DRIVER_NOR_SFDP_ERROR_SFDP")
     retr = EXTMEM_DRIVER_NOR_SFDP_ERROR_SFDP;
@@ -174,7 +178,7 @@ EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef EXTMEM_DRIVER_NOR_SFDP_Init(void *IP, EXTME
   {
     /*
      *  for the future, we can try to get SFDP by using different mode
-     *  the SFDP read is only perform in 1S1S1S mode
+     *  the SFDP read is only performed in 1S1S1S mode
      */
     SFDP_DEBUG_STR("ERROR::on the call of SFDP_MemoryReset but no error returned")
   }
@@ -182,8 +186,8 @@ EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef EXTMEM_DRIVER_NOR_SFDP_Init(void *IP, EXTME
   /* wait few ms after the reset operation, this is done to avoid issue on SFDP read */
   HAL_Delay(10);
 
-  /* analyse the SFPD structure to get driver information after the reset */
-  SFDP_DEBUG_STR("6 - analyse the SFPD structure to get driver information")
+  /* analyze the SFPD structure to get driver information after the reset */
+  SFDP_DEBUG_STR("6 - analyze the SFPD structure to get driver information")
   if(EXTMEM_SFDP_OK != SFDP_GetHeader(SFDPObject, &JEDEC_SFDP_Header))
   {
     /*
@@ -198,14 +202,14 @@ EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef EXTMEM_DRIVER_NOR_SFDP_Init(void *IP, EXTME
   /* Save information from the SFDP table */
   SFDPObject->sfpd_private.Sfdp_param_number = JEDEC_SFDP_Header.param_number;
   SFDPObject->sfpd_private.Sfdp_AccessProtocol = JEDEC_SFDP_Header.AccessProtocol;
-  
+
   /* read the flash ID */
   SFDP_DEBUG_STR("7 - read the flash ID")
   (void)SAL_XSPI_GetId(&SFDPObject->sfpd_private.SALObject, DataID, 4);
   DEBUG_ID(DataID);
-  
-  /* keep manufacturer information, it could be used to help in 
-     the building of consitent driver */
+
+  /* keep manufacturer information, it could be used to help in
+     building of consistent driver */
   SFDPObject->sfpd_private.ManuID = DataID[0];
 
   /* get the SFDP data */
@@ -219,21 +223,28 @@ EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef EXTMEM_DRIVER_NOR_SFDP_Init(void *IP, EXTME
 
   /* setup the generic driver information and prepare the physical layer */
   SFDP_DEBUG_STR("9 - build the generic driver information and prepare the physical layer")
-  if(EXTMEM_SFDP_OK !=  SFDP_BuildGenericDriver(SFDPObject))
+  if(EXTMEM_SFDP_OK !=  SFDP_BuildGenericDriver(SFDPObject, &FreqUpdate))
   {
     SFDP_DEBUG_STR("ERROR::EXTMEM_DRIVER_NOR_SFDP_ERROR_BUILD")
     retr = EXTMEM_DRIVER_NOR_SFDP_ERROR_BUILD;
     goto error;
   }
 
-  SFDP_DEBUG_STR("10 - read again the SFDP header to adjust memory type if necessary")
+  SFDP_DEBUG_STR("10 - adjust the frequency if required")
+  if ((FreqUpdate == 0u) && (SFDPObject->sfdp_public.MaxFreq != 0u))
+  {
+    (void)SAL_XSPI_SetClock(&SFDPObject->sfpd_private.SALObject, ClockInput, SFDPObject->sfdp_public.MaxFreq, &ClockOut);
+    SFDP_DEBUG_STR("--> new freq configured");
+  }
+
+  SFDP_DEBUG_STR("11 - read again the SFDP header to adjust memory type if necessary")
   if(EXTMEM_SFDP_OK != SFDP_ReadHeader(SFDPObject, &JEDEC_SFDP_Header))
   {
     SFDP_DEBUG_STR("ERROR::EXTMEM_DRIVER_NOR_SFDP_MEMTYPE_CHECK")
     retr = EXTMEM_DRIVER_NOR_SFDP_ERROR_MEMTYPE_CHECK;
     goto error;
   }
-  
+
   (void)memset(DataID, 0xAA, sizeof(DataID));
   (void)SAL_XSPI_GetId(&SFDPObject->sfpd_private.SALObject, DataID, 4);
   DEBUG_ID(DataID);
@@ -280,7 +291,7 @@ EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef EXTMEM_DRIVER_NOR_SFDP_Write(EXTMEM_DRIVER_
 
   DEBUG_DRIVER((uint8_t *)__func__)
   while(local_size != 0u) {
-   
+
     if (misalignment == 1u)
     {
       size_write = SFDPObject->sfpd_private.PageSize - (local_Address % SFDPObject->sfpd_private.PageSize);
@@ -300,7 +311,7 @@ EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef EXTMEM_DRIVER_NOR_SFDP_Write(EXTMEM_DRIVER_
       goto error;
     }
 
-    /* wait the write enable write */
+    /* wait for write enable flag */
     retr = driver_set_FlagWEL(SFDPObject, DRIVER_DEFAULT_TIMEOUT);
     if ( EXTMEM_DRIVER_NOR_SFDP_OK != retr)
     {
@@ -343,11 +354,10 @@ EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef EXTMEM_DRIVER_NOR_SFDP_WriteInMappedMode(EX
   const uint8_t *local_Data = Data;
   uint32_t size;
   uint32_t misalignment = 0u;
-  
 
   DEBUG_DRIVER((uint8_t *)__func__)
 
-  /* check if the input address is aligned 32bit */
+  /* check if the input address is 32bit aligned */
   if (0u != (local_Address % 4u))
   {
     retr = EXTMEM_DRIVER_NOR_SFDP_ERROR_ADDRESS_ALIGNMENT;
@@ -383,11 +393,11 @@ EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef EXTMEM_DRIVER_NOR_SFDP_WriteInMappedMode(EX
       }
     }
 
-    /* wait the write enable flag */
+    /* wait for Write enable flag */
     retr = driver_set_FlagWEL(SFDPObject, DRIVER_DEFAULT_TIMEOUT);
     if ( EXTMEM_DRIVER_NOR_SFDP_OK != retr)
     {
-      DEBUG_DRIVER_ERROR("EXTMEM_DRIVER_NOR_SFDP_WriteInMappedMode::ERROR_CHECK_WEL")
+      DEBUG_DRIVER_ERROR("EXTMEM_DRIVER_NOR_SFDP_write::ERROR_CHECK_WEL")
       goto error;
     }
 
@@ -413,7 +423,7 @@ EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef EXTMEM_DRIVER_NOR_SFDP_WriteInMappedMode(EX
     retr = driver_check_FlagBUSY(SFDPObject, 5000);
     if ( EXTMEM_DRIVER_NOR_SFDP_OK != retr)
     {
-      DEBUG_DRIVER_ERROR("EXTMEM_DRIVER_NOR_SFDP_WriteInMappedMode::ERROR_CHECK_BUSY_ON_EXIT")
+      DEBUG_DRIVER_ERROR("EXTMEM_DRIVER_NOR_SFDP_write::ERROR_CHECK_BUSY_ON_EXIT")
       goto error;
     }
 
@@ -462,7 +472,7 @@ EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef EXTMEM_DRIVER_NOR_SFDP_SectorErase(EXTMEM_D
   uint32_t timeout;
   DEBUG_DRIVER((uint8_t *)__func__)
 
-  /* check if the sector type selected is available */
+  /* check if the selected sector type is available */
   switch(SectorType)
   {
     case EXTMEM_DRIVER_NOR_SFDP_SECTOR_TYPE1:
@@ -512,7 +522,7 @@ EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef EXTMEM_DRIVER_NOR_SFDP_SectorErase(EXTMEM_D
     goto error;
   }
 
-  /* wait the write enable flag */
+  /* wait for write enable flag */
   retr = driver_set_FlagWEL(SFDPObject, DRIVER_DEFAULT_TIMEOUT);
   if (EXTMEM_DRIVER_NOR_SFDP_OK != retr )
   {
@@ -543,23 +553,22 @@ EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef EXTMEM_DRIVER_NOR_SFDP_MassErase(EXTMEM_DRI
   retr = driver_check_FlagBUSY(SFDPObject, 1000);
   if ( EXTMEM_DRIVER_NOR_SFDP_OK != retr)
   {
-    DEBUG_DRIVER_ERROR("EXTMEM_DRIVER_NOR_SFDP_MassErase::ERROR_CHECK_BUSY")
+    DEBUG_DRIVER_ERROR("EXTMEM_DRIVER_NOR_SFDP_read::ERROR_CHECK_BUSY")
     retr = EXTMEM_DRIVER_NOR_SFDP_ERROR_FLASHBUSY;
     goto error;
   }
 
-  /* wait the write enable flag */
+  /* wait for write enable flag */
   retr = driver_set_FlagWEL(SFDPObject, DRIVER_DEFAULT_TIMEOUT);
   if (EXTMEM_DRIVER_NOR_SFDP_OK != retr)
   {
-    DEBUG_DRIVER_ERROR("EXTMEM_DRIVER_NOR_SFDP_MassErase::ERROR_CHECK_WEL")
+    DEBUG_DRIVER_ERROR("EXTMEM_DRIVER_NOR_SFDP_read::ERROR_CHECK_WEL")
     goto error;
   }
 
   /* launch mass erase command */
   (void)SAL_XSPI_CommandSendData(&SFDPObject->sfpd_private.SALObject, ERASE_COMMAND, NULL, 0);
-  HAL_Delay(1);
-  
+
 
   /* check busy flag */
   retr = driver_check_FlagBUSY(SFDPObject, SFDPObject->sfpd_private.DriverInfo.EraseChipTiming); /* time to used should be set according the memory characteristic */
@@ -607,39 +616,22 @@ EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef EXTMEM_DRIVER_NOR_SFDP_Disable_MemoryMapped
   * @}
   */
 
+/** @addtogroup DRIVER_SFDP_Internal_Functions DRIVER SFDP Internal Functions
+  * @{
+  */
+
+
+
+/**
+  * @}
+  */
+
 /** @addtogroup DRIVER_SFDP_Private_Functions DRIVER SFDP Private Functions
   * @{
   */
 
 /**
- * @brief this function initialize a memory
- *
- * @param SFDPObject memory Object
- * @param timeout timeout value
- * @return @ref EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef
- **/
-EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef driver_check_FlagBUSY(EXTMEM_DRIVER_NOR_SFDP_ObjectTypeDef *SFDPObject, uint32_t Timeout)
-{
-  EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef retr = EXTMEM_DRIVER_NOR_SFDP_ERROR_BUSY;
-  DEBUG_DRIVER((uint8_t *)__func__)
-  if (0u != SFDPObject->sfpd_private.DriverInfo.ReadWIPCommand)
-  {
-    /* check if the busy flag is enabled */
-    if (HAL_OK == SAL_XSPI_CheckStatusRegister(&SFDPObject->sfpd_private.SALObject,
-                                               SFDPObject->sfpd_private.DriverInfo.ReadWIPCommand,
-                                               SFDPObject->sfpd_private.DriverInfo.WIPAddress,
-                                               SFDPObject->sfpd_private.DriverInfo.WIPBusyPolarity << SFDPObject->sfpd_private.DriverInfo.WIPPosition,
-                                               1u << SFDPObject->sfpd_private.DriverInfo.WIPPosition,
-                                               Timeout))
-    {
-      retr = EXTMEM_DRIVER_NOR_SFDP_OK;
-    }
-  }
-  return retr;
-}
-
-/**
- * @brief this function enable the WEL Flag and checks its activation
+ * @brief This function enables the WEL Flag and checks its activation
  *
  * @param SFDPObject memory object
  * @param timeout timeout value
@@ -652,10 +644,10 @@ EXTMEM_DRIVER_NOR_SFDP_StatusTypeDef driver_set_FlagWEL(EXTMEM_DRIVER_NOR_SFDP_O
   /* send the command write enable */
   (void)SAL_XSPI_CommandSendData(&SFDPObject->sfpd_private.SALObject, SFDPObject->sfpd_private.DriverInfo.WriteWELCommand, NULL, 0);
 
-  /* wait the write enable status */
+  /* wait for write enable status */
   if (0u != SFDPObject->sfpd_private.DriverInfo.ReadWELCommand)
   {
-    /* check if flag flag write enable is enabled */
+    /* check if flag write enable is enabled */
     if (HAL_OK == SAL_XSPI_CheckStatusRegister(&SFDPObject->sfpd_private.SALObject,
                                                SFDPObject->sfpd_private.DriverInfo.ReadWELCommand,
                                                SFDPObject->sfpd_private.DriverInfo.WELAddress,

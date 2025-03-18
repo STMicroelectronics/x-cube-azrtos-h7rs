@@ -70,6 +70,7 @@ __ALIGN_BEGIN static UCHAR ux_device_byte_pool_buffer[UX_DEVICE_APP_MEM_POOL_SIZ
 static TX_BYTE_POOL ux_device_app_byte_pool;
 
 /* USER CODE BEGIN USBPD_Pool_Buffer */
+
 /* USER CODE END USBPD_Pool_Buffer */
 #if defined ( __ICCARM__ )
 #pragma data_alignment=4

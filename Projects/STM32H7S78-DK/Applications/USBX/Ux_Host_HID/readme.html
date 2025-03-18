@@ -27,7 +27,7 @@ vertical-align: middle;
 <body>
 <div class="row">
 <section id="ux_host_hid-application-description" class="col-sm-12 col-lg-8">
-<h2><b>Ux_Host_HID application description</b></h2>
+<h2><b>Ux_Host_HID Application Description</b></h2>
 <p>This application provides an example of Azure RTOS USBX stack usage.
 It shows how to develop a USB Host Human Interface “HID” able to
 enumerate and communicate with a mouse or a keyboard.</p>
@@ -38,8 +38,10 @@ display data on UART HyperTerminal.</p>
 <p>The main entry function tx_application_define() is then called by
 ThreadX during kernel start, at this stage, all USBx resources are
 initialized, the HID class driver and HID clients are registered. The
-application creates 3 threads with different priorities:</p>
+application creates 4 threads with different priorities:</p>
 <ul>
+<li>ucpd_app_thread_entry     (Priority : 20; Preemption threshold : 20)
+used to start the Host after USB Device attachment.</li>
 <li>app_ux_host_thread_entry (Priority : 25; Preemption threshold : 25)
 used to initialize USB OTG HAL HCD driver and start the Host.</li>
 <li>hid_mouse_thread_entry (Priority : 30; Preemption threshold : 30)
@@ -126,7 +128,7 @@ or modify the line below in &quot;tx_initialize_low_level.S to match the memory 
      __RAM_segment_used_end__ = .;
      . = . + 64K;
      . = ALIGN(8);
-   } &gt;RAM_D1 AT&gt; RAM_D1</code></pre>
+   } &gt;RAM AT&gt; RAM</code></pre>
 <pre><code>The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
 In the example above the ThreadX heap size is set to 64KBytes.
 The ._threadx_heap must be located between the .bss and the ._user_heap_stack sections in the linker script.
@@ -153,12 +155,12 @@ environment</b></h3>
 <ul>
 <li><p>This application runs on STM32H7S7L8xx devices.</p></li>
 <li><p>This application has been tested with STMicroelectronics
-STM32H7S78-DK boards Revision: MB1736-H7S7L8-C01. boards and can be
+STM32H7S78-DK boards revision: MB1736-H7S7L8-D01 and can be
 easily tailored to any other supported device and development
 board.</p></li>
-<li><p>STM32H7S78-DK Set-up</p>
+<li><p>STM32H7S78-DK set-up:</p>
 <ul>
-<li>Plug the USB device (mouse, keyboard, flash disk) into the
+<li>Plug the USB HID device into the
 STM32H7S78-DK board through ‘USB micro Type C-Male to A-Female’ cable to
 the connector:
 <ul>
@@ -183,7 +185,7 @@ HyperTerminal.</li>
 <p>To configure STM32CubeIDE Debug Configuration, you must do the
 following :</p>
 <pre><code>1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project-&gt;Debugger Configuration
-2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration
+2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the "Load Symbols" option
 3. Move up the application in the startup</code></pre>
 <p>In order to make the program work, you must do the following :</p>
 <ul>

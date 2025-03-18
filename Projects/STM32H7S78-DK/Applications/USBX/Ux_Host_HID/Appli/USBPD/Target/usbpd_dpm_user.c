@@ -122,11 +122,6 @@ extern USBPD_ParamsTypeDef DPM_Params[USBPD_PORT_COUNT];
 /* USER CODE END USBPD_USER_EXPORTED_FUNCTIONS_GROUP1 */
 
 /**
-  * @brief  Initialize DPM (port power role, PWR_IF, CAD and PE Init procedures)
-  * @retval USBPD Status
-  */
-
-/**
   * @brief  User delay implementation which is OS dependent
   * @param  Time time in ms
   * @retval None
@@ -157,7 +152,7 @@ void USBPD_DPM_UserExecute(void const *argument)
 void USBPD_DPM_UserCableDetection(uint8_t PortNum, USBPD_CAD_EVENT State)
 {
 /* USER CODE BEGIN USBPD_DPM_UserCableDetection */
-   DPM_USER_DEBUG_TRACE(PortNum, "ADVICE: update USBPD_DPM_UserCableDetection");
+DPM_USER_DEBUG_TRACE(PortNum, "ADVICE: update USBPD_DPM_UserCableDetection");
    switch(State)
    {
    case USBPD_CAD_EVENT_ATTACHED:
@@ -206,7 +201,7 @@ void USBPD_DPM_Notification(uint8_t PortNum, USBPD_NotifyEventValue_TypeDef Even
   /* Manage event notified by the stack? */
   switch(EventVal)
   {
-    case USBPD_NOTIFY_USBSTACK_START:
+  case USBPD_NOTIFY_USBSTACK_START:
     {
       if (USBPD_PORTDATAROLE_DFP == DPM_Params[PortNum].PE_DataRole)
       {
@@ -218,7 +213,7 @@ void USBPD_DPM_Notification(uint8_t PortNum, USBPD_NotifyEventValue_TypeDef Even
       }
       break;
     }
-    case USBPD_NOTIFY_USBSTACK_STOP:
+  case USBPD_NOTIFY_USBSTACK_STOP:
     {
       if (USBPD_PORTDATAROLE_DFP == DPM_Params[PortNum].PE_DataRole)
       {
@@ -241,8 +236,8 @@ void USBPD_DPM_Notification(uint8_t PortNum, USBPD_NotifyEventValue_TypeDef Even
       break;
     }
 
-    default:
-      break;
+  default:
+    break;
   }
 /* USER CODE END USBPD_DPM_Notification */
 }

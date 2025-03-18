@@ -24,7 +24,7 @@
  extern "C" {
 #endif
 
-   
+
 /* Includes ------------------------------------------------------------------*/
 /** @addtogroup NOR_SFDP
   * @ingroup EXTMEM_DRIVER
@@ -91,6 +91,12 @@ typedef struct {
  */
 typedef struct {
   struct {
+    uint32_t                MaxFreq;              /*!< Maximum frequency supported by the memory
+                                                     @note if the value is equal to zero, the parameters is ignored */
+    uint8_t                 DtrReadDummyCycle;    /*!< Number of dummy cycle for DTR read command
+                                                     @note used only for JEDEC basic with DTR option */
+  } sfdp_public;
+  struct {
   SAL_XSPI_ObjectTypeDef    SALObject;             /*!< Instance of the memory */
   EXTMEM_LinkConfig_TypeDef Config;                /*!< memory configuration */
   uint8_t                   ManuID;                /*!< manufacturer ID */
@@ -100,7 +106,7 @@ typedef struct {
   uint32_t                  Sfdp_table_mask;       /*!< sfdp table mask */
   uint32_t                  Reset_info;            /*!< this bit is a copy of JEDEC Basic 16 Reset/Rescue info */
   uint8_t                   Sfdp_param_number;     /*!< Number of param from the SFDP header table */
-  uint8_t                   Sfdp_AccessProtocol;   /*!< Access protcol from the SFDP header table */
+  uint8_t                   Sfdp_AccessProtocol;   /*!< Access protocol from the SFDP header table */
   } sfpd_private;
 } EXTMEM_DRIVER_NOR_SFDP_ObjectTypeDef;
 

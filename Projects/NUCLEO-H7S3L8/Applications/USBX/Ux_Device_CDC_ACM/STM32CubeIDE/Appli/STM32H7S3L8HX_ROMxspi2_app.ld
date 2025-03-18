@@ -197,12 +197,12 @@ SECTIONS
     *(.UsbxAppSection)
   } >RAM
 
-  .usbx_bss 0x24046000 (NOLOAD):
+  .usbx_data 0x24036000 (NOLOAD):
   {
     *(.UsbxPoolSection)
   } >RAM
 
-  /* Remove information from the compiler libraries */
+/* Remove information from the compiler libraries */
   /DISCARD/ :
   {
     libc.a ( * )

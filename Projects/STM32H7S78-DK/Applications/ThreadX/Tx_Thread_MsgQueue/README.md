@@ -1,4 +1,5 @@
-##  <b>Tx_Thread_MsgQueue application description</b>
+
+##  <b>Tx_Thread_MsgQueue Application Description</b>
 
 This application provides an example of Azure RTOS ThreadX stack usage, it shows how to develop an application using the ThreadX message queue APIs.
 It demonstrates how to send and receive messages between threads using ThreadX message queue APIs. In addition, it shows how to use the event chaining feature.
@@ -69,7 +70,7 @@ Note that the boot part is automatically downloaded from the IDE environment via
          __RAM_segment_used_end__ = .;
          . = . + 64K;
          . = ALIGN(8);
-       } >RAM_D1 AT> RAM_D1
+       } >RAM AT> RAM
     ```
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
        In the example above the ThreadX heap size is set to 64KBytes.
@@ -85,10 +86,10 @@ RTOS, ThreadX, Threading, Message Queue, Event chaining
 
 ### <b>Hardware and Software environment</b>
 
-  - This example runs on STM32H7S7L8xx devices.
-  - This example has been tested with STMicroelectronics STM32H7S78-DK boards revision MB1736-H7S7L8-C01
+  - This application runs on STM32H7S7L8xx devices.
+  - This application has been tested with STMicroelectronics STM32H7S78-DK boards revision MB1736-H7S7L8-D01
     and can be easily tailored to any other supported device and development board.
-  - This application uses USART3 to display logs, the hyperterminal configuration is as follows:
+  - This application uses USART4 to display logs, the hyperterminal configuration is as follows:
       - BaudRate = 115200 baud
       - Word Length = 8 Bits
       - Stop Bit = 1
@@ -100,10 +101,10 @@ RTOS, ThreadX, Threading, Message Queue, Event chaining
 To configure STM32CubeIDE Debug Configuration, you must do the following :
 
     1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration
-    2. Add in the startup the Boot_XIP.elf in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup
 
-In order to make the program work, you must do the following :
+In order to make the program work, you must do the following:
 
  - Open your preferred toolchain
  - Rebuild all files and load your image into target memory

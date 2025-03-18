@@ -69,13 +69,13 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define LED2_Pin GPIO_PIN_2
-#define LED2_GPIO_Port GPIOM
+#define LED_RED_Pin GPIO_PIN_2
+#define LED_RED_GPIO_Port GPIOM
 #define SD_DETECT_Pin GPIO_PIN_14
 #define SD_DETECT_GPIO_Port GPIOM
 #define SD_DETECT_EXTI_IRQn EXTI14_IRQn
-#define LED1_Pin GPIO_PIN_1
-#define LED1_GPIO_Port GPIOO
+#define LED_GREEN_Pin GPIO_PIN_1
+#define LED_GREEN_GPIO_Port GPIOO
 
 /* USER CODE BEGIN Private defines */
 

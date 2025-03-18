@@ -1,9 +1,9 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file    stm32h7rsxx_hal_msp.c
-  * @brief   This file provides code for the MSP Initialization
-  *          and de-Initialization codes.
+  * @file         stm32h7rsxx_hal_msp.c
+  * @brief        This file provides code for the MSP Initialization
+  *               and de-Initialization codes.
   ******************************************************************************
   * @attention
   *
@@ -70,6 +70,13 @@ void HAL_MspInit(void)
   /* System interrupt init*/
 
   /* Enable the XSPIM_P1 interface */
+
+  /* Enable USB Voltage detector */
+  if(HAL_PWREx_EnableUSBVoltageDetector() != HAL_OK)
+  {
+   /* Initialization error */
+   Error_Handler();
+  }
 
   /* USER CODE BEGIN MspInit 1 */
 

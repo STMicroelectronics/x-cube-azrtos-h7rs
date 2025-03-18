@@ -27,6 +27,7 @@
 #endif /* _TRACE */
 
 /* USER CODE BEGIN include */
+
 /* USER CODE END include */
 
 /** @addtogroup BSP
@@ -468,7 +469,6 @@ __weak int32_t BSP_USBPD_PWR_VBUSSetVoltage_APDO(uint32_t Instance,
 __weak int32_t BSP_USBPD_PWR_VBUSGetVoltage(uint32_t Instance, uint32_t *pVoltage)
 {
   /* USER CODE BEGIN BSP_USBPD_PWR_VBUSGetVoltage */
-
   /* Check if instance is valid       */
   int32_t ret;
   uint32_t val = 0U;

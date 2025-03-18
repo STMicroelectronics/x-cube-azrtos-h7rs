@@ -35,7 +35,6 @@ extern "C" {
 #include "usart.h"
 #include "usb_otg.h"
 #include "ux_dcd_stm32.h"
-
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -44,10 +43,10 @@ extern "C" {
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
-#define USBX_DEVICE_MEMORY_STACK_SIZE       4*1024
+#define USBX_DEVICE_MEMORY_STACK_SIZE       6*1024
 
-#define UX_DEVICE_APP_THREAD_STACK_SIZE   1024
-#define UX_DEVICE_APP_THREAD_PRIO         10
+#define UX_DEVICE_APP_THREAD_STACK_SIZE     1024
+#define UX_DEVICE_APP_THREAD_PRIO           10
 
 /* USER CODE BEGIN EC */
 
@@ -68,7 +67,7 @@ VOID USBX_APP_UART_Init(UART_HandleTypeDef **huart);
 
 /* Private defines -----------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define APP_QUEUE_SIZE                               5
+
 /* USER CODE END PD */
 
 #ifndef UX_DEVICE_APP_THREAD_NAME

@@ -100,6 +100,7 @@
   * @{
   */
 /* USER CODE BEGIN USBPD_USER_PRIVATE_FUNCTIONS_Prototypes */
+
 /* USER CODE END USBPD_USER_PRIVATE_FUNCTIONS_Prototypes */
 /**
   * @}
@@ -119,11 +120,6 @@
 /* USER CODE BEGIN USBPD_USER_EXPORTED_FUNCTIONS_GROUP1 */
 
 /* USER CODE END USBPD_USER_EXPORTED_FUNCTIONS_GROUP1 */
-
-/**
-  * @brief  Initialize DPM (port power role, PWR_IF, CAD and PE Init procedures)
-  * @retval USBPD Status
-  */
 
 /**
   * @brief  User delay implementation which is OS dependent
@@ -156,7 +152,7 @@ void USBPD_DPM_UserExecute(void const *argument)
 void USBPD_DPM_UserCableDetection(uint8_t PortNum, USBPD_CAD_EVENT State)
 {
 /* USER CODE BEGIN USBPD_DPM_UserCableDetection */
-   DPM_USER_DEBUG_TRACE(PortNum, "ADVICE: update USBPD_DPM_UserCableDetection");
+  DPM_USER_DEBUG_TRACE(PortNum, "ADVICE: update USBPD_DPM_UserCableDetection");
 /* USER CODE END USBPD_DPM_UserCableDetection */
 }
 
@@ -226,6 +222,7 @@ void USBPD_DPM_Notification(uint8_t PortNum, USBPD_NotifyEventValue_TypeDef Even
   */
 
 /* USER CODE BEGIN USBPD_USER_PRIVATE_FUNCTIONS */
+
 /* USER CODE END USBPD_USER_PRIVATE_FUNCTIONS */
 
 /**
