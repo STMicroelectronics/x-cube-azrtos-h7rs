@@ -27,6 +27,7 @@
 #endif /* _TRACE */
 
 /* USER CODE BEGIN include */
+
 /* USER CODE END include */
 
 /** @addtogroup BSP
@@ -289,6 +290,7 @@ __weak int32_t BSP_USBPD_PWR_VBUSDeInit(uint32_t Instance)
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
+
   return ret;
   /* USER CODE END BSP_USBPD_PWR_VBUSDeInit */
 }
@@ -368,6 +370,7 @@ __weak int32_t BSP_USBPD_PWR_VBUSSetVoltage_Fixed(uint32_t Instance,
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
+
   return ret;
   /* USER CODE END BSP_USBPD_PWR_VBUSSetVoltage_Fixed */
 }
@@ -397,6 +400,7 @@ __weak int32_t BSP_USBPD_PWR_VBUSSetVoltage_Variable(uint32_t Instance,
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
+
   return ret;
   /* USER CODE END BSP_USBPD_PWR_VBUSSetVoltage_Variable */
 }
@@ -426,6 +430,7 @@ __weak int32_t BSP_USBPD_PWR_VBUSSetVoltage_Battery(uint32_t Instance,
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
+
   return ret;
   /* USER CODE END BSP_USBPD_PWR_VBUSSetVoltage_Battery */
 }
@@ -453,6 +458,7 @@ __weak int32_t BSP_USBPD_PWR_VBUSSetVoltage_APDO(uint32_t Instance,
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
+
   return ret;
   /* USER CODE END BSP_USBPD_PWR_VBUSSetVoltage_APDO */
 }
@@ -510,6 +516,7 @@ __weak int32_t BSP_USBPD_PWR_VBUSGetCurrent(uint32_t Instance, int32_t *pCurrent
     *pCurrent = 0;
     ret = BSP_ERROR_FEATURE_NOT_SUPPORTED;
   }
+
   return ret;
   /* USER CODE END BSP_USBPD_PWR_VBUSGetCurrent */
 }
@@ -536,6 +543,7 @@ __weak int32_t BSP_USBPD_PWR_VCONNInit(uint32_t Instance,
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
+
   return ret;
   /* USER CODE END BSP_USBPD_PWR_VCONNInit */
 }
@@ -562,6 +570,7 @@ __weak int32_t BSP_USBPD_PWR_VCONNDeInit(uint32_t Instance,
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
+
   return ret;
   /* USER CODE END BSP_USBPD_PWR_VCONNDeInit */
 }
@@ -588,6 +597,7 @@ __weak int32_t BSP_USBPD_PWR_VCONNOn(uint32_t Instance,
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
+
   return ret;
   /* USER CODE END BSP_USBPD_PWR_VCONNOn */
 }
@@ -614,6 +624,7 @@ __weak int32_t BSP_USBPD_PWR_VCONNOff(uint32_t Instance,
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
+
   return ret;
   /* USER CODE END BSP_USBPD_PWR_VCONNOff */
 }
@@ -642,6 +653,7 @@ __weak int32_t BSP_USBPD_PWR_VCONNIsOn(uint32_t Instance,
     ret = BSP_ERROR_WRONG_PARAM;
   }
   *pState = 0u;
+
   return ret;
   /* USER CODE END BSP_USBPD_PWR_VCONNIsOn */
 }
@@ -668,6 +680,7 @@ __weak int32_t BSP_USBPD_PWR_SetVBUSDisconnectionThreshold(uint32_t Instance,
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
+
   return ret;
   /* USER CODE END BSP_USBPD_PWR_SetVBUSDisconnectionThreshold */
 }
@@ -695,6 +708,7 @@ __weak int32_t BSP_USBPD_PWR_RegisterVBUSDetectCallback(uint32_t  Instance,
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
+
   return ret;
   /* USER CODE END BSP_USBPD_PWR_RegisterVBUSDetectCallback */
 }

@@ -24,6 +24,7 @@
 #include "usbpd_trace.h"
 
 /* USER CODE BEGIN Includes */
+
 #include "app_usbx_device.h"
 /* USER CODE END Includes */
 
@@ -153,6 +154,7 @@ void USBPD_USBIF_DeviceStop(uint32_t PortNum)
 {
 /* USER CODE BEGIN USBPD_USBIF_DeviceStop */
   USBPD_TRACE_Add(USBPD_TRACE_DEBUG, PortNum, 0, (uint8_t *) "USBIF Device stop", 17);
+
   /* Set Device state */
   USB_Device_EVENT = STOP_USB_DEVICE;
 

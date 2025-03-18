@@ -62,7 +62,6 @@ TX_THREAD       fx_app_thread;
 
 /* Buffer for FileX FX_MEDIA sector cache. */
 ALIGN_32BYTES (uint32_t fx_sd_media_memory[FX_STM32_SD_DEFAULT_SECTOR_SIZE / sizeof(uint32_t)]);
-
 /* Define FileX global data structures.  */
 FX_MEDIA        sdio_disk;
 
@@ -125,7 +124,7 @@ UINT MX_FileX_Init(VOID *memory_ptr)
                          FX_APP_THREAD_PRIO, FX_APP_PREEMPTION_THRESHOLD, FX_APP_THREAD_TIME_SLICE, FX_APP_THREAD_AUTO_START);
 
   /* Check main thread creation */
-  if (ret != FX_SUCCESS)
+  if (ret != TX_SUCCESS)
   {
     return TX_THREAD_ERROR;
   }
@@ -144,7 +143,7 @@ UINT MX_FileX_Init(VOID *memory_ptr)
   ret = tx_thread_create(&fx_thread_one, "fx_thread_one", fx_thread_one_entry, 0, pointer, DEFAULT_STACK_SIZE, DEFAULT_THREAD_PRIO,
                          DEFAULT_PREEMPTION_THRESHOLD, DEFAULT_TIME_SLICE, TX_DONT_START);
 
-  if (ret != FX_SUCCESS)
+  if (ret != TX_SUCCESS)
   {
     /* Failed at creating thread */
     Error_Handler();
@@ -153,7 +152,7 @@ UINT MX_FileX_Init(VOID *memory_ptr)
   /* Allocate memory for the 2nd concurrent thread's stack */
   ret = tx_byte_allocate(byte_pool, &pointer, DEFAULT_STACK_SIZE, TX_NO_WAIT);
 
-  if (ret != FX_SUCCESS)
+  if (ret != TX_SUCCESS)
   {
     /* Failed at allocating memory */
     Error_Handler();
@@ -161,9 +160,9 @@ UINT MX_FileX_Init(VOID *memory_ptr)
 
   /* Create the 2nd concurrent thread */
   ret = tx_thread_create(&fx_thread_two, "fx_thread_two", fx_thread_two_entry, 0, pointer, DEFAULT_STACK_SIZE, DEFAULT_THREAD_PRIO,
-                   DEFAULT_PREEMPTION_THRESHOLD, DEFAULT_TIME_SLICE, TX_DONT_START);
+                         DEFAULT_PREEMPTION_THRESHOLD, DEFAULT_TIME_SLICE, TX_DONT_START);
 
-  if (ret != FX_SUCCESS)
+  if (ret != TX_SUCCESS)
   {
     /* Failed at creating thread */
     Error_Handler();
@@ -172,7 +171,7 @@ UINT MX_FileX_Init(VOID *memory_ptr)
   /* An event flag to indicate the status of execution */
   ret = tx_event_flags_create(&finish_flag, "event_flag");
 
-  if (ret != FX_SUCCESS)
+  if (ret != TX_SUCCESS)
   {
     /* Failed at creating event flag */
     Error_Handler();

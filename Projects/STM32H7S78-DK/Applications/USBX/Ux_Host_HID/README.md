@@ -1,5 +1,5 @@
 
-## <b>Ux_Host_HID application description</b>
+## <b>Ux_Host_HID Application Description</b>
 
 This application provides an example of Azure RTOS USBX stack usage.
 It shows how to develop a USB Host Human Interface "HID" able to enumerate and communicate with a mouse or a keyboard.
@@ -9,7 +9,9 @@ HID devices, HID class APIs to decode HID reports received from a mouse or a key
 
 The main entry function tx_application_define() is then called by ThreadX during kernel start, at this stage, all USBx resources
 are initialized, the HID class driver and HID clients are registered.
-The application creates 3 threads with different priorities:
+The application creates 4 threads with different priorities:
+
+  - ucpd_app_thread_entry     (Priority : 20; Preemption threshold : 20) used to start the Host after USB Device attachment.
 
   - app_ux_host_thread_entry  (Priority : 25; Preemption threshold : 25) used to initialize USB OTG HAL HCD driver and start the Host.
   - hid_mouse_thread_entry    (Priority : 30; Preemption threshold : 30) used to decode HID reports received  from a mouse.
@@ -40,6 +42,7 @@ Errors are detected (such as unsupported device, enumeration fail) and the corre
 User is familiar with USB 2.0 "Universal Serial BUS" specification and HID class specification.
 
 #### <b>Known limitations</b>
+
 None
 
 ### <b>Notes</b>
@@ -76,7 +79,7 @@ Note that the boot part is automatically downloaded from the IDE environment via
          __RAM_segment_used_end__ = .;
          . = . + 64K;
          . = ALIGN(8);
-       } >RAM_D1 AT> RAM_D1
+       } >RAM AT> RAM
     ```
 
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
@@ -99,18 +102,15 @@ Connectivity, USBX Host, USBPD, ThreadX, USB, HID, Mouse, Keyboard, UART, USART
 ### <b>Hardware and Software environment</b>
 
   - This application runs on STM32H7S7L8xx devices.
-
-  - This application has been tested with STMicroelectronics STM32H7S78-DK boards Revision: MB1736-H7S7L8-C01.
-    boards and can be easily tailored to any other supported device and development board.
-
-  - STM32H7S78-DK Set-up
-    - Plug the USB device (mouse, keyboard, flash disk) into the STM32H7S78-DK board through 'USB micro Type C-Male
+  - This application has been tested with STMicroelectronics STM32H7S78-DK MB1736-H7S7L8-D01
+    and can be easily tailored to any other supported device and development board.
+  - STM32H7S78-DK set-up:
+    - Plug the USB HID device into the STM32H7S78-DK board through 'USB micro Type C-Male
       to A-Female' cable to the connector:
-      - CN18 : to use USB OTG IP in high speed (HS)
+      - CN18 : to use USB High Speed OTG IP (HS)
     - Connect ST-Link cable to the PC USB port to display data on the HyperTerminal.
 
     A virtual COM port will then appear in the HyperTerminal:
-
      - Hyperterminal configuration
        - Data Length = 8 Bits
        - One Stop Bit
@@ -123,7 +123,7 @@ Connectivity, USBX Host, USBPD, ThreadX, USB, HID, Mouse, Keyboard, UART, USART
 To configure STM32CubeIDE Debug Configuration, you must do the following :
 
     1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration
-    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup
 
 In order to make the program work, you must do the following :

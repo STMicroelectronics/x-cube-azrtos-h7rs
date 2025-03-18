@@ -49,8 +49,10 @@ static UX_SLAVE_CLASS_STORAGE_PARAMETER storage_parameter;
 static TX_THREAD ux_device_app_thread;
 
 /* USER CODE BEGIN PV */
-TX_EVENT_FLAGS_GROUP                         EventFlag;
-TX_QUEUE                                     ux_app_MsgQueue;
+TX_EVENT_FLAGS_GROUP EventFlag;
+
+/* ux app msg queue */
+TX_QUEUE ux_app_MsgQueue;
 #if defined ( __ICCARM__ ) /* IAR Compiler */
   #pragma data_alignment=4
 #endif /* defined ( __ICCARM__ ) */
@@ -237,6 +239,7 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
   {
     return TX_QUEUE_ERROR;
   }
+
   /* USER CODE END MX_USBX_Device_Init1 */
 
   return ret;
@@ -261,9 +264,10 @@ static VOID app_ux_device_thread_entry(ULONG thread_input)
     if (tx_queue_receive(&ux_app_MsgQueue, &USB_Device_State_Msg,
                          TX_WAIT_FOREVER)!= TX_SUCCESS)
     {
-      /*Error*/
-      Error_Handler();
+     /*Error*/
+     Error_Handler();
     }
+
     /* Check if received message equal to USB_PCD_START */
     if (USB_Device_State_Msg == START_USB_DEVICE)
     {
@@ -283,6 +287,7 @@ static VOID app_ux_device_thread_entry(ULONG thread_input)
       Error_Handler();
     }
   }
+
   /* USER CODE END app_ux_device_thread_entry */
 }
 
@@ -303,16 +308,19 @@ VOID USBX_APP_Device_Init(VOID)
   MX_USB_OTG_HS_PCD_Init();
 
   /* USER CODE BEGIN USB_Device_Init_PreTreatment_1 */
+
   /* Set Rx FIFO */
   HAL_PCDEx_SetRxFiFo(&hpcd_USB_OTG_HS, 0x200);
   /* Set Tx FIFO 0 */
   HAL_PCDEx_SetTxFiFo(&hpcd_USB_OTG_HS, 0, 0x40);
   /* Set Tx FIFO 1 */
   HAL_PCDEx_SetTxFiFo(&hpcd_USB_OTG_HS, 1, 0x100);
+
   /* USER CODE END USB_Device_Init_PreTreatment_1 */
 
   /* Initialize and link controller HAL driver */
   ux_dcd_stm32_initialize((ULONG)USB_OTG_HS, (ULONG)&hpcd_USB_OTG_HS);
+
   /* USER CODE BEGIN USB_Device_Init_PostTreatment */
 
   /* USER CODE END USB_Device_Init_PostTreatment */

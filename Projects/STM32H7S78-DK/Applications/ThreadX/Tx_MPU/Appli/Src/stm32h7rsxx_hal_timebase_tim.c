@@ -34,12 +34,12 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define TIM_CNT_FREQ 1000000U    /* Timer counter frequency : 1 MHz */
+#define TIM_CNT_FREQ 1000000U /* Timer counter frequency : 1 MHz */
 #define TIM_FREQ     1000U    /* Timer frequency : 1 kHz => to have 1 ms interrupt */
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
- TIM_HandleTypeDef htim6;
+TIM_HandleTypeDef htim6;
 
 /* Private function prototypes -----------------------------------------------*/
 #if (USE_HAL_TIM_REGISTER_CALLBACKS == 1U)
@@ -77,9 +77,9 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
   /* Compute TIM6 clock */
   if (uwAPB1Prescaler == RCC_APB1_DIV1)
   {
-        uwTimclock = HAL_RCC_GetPCLK1Freq();
+    uwTimclock = HAL_RCC_GetPCLK1Freq();
   }
- else if (uwAPB1Prescaler == RCC_APB1_DIV2)
+  else if (uwAPB1Prescaler == RCC_APB1_DIV2)
   {
     uwTimclock = 2UL * HAL_RCC_GetPCLK1Freq();
   }
@@ -93,8 +93,7 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
     {
       uwTimclock = 4UL * HAL_RCC_GetPCLK1Freq();
     }
-
-    }
+  }
 
   /* Compute the prescaler value to have TIM6 counter clock equal to TIM_CNT_FREQ */
   uwPrescalerValue = (uint32_t)((uwTimclock / TIM_CNT_FREQ) - 1U);
@@ -108,7 +107,7 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
   + ClockDivision = 0
   + Counter direction = Up
   */
-  htim6.Init.Period = ((uint32_t)uwTickFreq * (TIM_CNT_FREQ / TIM_FREQ)) - 1U;
+  htim6.Init.Period = ((uint32_t)uwTickFreq  * (TIM_CNT_FREQ / TIM_FREQ)) - 1U;
   htim6.Init.Prescaler = uwPrescalerValue;
   htim6.Init.ClockDivision = 0;
   htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
@@ -116,9 +115,9 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
   Status = HAL_TIM_Base_Init(&htim6);
   if (Status == HAL_OK)
   {
-  #if (USE_HAL_TIM_REGISTER_CALLBACKS == 1U)
-  HAL_TIM_RegisterCallback(&htim6, HAL_TIM_PERIOD_ELAPSED_CB_ID, TimeBase_TIM_PeriodElapsedCallback);
-  #endif /* USE_HAL_TIM_REGISTER_CALLBACKS */
+#if (USE_HAL_TIM_REGISTER_CALLBACKS == 1U)
+    HAL_TIM_RegisterCallback(&htim6, HAL_TIM_PERIOD_ELAPSED_CB_ID, TimeBase_TIM_PeriodElapsedCallback);
+#endif /* USE_HAL_TIM_REGISTER_CALLBACKS */
     /* Start the TIM time Base generation in interrupt mode */
     Status = HAL_TIM_Base_Start_IT(&htim6);
     if (Status == HAL_OK)
@@ -181,6 +180,7 @@ void TimeBase_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   UNUSED(htim);
 
   HAL_IncTick();
+
 }
 #endif /* USE_HAL_TIM_REGISTER_CALLBACKS */
 /**

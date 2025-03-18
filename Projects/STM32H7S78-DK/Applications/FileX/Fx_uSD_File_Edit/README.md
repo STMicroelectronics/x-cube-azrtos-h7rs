@@ -1,5 +1,5 @@
 
-## <b>Fx_uSD_File_Edit application description</b>
+## <b>Fx_uSD_File_Edit Application Description</b>
 
 This application provides an example of Azure RTOS FileX stack usage on STM32H7S78-DK, it shows how to develop a basic SD card file
 operations application. The application is designed to handle SD card insertion/removal events, and depending on that state, it starts
@@ -8,7 +8,6 @@ and stops file operations from and into the SD card.
 The application is developed using HAL, so managing leds, SD initialisation or any SD card insertion/removal mechanisms are implemented using HAL drivers without any reference to BSP.
 
 The main entry function, tx_application_define(), is called by ThreadX during kernel start. At this stage, all FileX resources are initialized,
-
 the SD card detection event is registered and drivers are initialized.
 
 A single thread is created:
@@ -34,7 +33,7 @@ That is why MX_SDMMC1_SD_Init() should be public to initialize the newly plugged
 
 - A file named STM32.TXT should be visible in the root directory of the SD card.
 - A blinking green LED light marks the success of the file operations.
-
+- A red LED light is ON when the SD card is unplugged.
 #### <b>Error behaviors</b>
 
 - On failure, the red LED should start blinking.
@@ -46,7 +45,12 @@ That is why MX_SDMMC1_SD_Init() should be public to initialize the newly plugged
 
 #### <b>Known limitations</b>
 
-None
+Performing quick plug/unplug of SD card may trigger the Error_Handler() function.
+
+### <b>Notes</b>
+
+ 1.  This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed).
+      Note that the boot part is automatically downloaded from the IDE environment via the board boot binary under Binary/Boot_XIP.hex file.
 
 #### <b>ThreadX usage hints</b>
 
@@ -77,7 +81,7 @@ None
          __RAM_segment_used_end__ = .;
          . = . + 64K;
          . = ALIGN(8);
-       } >RAM_D1 AT> RAM_D1
+       } >RAM AT> RAM
     ```
 
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
@@ -101,7 +105,7 @@ RTOS, ThreadX, FileX, File system, SDMMC, FAT32
 ### <b>Hardware and Software environment</b>
 
   - This application runs on STM32H7S7L8xx devices.
-  - This application has been tested with STMicroelectronics STM32H7S78-DK boards revision: MB1736-H7S7L8-C01
+  - This application has been tested with STMicroelectronics STM32H7S78-DK boards revision: MB1736-H7S7L8-D01
     and can be easily tailored to any other supported device and development board.
 
 ### <b>How to use it ?</b>
@@ -109,7 +113,7 @@ RTOS, ThreadX, FileX, File system, SDMMC, FAT32
 To configure STM32CubeIDE Debug Configuration, you must do the following :
 
     1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration
-    2. Add in the startup the Boot_XIP.elf in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup
 
 In order to make the program work, you must do the following :

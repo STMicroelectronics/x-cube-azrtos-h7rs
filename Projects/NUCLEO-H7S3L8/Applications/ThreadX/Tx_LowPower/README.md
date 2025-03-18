@@ -1,5 +1,5 @@
 
-## <b>Tx_LowPower application description</b>
+## <b>Tx_LowPower Application Description</b>
 
 This application provides an example of Azure RTOS ThreadX stack usage, it shows how to develop an application using ThreadX LowPower feature.
 It demonstrates how to configure the LowPower feature of Azure RTOS ThreadX stack. In addition, it shows how to use ThreadX MACRO related to the LowPower feature.
@@ -81,24 +81,24 @@ Note that the boot part is automatically downloaded from the IDE environment via
    This requires changes in the linker files to expose this memory location.
     + For EWARM add the following section into the .icf file:
      ```
-	 place in RAM_region    { last section FREE_MEM };
-	 ```
+      place in RAM_region    { last section FREE_MEM };
+      ```
     + For MDK-ARM:
-	```
+    ```
     either define the RW_IRAM1 region in the ".sct" file
     or modify the line below in "tx_initialize_low_level.S to match the memory region being used
         LDR r1, =|Image$$RW_IRAM1$$ZI$$Limit|
-	```
+    ```
     + For STM32CubeIDE add the following section into the .ld file:
-	```
+    ```
     ._threadx_heap :
       {
          . = ALIGN(8);
          __RAM_segment_used_end__ = .;
          . = . + 64K;
          . = ALIGN(8);
-       } >RAM_D1 AT> RAM_D1
-	```
+       } >RAM AT> RAM
+    ```
 
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
        In the example above the ThreadX heap size is set to 64KBytes.
@@ -114,16 +114,16 @@ RTOS, ThreadX, Threading, Semaphore, LowPower
 
 ### <b>Hardware and Software environment</b>
 
-  - This example runs on NUCLEO-H7S3L8xx devices.
-  - This example has been tested with STMicroelectronics NUCLEO-H7S3L8 boards revision: MB1737-H7S3L8-B01
+  - This application runs on STM32H7S3L8xx devices.
+  - This application has been tested with STMicroelectronics NUCLEO-H7S3L8 boards revision: MB1737-H7S3L8-B02
     and can be easily tailored to any other supported device and development board.
 
 ###  <b>How to use it ?</b>
 
 To configure STM32CubeIDE Debug Configuration, you must do the following :
 
-    1. Add the adequate external loader (MX25UW25645G_STM32H7R38-NUCLEO.stldr file) in Project->Debugger Configuration
-    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration
+    1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup
 
 In order to make the program work, you must do the following :

@@ -25,13 +25,13 @@
 /* Include the ThreadX module header. */
 #include "txm_module.h"
 
-/* Define constants. */
-#define DEFAULT_STACK_SIZE         512
-#define DEFAULT_BYTE_POOL_SIZE     2048
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
 
-#define READONLY_REGION            0x24040000
-#define READWRITE_REGION           0x24040100
+/* USER CODE END Includes */
 
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
 typedef enum {
 PROCESSING_NOT_STARTED    = 99,
 WRITING_TO_READWRITE      = 88,
@@ -40,64 +40,90 @@ READING_FROM_READWRITE    = 66,
 READING_FROM_READONLY     = 55,
 PROCESSING_FINISHED       = 44
 } ProgressState;
+/* USER CODE END PTD */
 
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+/* Define constants. */
+#define DEFAULT_STACK_SIZE         1024
+#define DEFAULT_BYTE_POOL_SIZE     2048
+
+#define READONLY_REGION            0x24020000
+#define READWRITE_REGION           0x24020100
+
+#define MAIN_THREAD_PRIO                         2
+#define MAIN_THREAD_PREEMPTION_THRESHOLD         MAIN_THREAD_PRIO
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
 #define UNUSED(x) (void)(x)
-
 /* Define the pool space in the bss section of the module. ULONG is used to
    get word alignment. */
-
-#if defined(__GNUC__) || defined(__CC_ARM)
+#if defined(__GNUC__) || defined(__CC_ARM) || defined(__ARMCC_VERSION)
 ULONG  default_module_pool_space[DEFAULT_BYTE_POOL_SIZE / 4] __attribute__ ((aligned(32)));
 #else /* __ICCARM__ */
 _Pragma("data_alignment=32") ULONG  default_module_pool_space[DEFAULT_BYTE_POOL_SIZE / 4];
 #endif
+/* USER CODE END PM */
 
+/* Private variables ---------------------------------------------------------*/
+/* USER CODE BEGIN PV */
 /* Define the ThreadX object control block pointers. */
+TX_THREAD               *MainThread;
+TX_BYTE_POOL            *ModuleBytePool;
+TX_BLOCK_POOL           *ModuleBlockPool;
+TX_QUEUE                *ResidentQueue;
+/* USER CODE END PV */
 
-TX_THREAD               *thread_0;
-TX_BYTE_POOL            *byte_pool_0;
-TX_QUEUE                *resident_queue;
-
-/* Function prototypes*/
-
+/* Private function prototypes -----------------------------------------------*/
+/* USER CODE BEGIN PFP */
 void default_module_start(ULONG id);
-void thread_0_entry(ULONG thread_input);
+void MainThread_Entry(ULONG thread_input);
 void Error_Handler(void);
+/* USER CODE END PFP */
 
-/* Module entry function */
+/**
+  * @brief  Module entry function.
+  * @param  id : Module ID
+  * @retval None
+  */
 void    default_module_start(ULONG id)
 {
+  CHAR    *pointer;
 
-    CHAR    *pointer;
+  /* Allocate all the objects. In MPU mode, modules cannot allocate control blocks within
+  their own memory area so they cannot corrupt the resident portion of ThreadX by overwriting
+  the control block(s).  */
+  txm_module_object_allocate((void*)&MainThread, sizeof(TX_THREAD));
+  txm_module_object_allocate((void*)&ModuleBytePool, sizeof(TX_BYTE_POOL));
 
-    /* Allocate all the objects. In MPU mode, modules cannot allocate control blocks within
-       their own memory area so they cannot corrupt the resident portion of ThreadX by overwriting
-       the control block(s).  */
-    txm_module_object_allocate((void*)&thread_0, sizeof(TX_THREAD));
-    txm_module_object_allocate((void*)&byte_pool_0, sizeof(TX_BYTE_POOL));
+  /* Create a byte memory pool from which to allocate the thread stacks. */
+  tx_byte_pool_create(ModuleBytePool, "Module Byte Pool", (UCHAR*)default_module_pool_space, DEFAULT_BYTE_POOL_SIZE);
 
-    /* Create a byte memory pool from which to allocate the thread stacks.  */
-    tx_byte_pool_create(byte_pool_0, "module byte pool 0", (UCHAR*)default_module_pool_space, DEFAULT_BYTE_POOL_SIZE);
+  /* Allocate the stack for thread 0. */
+  tx_byte_allocate(ModuleBytePool, (VOID **) &pointer, DEFAULT_STACK_SIZE, TX_NO_WAIT);
 
-    /* Allocate the stack for thread 0.  */
-    tx_byte_allocate(byte_pool_0, (VOID **) &pointer, DEFAULT_STACK_SIZE, TX_NO_WAIT);
-
-    /* Create the main thread.  */
-    tx_thread_create(thread_0, "module thread 0", thread_0_entry, 0,
-            pointer, DEFAULT_STACK_SIZE,
-            2, 2, TX_NO_TIME_SLICE, TX_AUTO_START);
+  /* Create the main thread. */
+  tx_thread_create(MainThread, "Module Main Thread", MainThread_Entry, 0,
+                   pointer, DEFAULT_STACK_SIZE,
+                   MAIN_THREAD_PRIO, MAIN_THREAD_PREEMPTION_THRESHOLD, TX_NO_TIME_SLICE, TX_AUTO_START);
 
 }
 
-/* Module main thread function */
-void thread_0_entry(ULONG thread_input)
+/**
+  * @brief  Module main thread.
+  * @param  thread_input: thread id
+  * @retval none
+  */
+void MainThread_Entry(ULONG thread_input)
 {
   UINT status;
   ULONG s_msg;
   ULONG readbuffer;
 
   /* Request access to the queue from the module manager */
-  status = txm_module_object_pointer_get(TXM_QUEUE_OBJECT, "Resident Queue", (VOID **)&resident_queue);
+  status = txm_module_object_pointer_get(TXM_QUEUE_OBJECT, "Resident Queue", (VOID **)&ResidentQueue);
 
   if(status)
   {
@@ -106,32 +132,42 @@ void thread_0_entry(ULONG thread_input)
 
   /* Writing to write and read region */
   s_msg = WRITING_TO_READWRITE;
-  tx_queue_send(resident_queue, &s_msg, TX_NO_WAIT);
+  tx_queue_send(ResidentQueue, &s_msg, TX_NO_WAIT);
   *(ULONG *)READWRITE_REGION = 0xABABABAB;
   tx_thread_sleep(TX_TIMER_TICKS_PER_SECOND / 10);
 
   /* WReading from write and read region */
   s_msg = READING_FROM_READWRITE;
-  tx_queue_send(resident_queue, &s_msg, TX_NO_WAIT);
+  tx_queue_send(ResidentQueue, &s_msg, TX_NO_WAIT);
   readbuffer = *(ULONG*)READWRITE_REGION;
   tx_thread_sleep(TX_TIMER_TICKS_PER_SECOND / 10);
 
   /* Reading from read only region */
   s_msg = READING_FROM_READONLY;
-  tx_queue_send(resident_queue, &s_msg, TX_NO_WAIT);
+  tx_queue_send(ResidentQueue, &s_msg, TX_NO_WAIT);
   readbuffer = *(ULONG*)READONLY_REGION;
   tx_thread_sleep(TX_TIMER_TICKS_PER_SECOND / 10);
 
   /* Writing to read only region */
   s_msg = WRITING_TO_READONLY;
-  tx_queue_send(resident_queue, &s_msg, TX_NO_WAIT);
+  tx_queue_send(ResidentQueue, &s_msg, TX_NO_WAIT);
   *(ULONG *)READONLY_REGION = 0xABABABAB;
   tx_thread_sleep(TX_TIMER_TICKS_PER_SECOND / 10);
 
   /* Suppress unused variable warning */
   UNUSED(readbuffer);
+
+  /* Stay here, waiting for the module manager to stop and loading the module*/
+  while(1)
+  {
+    tx_thread_sleep(10);
+  }
 }
 
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
 void Error_Handler(void)
 {
   /* Nothing to do, block here */

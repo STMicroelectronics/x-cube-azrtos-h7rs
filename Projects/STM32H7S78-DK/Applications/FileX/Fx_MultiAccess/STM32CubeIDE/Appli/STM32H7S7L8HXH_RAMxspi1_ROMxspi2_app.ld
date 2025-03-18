@@ -191,6 +191,7 @@ SECTIONS
     . = ALIGN(8);
   } >DTCM
 
+
   /* Remove information from the compiler libraries */
   /DISCARD/ :
   {

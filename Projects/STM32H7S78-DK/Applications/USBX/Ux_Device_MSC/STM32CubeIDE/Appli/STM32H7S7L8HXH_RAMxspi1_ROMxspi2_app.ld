@@ -193,6 +193,11 @@ SECTIONS
 
   .usbx_data 0x24035000 (NOLOAD):
   {
+    *(.UsbHpcdSection)
+  } >RAM
+
+  .usbx_bss 0x24036000 (NOLOAD):
+  {
     *(.UsbxPoolSection)
   } >RAM
 

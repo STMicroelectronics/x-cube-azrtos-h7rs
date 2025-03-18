@@ -34,37 +34,18 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 
-typedef enum {
-  SAL_XSPI_COMMAND_SEND,                        /*!< corresponds to send only a command */
-  SAL_XSPI_COMMAND_SEND_DATA,                   /*!< corresponds to send a command with data */
-  SAL_XSPI_COMMAND_SEND_ADDRESS_DATA,           /*!< corresponds to send a command with an adress + data  */
-  SAL_XSPI_COMMAND_READ_DATA,                   /*!< data strobe parameter */
-} SAL_XSPI_CommanTypeDef;
-
-typedef enum {
- SAL_XSPI_ORDERINVERTED = 0,
-} SAL_XSPI_DataOrderTypeDef;
 
 /** @defgroup SAL_XSPI_Exported_types SAL XSPI exported types
   * @{
   */
 
-typedef struct {
-   XSPI_HandleTypeDef     *hxspi;            /*!< handle on the XSPI instance */
-   XSPI_RegularCmdTypeDef Commandbase;       /*!< command base configuration */
-   uint8_t                CommandExtension;  /*!< Flag on the 16-bit command extension 0 inverted 1 the same */
-   uint8_t                SFDPDummyCycle;    /*!< SDPF dummy cycle */
-} SAL_XSPI_ObjectTypeDef;
+/**
+ * @brief data order information
+ */
 
-
-typedef struct {
-  SAL_XSPI_CommanTypeDef CommandType;    /*!< */
-  uint8_t Command;                       /*!< */
-  uint32_t Address;                      /*!< */
-  uint32_t DataValue;                    /*!< */
-  uint32_t DataSize;                     /*!< */
-}SAL_XSPI_CommnandTypeDef;               /*!< */
-
+typedef enum {
+ SAL_XSPI_ORDERINVERTED = 0,
+} SAL_XSPI_DataOrderTypeDef;
 
 /**
  * @brief list of the supported configuration link
@@ -72,13 +53,14 @@ typedef struct {
 
 typedef enum {
   PHY_LINK_1S1S1S,    /*!< physical link configure in 1S1S1S */
-  PHY_LINK_1S2S2S,    /*!< physical link configure in 1S1S1S */
-  PHY_LINK_2S2S2S,    /*!< physical link configure in 2S2S2S */
+  PHY_LINK_1S1S2S,    /*!< physical link configure in 1S1S2S */
+  PHY_LINK_1S2S2S,    /*!< physical link configure in 1S2S2S */
+  PHY_LINK_1S1D1D,    /*!< physical link configure in 1S1D1D */
   PHY_LINK_4S4S4S,    /*!< physical link configure in 4S4S4S */
   PHY_LINK_4S4D4D,    /*!< physical link configure in 4S4D4D */
   PHY_LINK_4D4D4D,    /*!< physical link configure in 4D4D4D */
   PHY_LINK_1S8S8S,    /*!< physical link configure in 1S8S8S */
-  PHY_LINK_8S8D8D,    /*!< physical link configure in 8D8D8D */
+  PHY_LINK_8S8D8D,    /*!< physical link configure in 8S8D8D */
   PHY_LINK_8D8D8D,    /*!< physical link configure in 8D8D8D */
 
   PHY_LINK_RAM8,      /*!< physical link configure for RAM  8lines of data */
@@ -87,6 +69,14 @@ typedef enum {
 #endif /* defined(HAL_XSPI_DATA_16_LINES) */
 } SAL_XSPI_PhysicalLinkTypeDef;
 
+typedef struct {
+   XSPI_HandleTypeDef           *hxspi;            /*!< handle on the XSPI instance */
+   XSPI_RegularCmdTypeDef       Commandbase;       /*!< command base configuration */
+   uint8_t                      CommandExtension;  /*!< Flag on the 16-bit command extension 0 inverted 1 the same */
+   uint8_t                      SFDPDummyCycle;    /*!< SDPF dummy cycle */
+   SAL_XSPI_PhysicalLinkTypeDef PhyLink;           /*!< Only used for data Read in 4S4D4d 2S2D2D 1S1D1D */
+   uint8_t                      DTRDummyCycle;     /*!< Specify that DTR read only valid for data read using DTRDummyCycle value */
+} SAL_XSPI_ObjectTypeDef;
 
 /**
   * @brief define the list of the parameter
@@ -104,6 +94,7 @@ typedef enum {
 
 /* Exported Macro ------------------------------------------------------------*/
 
+#define SAL_XSPI_SET_DTRREADDUMMYCYLE(_OBJ_,_VAL_) (_OBJ_).DTRDummyCycle = (_VAL_)
 #define SAL_XSPI_SET_SFDPDUMMYCYLE(_OBJ_,_VAL_)    (_OBJ_).SFDPDummyCycle = (_VAL_)
 #define SAL_XSPI_SET_COMMANDEXTENSION(_OBJ_,_VAL_) (_OBJ_).CommandExtension = (_VAL_)
 

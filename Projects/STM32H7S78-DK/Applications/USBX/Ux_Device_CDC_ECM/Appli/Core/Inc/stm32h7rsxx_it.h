@@ -13,7 +13,7 @@
   * in the root directory of this software component.
   * If no LICENSE file comes with this software, it is provided AS-IS.
   *
- ******************************************************************************
+  ******************************************************************************
   */
 /* USER CODE END Header */
 
@@ -22,7 +22,7 @@
 #define __STM32H7RSxx_IT_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Private includes ----------------------------------------------------------*/
@@ -60,7 +60,7 @@ void OTG_HS_IRQHandler(void);
 void SDMMC1_IRQHandler(void);
 void UCPD1_IRQHandler(void);
 /* USER CODE BEGIN EFP */
-
+void EXTI8_IRQHandler(void);
 /* USER CODE END EFP */
 
 #ifdef __cplusplus

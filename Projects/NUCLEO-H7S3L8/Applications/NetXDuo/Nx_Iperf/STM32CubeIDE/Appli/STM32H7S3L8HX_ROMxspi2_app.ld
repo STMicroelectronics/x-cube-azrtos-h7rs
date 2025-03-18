@@ -187,7 +187,7 @@ SECTIONS
     . = ALIGN(8);
   } >DTCM
 
-   .lwip_sec (NOLOAD) : {
+  .tcp_sec (NOLOAD) : {
     . = ABSOLUTE(0x24020000);
     *(.RxDescripSection)
 
@@ -195,13 +195,14 @@ SECTIONS
     *(.TxDescripSection)
   } >RAM
 
-    .nx_data 0x24030100 (NOLOAD): {
+  .nx_data 0x24030100 (NOLOAD): {
+
     . = ABSOLUTE(0x24030100);
     *(.NxServerPoolSection)
 
     . = ABSOLUTE(0x24034100);
     *(.NetXPoolSection)
-   } >RAM
+  } >RAM
 
   /* Remove information from the compiler libraries */
   /DISCARD/ :

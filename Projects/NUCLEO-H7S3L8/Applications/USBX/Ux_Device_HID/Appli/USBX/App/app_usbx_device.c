@@ -23,6 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,12 +51,13 @@ static TX_THREAD ux_device_app_thread;
 /* USER CODE BEGIN PV */
 static TX_THREAD ux_hid_thread;
 extern uint8_t User_Button_State;
-TX_QUEUE                        ux_app_MsgQueue;
+/* ux app msg queue */
+TX_QUEUE     ux_app_MsgQueue;
 #if defined ( __ICCARM__ ) /* IAR Compiler */
   #pragma data_alignment=4
 #endif /* defined ( __ICCARM__ ) */
 __ALIGN_BEGIN USB_MODE_STATE                  USB_Device_State_Msg   __ALIGN_END;
-extern PCD_HandleTypeDef                      hpcd_USB_OTG_HS;
+extern PCD_HandleTypeDef hpcd_USB_OTG_HS;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -201,6 +203,7 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
     return TX_THREAD_ERROR;
   }
 
+
   /* Allocate Memory for the Queue */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer,
                        sizeof(APP_QUEUE_SIZE*sizeof(ULONG)),
@@ -232,7 +235,6 @@ static VOID app_ux_device_thread_entry(ULONG thread_input)
 
   /* Initialization of USB device */
   USBX_APP_Device_Init();
-
   /* Wait for message queue to start/stop the device */
   while(1)
   {

@@ -1,5 +1,5 @@
 
-## <b>Ux_Host_MSC application description</b>
+## <b>Ux_Host_MSC Application Description</b>
 
 This application provides an example of Azure RTOS USBX stack usage. It shows how to develop USB Host Mass Storage "MSC" able to enumerate and communicate with a removable USB flash disk.
 
@@ -8,7 +8,7 @@ The application is designed to behave as a USB MSC Host able to operate with an 
 The main entry function tx_application_define() is then called by ThreadX during kernel start, at this stage, all USBx resources are initialized, the MSC class driver is registered.
 The application creates two threads :
 
-  - usbx_app_thread_entry    (Priority : 10; Preemption threshold : 10) used to initialize USB_OTG HAL HCD driver and start the Host.
+  - app_ux_host_thread_entry (Priority : 10; Preemption threshold : 10) used to initialize USB_OTG HAL HCD driver and start the Host.
   - msc_process_thread_entry (Priority : 30; Preemption threshold : 30) used to proceed to file operations once the device is properly enumerated.
 
 ####  <b>Expected success behavior</b>
@@ -70,7 +70,7 @@ Note that the boot part is automatically downloaded from the IDE environment via
          __RAM_segment_used_end__ = .;
          . = . + 64K;
          . = ALIGN(8);
-       } >RAM_D1 AT> RAM_D1
+       } >RAM AT> RAM
     ```
 
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
@@ -93,11 +93,12 @@ Connectivity, USBXHost, USBPD, FileX, ThreadX, MSC, Mass Storage, BOT, SCSI, Rem
 ### <b>Hardware and Software environment</b>
 
   - This application runs on STM32H7S7L8xx devices.
-  - This application has been tested with STMicroelectronics STM32H7S78-DK boards revision: MB1736-H7S7L8-C01
+  - This application has been tested with STMicroelectronics STM32H7S78-DK boards revision: MB1736-H7S7L8-D01
     and can be easily tailored to any other supported device and development board.
   - STM32H7S78-DK set-up:
     - Plug the USB key into the STM32H7S78-DK board through 'USB micro Type C-Male
-      to A-Female' cable to the connector:CN18
+      to A-Female' cable to the connector:
+      - CN18 : to use USB High Speed OTG IP (HS)
     - Connect ST-Link cable to the PC USB port to display data on the HyperTerminal.
 
   - A virtual COM port will then appear in the HyperTerminal:
@@ -113,7 +114,7 @@ Connectivity, USBXHost, USBPD, FileX, ThreadX, MSC, Mass Storage, BOT, SCSI, Rem
  To configure STM32CubeIDE Debug Configuration, you must do the following :
 
     1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration
-    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup
 
 In order to make the program work, you must do the following:
@@ -125,5 +126,5 @@ In order to make the program work, you must do the following:
 
 ### <b>Note</b>
 
- The user has to check the list of the COM ports in Device Manager to find out the number of the COM ports that have been assigned (by OS) to the Stlink VCP.
- The application uses the external HSE clock as USB source clock.
+The user has to check the list of the COM ports in Device Manager to find out the number of the COM ports that have been assigned (by OS) to the Stlink VCP.
+The application uses the external HSE clock as USB source clock.

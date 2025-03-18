@@ -1,13 +1,12 @@
-
-## <b>Tx_Thread_Creation application description</b>
+## <b>Tx_Thread_Creation Application Description</b>
 
 This application provides an example of Azure RTOS ThreadX stack usage, it shows how to develop an application using the ThreadX thread management APIs.
 It demonstrates how to create and destroy multiple threads using Azure RTOS ThreadX APIs. In addition, it shows how to use preemption threshold between threads and change priorities on-fly.
 The main entry function tx_application_define() is then called by ThreadX during kernel start, at this stage, the application creates 3 threads with different priorities:
 
   - MainThread (Prio : 5; Preemption Threshold : 5)
-  - ThreadOne  (Prio : 10; Preemption Threshold : 9)
-  - ThreadTwo  (Prio : 10; Preemption Threshold : 10)
+  - ThreadOne  (Prio : 10; Preemption Threshold : 10)
+  - ThreadTwo  (Prio : 10; Preemption Threshold : 9)
 
 Once started, the <b>MainThread</b> is suspended waiting for the event flag.
 The *ThreadOne* starts to toggle the *LED_GREEN* each 500ms and <b>ThreadTwo</b> cannot as its priority is less than the *ThreadOne* threshold.
@@ -27,7 +26,7 @@ After repeating the sequence above 3 times, the <b>MainThread</b> should destroy
 
 #### <b>Error behaviors</b>
 
-LED_RED toggles every 1 second if an error occurs.
+LED_RED toggles every 1 second if an error occurs while the LED_GREEN switch off.
 An error message is printed to the serial port.
 
 #### <b>Assumptions if any</b>
@@ -37,6 +36,7 @@ None
 #### <b>Known limitations</b>
 
 None
+
 ### <b>Notes</b>
 
 This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed).
@@ -71,7 +71,7 @@ Note that the boot part is automatically downloaded from the IDE environment via
          __RAM_segment_used_end__ = .;
          . = . + 64K;
          . = ALIGN(8);
-       } >RAM_D1 AT> RAM_D1
+       } >RAM AT> RAM
     ```
 
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
@@ -88,8 +88,8 @@ RTOS, ThreadX, Threading, Event flags, Preemption threshold
 
 ### <b>Hardware and Software environment</b>
 
-  - This example runs on NUCLEO-H7S3L8xx devices.
-  - This example has been tested with STMicroelectronics NUCLEO-H7S3L8 boards revision MB1737-H7S3L8-B01
+  - This application runs on STM32H7S3L8xx devices.
+  - This application has been tested with STMicroelectronics NUCLEO-H7S3L8 boards revision MB1737-H7S3L8-B02
     and can be easily tailored to any other supported device and development board.
   - This application uses USART3 to display logs, the hyperterminal configuration is as follows:
       - BaudRate = 115200 baud
@@ -102,8 +102,8 @@ RTOS, ThreadX, Threading, Event flags, Preemption threshold
 
 To configure STM32CubeIDE Debug Configuration, you must do the following :
 
-    1. Add the adequate external loader (MX25UW25645G_STM32H7R38-NUCLEO.stldr file) in Project->Debugger Configuration
-    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration
+    1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup
 
 In order to make the program work, you must do the following :

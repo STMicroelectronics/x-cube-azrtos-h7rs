@@ -11,10 +11,10 @@ The scope of this package covers the following Azure RTOS middleware: RTOS (***T
 ![](_htmresc/OverviewAzureRTOS_in_STM32Cube.png)
 
 Azure RTOS is a professional grade, highly reliable and market proven Middleware suite:
- - **Integrated** and full featured **RTOS**. Learn more [_ThreadX_](https://aka.ms/threadx).
- - **Industrial grade** networking stack: optimized for performance coming with **many IoT protocols.** Learn more [_Netx Duo_](https://aka.ms/netxduo)
- - Advanced FS/FTL: **fully featured** to support **NAND/NOR Flash** memories. Learn more [_FileX_](https://aka.ms/filex)  _and_  [_LevelX_](https://docs.microsoft.com/en-us/azure/rtos/levelx/)
- - USB **Host** and **Device** stacks coming with **multiple classes.** Learn more [_USBX_](https://aka.ms/usbx)
+ - **Integrated** and full featured **RTOS**. Learn more [_ThreadX_](https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/index.md).
+ - **Industrial grade** networking stack: optimized for performance coming with **many IoT protocols.** Learn more [_Netx Duo_](https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/netx-duo/index.md)
+ - Advanced FS/FTL: **fully featured** to support **NAND/NOR Flash** memories. Learn more [_FileX_](https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/filex/index.md)  _and_  [_LevelX_](https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/levelx/index.md)
+ - USB **Host** and **Device** stacks coming with **multiple classes.** Learn more [_USBX_](https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/usbx/index.md)
  - **Safety pre-certifications (from Microsoft)**: IEC 61508 SIL4, IEC 62304 Class C and ISO 26262 ASIL D
  - **Security pre-certifications (from Microsoft)**: EAL4+ for TLS/DTLS, FIPS 140-2 for SW crypto lib
  - STM32 **granted production license:** [_here_](https://github.com/azure-rtos/threadx/blob/master/LICENSED-HARDWARE.txt)
@@ -27,12 +27,12 @@ Azure RTOS is a professional grade, highly reliable and market proven Middleware
 One of the following toolchains:
 
 - IAR Embedded Workbench for ARM (EWARM) toolchain 9.20.1 + ST-LINKV3
-- [STM32CubeIDE V1.15.0](https://www.st.com/en/development-tools/stm32cubeide.html) + ST-LINKV3
-- RealView Microcontroller Development Kit (MDK-ARM) toolchain V5.38 + ST-LINKV3
+- [STM32CubeIDE V1.18.0](https://www.st.com/en/development-tools/stm32cubeide.html) + ST-LINKV3
+- RealView Microcontroller Development Kit (MDK-ARM) toolchain V5.39 + ST-LINKV3
 
 ## Supported Devices and Boards by applications
-- [NUCLEO-H7S3L8](https://www.st.com/en/evaluation-tools/nucleo-h7s3l8.html) *(MB1737-B01)*
-- [STM32H7S78-DK](https://www.st.com/en/evaluation-tools/stm32h7s78-dk.html) *(MB1736-C01)*
+- [NUCLEO-H7S3L8](https://www.st.com/en/evaluation-tools/nucleo-h7s3l8.html) *(MB1737-B02)*
+- [STM32H7S78-DK](https://www.st.com/en/evaluation-tools/stm32h7s78-dk.html) *(MB1736-D01)*
 
 
 
@@ -95,6 +95,9 @@ Details about the content of this release are available in the release note [her
 |NetXDuo | Nx_MQTT_Client                | It demonstrates how to exchange data between client and server using MQTT protocol in an encrypted mode supporting TLS v1.2. [readme](./Projects/STM32H7S78-DK/Applications/NetXDuo/Nx_MQTT_Client/README.md) |
 |NetXDuo | Nx_Iperf                      | It shows the performance of NetX IPerf stack when using different modes: TCP_server, UDP_server, TCP_client and UDP_client. [readme](./Projects/NUCLEO-H7S3L8/Applications/NetXDuo/Nx_Iperf/README.md) |
 |NetXDuo | Nx_SNTP_Client                | It demonstrates how to develop a NetX SNTP client and connect with an STNP server to get a time update. [readme](./Projects/NUCLEO-H7S3L8/Applications/NetXDuo/Nx_SNTP_Client/README.md) |
+|NetXDuo | Nx_MQTT_Client_wifi           | It demonstrates how to exchange data between client and server using MQTT protocol in an encrypted mode supporting TLS v1.2. [readme](./Projects/STM32H7S78-DK/Applications/NetXDuo/Nx_MQTT_Client_wifi/README.md) |
+|NetXDuo | Nx_Iperf_wifi                 | It shows the performance of NetX IPerf stack when using different modes: TCP_server, UDP_server, TCP_client and UDP_client. [readme](./Projects/STM32H7S78-DK/Applications/NetXDuo/Nx_Iperf_wifi/README.md) |
+|NetXDuo | Nx_WebServer_wifi             | It demonstrates how to develop Web HTTP server based application. It is designed to load files and static web pages stored in SD card using a Web HTTP server, the code provides all required features to build a compliant Web HTTP Server.  [readme](./Projects/STM32H7S78-DK/Applications/NetXDuo/Nx_WebServer_wifi/README.md) |
 
 ## Troubleshooting
 **Caution**  : The issues are  **strictly limited**  to submit problems or suggestions related to the software delivered in this repository.

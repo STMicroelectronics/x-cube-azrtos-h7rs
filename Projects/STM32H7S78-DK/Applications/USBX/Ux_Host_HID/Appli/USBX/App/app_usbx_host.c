@@ -33,7 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define APP_QUEUE_SIZE                               1
+#define APP_QUEUE_SIZE 1
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -48,16 +48,15 @@ static TX_THREAD ux_host_app_thread;
 /* USER CODE BEGIN PV */
 TX_THREAD                  keyboard_app_thread;
 TX_THREAD                  mouse_app_thread;
-
-TX_QUEUE                   ux_app_MsgQueue_UCPD;
 UX_HOST_CLASS_HID          *hid_instance;
 UX_HOST_CLASS_HID_MOUSE    *mouse;
 UX_HOST_CLASS_HID_KEYBOARD *keyboard;
+TX_QUEUE                                 ux_app_MsgQueue_UCPD;
 
 #if defined ( __ICCARM__ ) /* IAR Compiler */
   #pragma data_alignment=4
 #endif /* defined ( __ICCARM__ ) */
-__ALIGN_BEGIN USB_MODE_STATE                            USB_Host_State_Msg   __ALIGN_END;
+__ALIGN_BEGIN USB_MODE_STATE        USB_Host_State_Msg __ALIGN_END;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -66,6 +65,7 @@ static UINT ux_host_event_callback(ULONG event, UX_HOST_CLASS *current_class, VO
 static VOID ux_host_error_callback(UINT system_level, UINT system_context, UINT error_code);
 /* USER CODE BEGIN PFP */
 extern HCD_HandleTypeDef hhcd_USB_OTG_HS;
+
 /* USER CODE END PFP */
 
 /**
@@ -262,8 +262,10 @@ UINT ux_host_event_callback(ULONG event, UX_HOST_CLASS *current_class, VOID *cur
   UINT status = UX_SUCCESS;
 
   /* USER CODE BEGIN ux_host_event_callback0 */
+
   /* Get current Hid Client */
   UX_HOST_CLASS_HID_CLIENT *client  = (UX_HOST_CLASS_HID_CLIENT *)current_instance;
+
   /* USER CODE END ux_host_event_callback0 */
 
   switch (event)
@@ -337,6 +339,7 @@ UINT ux_host_event_callback(ULONG event, UX_HOST_CLASS *current_class, VOID *cur
           USBH_UsrLog("Mouse is ready...\n");
         }
       }
+
       /* USER CODE END UX_HID_CLIENT_INSERTION */
 
       break;
@@ -429,6 +432,7 @@ VOID ux_host_error_callback(UINT system_level, UINT system_context, UINT error_c
       /* USER CODE BEGIN UX_NO_DEVICE_CONNECTED */
 
       USBH_UsrLog("USB Device disconnected");
+
       /* USER CODE END UX_NO_DEVICE_CONNECTED */
 
       break;
@@ -450,7 +454,6 @@ VOID ux_host_error_callback(UINT system_level, UINT system_context, UINT error_c
 /* USER CODE BEGIN 1 */
 
 /**
-
   * @brief  USBX_APP_Host_Init
   *         Initialization of USB host.
   * @param  none
@@ -459,21 +462,21 @@ VOID ux_host_error_callback(UINT system_level, UINT system_context, UINT error_c
 VOID USBX_APP_Host_Init(VOID)
 {
   /* USER CODE BEGIN USB_Host_Init_PreTreatment_0 */
+
   /* USER CODE END USB_Host_Init_PreTreatment_0 */
 
   /* Initialize the LL driver */
   MX_USB_OTG_HS_HCD_Init();
 
-  /* Register all the USB host controllers available in this system. */
+  /* Initialize the host controller driver */
   ux_host_stack_hcd_register(_ux_system_host_hcd_stm32_name,
                              _ux_hcd_stm32_initialize, USB_OTG_HS_PERIPH_BASE,
                              (ULONG)&hhcd_USB_OTG_HS);
 
-
   /* USER CODE BEGIN USB_Host_Init_PostTreatment1 */
 
   /* Start Application Message */
-  USBH_UsrLog("**** USB OTG HID Host **** \n");
+  USBH_UsrLog("**** USB OTG HS HID Host **** \n");
   USBH_UsrLog("USB Host library started.\n");
 
   /* Wait for Device to be attached */
@@ -482,5 +485,4 @@ VOID USBX_APP_Host_Init(VOID)
 
   /* USER CODE END USB_Host_Init_PostTreatment1 */
 }
-
 /* USER CODE END 1 */

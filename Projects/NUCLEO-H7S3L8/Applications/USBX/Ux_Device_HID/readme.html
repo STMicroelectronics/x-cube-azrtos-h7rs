@@ -27,31 +27,37 @@ vertical-align: middle;
 <body>
 <div class="row">
 <section id="ux_device_hid-application-description" class="col-sm-12 col-lg-8">
-<h1><b>Ux_Device_HID application description</b></h1>
+<h1><b>Ux_Device_HID Application Description</b></h1>
 <p>This application provides an example of Azure RTOS USBX stack usage
 on NUCLEO-H7S3L8 board, it shows how to develop USB Device Human
 Interface “HID” mouse based application.</p>
-<p>The application is designed to emulate an USB HID mouse device, the
+<p>The application is designed to emulate a USB HID mouse device, the
 code provides all required device descriptors framework and associated
 class descriptor report to build a compliant USB HID mouse device.</p>
 <p>At the beginning ThreadX calls the entry function
 tx_application_define(), at this stage, all USBX resources are
-initialized, the HID Class driver is registered and the application
+initialized, the HID class driver is registered and the application
 creates 2 threads with the same priorities :</p>
 <ul>
 <li>app_ux_device_thread_entry (Prio : 10; PreemptionPrio : 10) used to
 initialize USB_OTG HAL PCD driver and start the device.</li>
 <li>usbx_hid_thread_entry (Prio : 20; PreemptionPrio : 20) used to send
-HID reports to move automatically the PC host machine cursor. To
-customize the HID application by sending the mouse position step by step
-every 10ms.</li>
+HID reports to move automatically the PC host machine cursor.</li>
+<p>The thread usbx_app_thread_entry is responsible to start or stop the USB device.
+At Run mode the thread will be waiting on message queue form USB_PD interface,
+when the USB device is plugged to host PC a callback in USB_PD interface will send
+a message to usbx_app_thread_entry to start the USB device. By the same way when
+the USB device is unplugged, a callback in USB_PD interface will
+send a message to usbx_app_thread_entry to stop the USB device.<p>
+<p>To customize the HID application by sending the mouse position step by step
+every 10ms.<p>
 <li>For each 10ms, the application calls the GetPointerData() API to
 update the mouse position (x, y) and send the report buffer through the
 ux_device_class_hid_event_set() API.</li>
 </ul>
 <h4 id="expected-success-behavior"><b>Expected success behavior</b></h4>
 <p>When plugged to PC host, the NUCLEO-H7S3L8 must be properly
-enumerated as an USB HID mouse device. During the enumeration phase,
+enumerated as a USB HID mouse device. During the enumeration phase,
 device provides host with the requested descriptors (device,
 configuration, string). Those descriptors are used by host driver to
 identify the device capabilities. Once the NUCLEO-H7S3L8 USB device
@@ -118,7 +124,7 @@ or modify the line below in &quot;tx_initialize_low_level.S to match the memory 
      __RAM_segment_used_end__ = .;
      . = . + 64K;
      . = ALIGN(8);
-   } &gt;RAM_D1 AT&gt; RAM_D1</code></pre>
+   } &gt;RAM AT&gt; RAM</code></pre>
 <pre><code>The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
 In the example above the ThreadX heap size is set to 64KBytes.
 The ._threadx_heap must be located between the .bss and the ._user_heap_stack sections in the linker script.
@@ -130,14 +136,13 @@ the “USE_DYNAMIC_MEMORY_ALLOCATION” flag.</li>
 </ul></li>
 </ul>
 <h3 id="keywords"><b>Keywords</b></h3>
-<p>RTOS, ThreadX, USBXDevice, USBPD, USB_OTG, Full Speed, HID,
-Mouse.</p>
+<p>RTOS, ThreadX, USBXDevice, USB_OTG, Full Speed, HID, Mouse, USBPD.</p>
 <h3 id="hardware-and-software-environment"><b>Hardware and Software
 environment</b></h3>
 <ul>
-<li><p>This example runs on STM32H7S3L8xx devices.</p></li>
-<li><p>This example has been tested with STMicroelectronics
-NUCLEO-H7S3L8 boards Revision MB1737-H7S3L8-B01 and can be easily
+<li><p>This application runs on STM32H7S3L8xx devices.</p></li>
+<li><p>This application has been tested with STMicroelectronics
+NUCLEO-H7S3L8 boards revision MB1737-H7S3L8-B02 and can be easily
 tailored to any other supported device and development board.</p></li>
 <li><p>NUCLEO-H7S3L8 board Set-up</p>
 <ul>
@@ -146,12 +151,13 @@ tailored to any other supported device and development board.</p></li>
 <ul>
 <li>Press the Tamper push-button to move the cursor.</li>
 </ul></li>
+<li><p>Note User shall remove the jumpers JP3 and JP4.</p></li>
 </ul>
 <h3 id="how-to-use-it"><b>How to use it ?</b></h3>
 <p>To configure STM32CubeIDE Debug Configuration, you must do the
 following :</p>
-<pre><code>1. Add the adequate external loader (MX25UW25645G_STM32H7R38-NUCLEO.stldr file) in Project-&gt;Debugger Configuration
-2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration
+<pre><code>1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project-&gt;Debugger Configuration
+2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the "Load Symbols" option
 3. Move up the application in the startup</code></pre>
 <p>In order to make the program work, you must do the following :</p>
 <ul>

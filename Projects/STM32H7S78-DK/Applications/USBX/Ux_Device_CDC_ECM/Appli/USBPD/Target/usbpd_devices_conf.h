@@ -18,8 +18,8 @@
   */
 /* USER CODE END Header */
 
-#ifndef USBPD_DEVICE_CONF_H
-#define USBPD_DEVICE_CONF_H
+#ifndef __USBPD_DEVICE_CONF_H
+#define __USBPD_DEVICE_CONF_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -53,37 +53,12 @@ extern "C" {
 #define UCPD_INSTANCE0 UCPD1
 
 /* defined used to configure function : USBPD_HW_Init_DMARxInstance,USBPD_HW_DeInit_DMARxInstance */
-#define UCPDDMA_INSTANCE0_CLOCKENABLE_RX    do{                                     \
-                                                __HAL_RCC_GPDMA1_CLK_ENABLE();      \
-                                              }while(0)
-
-#define UCPDDMA_INSTANCE0_DMA_RX  GPDMA1
-
-#define UCPDDMA_INSTANCE0_REQUEST_RX   LL_GPDMA1_REQUEST_UCPD1_RX
-
-#define UCPDDMA_INSTANCE0_LL_CHANNEL_RX   LL_DMA_CHANNEL_0
-
-#define UCPDDMA_INSTANCE0_CHANNEL_RX   GPDMA1_Channel0
-
-/* defined used to configure function : USBPD_HW_Init_DMATxInstance, USBPD_HW_DeInit_DMATxInstance */
-#define UCPDDMA_INSTANCE0_CLOCKENABLE_TX    do{                                      \
-                                                __HAL_RCC_GPDMA1_CLK_ENABLE();       \
-                                              }while(0)
-
-#define UCPDDMA_INSTANCE0_DMA_TX  GPDMA1
-
-#define UCPDDMA_INSTANCE0_REQUEST_TX   LL_GPDMA1_REQUEST_UCPD1_TX
-
-#define UCPDDMA_INSTANCE0_LL_CHANNEL_TX   LL_DMA_CHANNEL_1
-
-#define UCPDDMA_INSTANCE0_CHANNEL_TX   GPDMA1_Channel1
-
 /* defined used to configure  USBPD_HW_SetFRSSignalling */
 #define UCPDFRS_INSTANCE0_FRSCC1
 #define UCPDFRS_INSTANCE0_FRSCC2
 
 #define UCPD_INSTANCE0_ENABLEIRQ  do{                                                                 \
-                                        NVIC_SetPriority(UCPD1_IRQn,0);                              \
+                                        NVIC_SetPriority(UCPD1_IRQn,5);                              \
                                         NVIC_EnableIRQ(UCPD1_IRQn);                                  \
                                     } while(0)
 
@@ -126,4 +101,4 @@ extern "C" {
 }
 #endif
 
-#endif /* USBPD_DEVICE_CONF_H */
+#endif /* __USBPD_DEVICE_CONF_H */

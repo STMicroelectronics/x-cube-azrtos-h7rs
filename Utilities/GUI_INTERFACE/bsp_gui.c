@@ -20,12 +20,10 @@
 #if defined(_GUI_INTERFACE)
 #include "bsp_gui.h"
 #include "usbpd_dpm_conf.h"
-#if defined(GUI_FLASH_MAGIC_NUMBER)
 #if defined(_TRACE)
 #include "usbpd_trace.h"
 #include "tracer_emb.h"
 #endif /* _TRACE */
-#endif /* GUI_FLASH_MAGIC_NUMBER */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private Defines */
@@ -220,7 +218,9 @@ GUI_StatusTypeDef BSP_GUI_LoadDataFromFlash(void)
 #endif /* _TRACE */
 #endif /* FLASH_TYPEPROGRAM_DOUBLEWORD || FLASH_TYPEPROGRAM_QUADWORD */
 
+#if defined(FLASH_TYPEPROGRAM_DOUBLEWORD) || defined(FLASH_TYPEPROGRAM_QUADWORD)
 _exit:
+#endif /* FLASH_TYPEPROGRAM_DOUBLEWORD || FLASH_TYPEPROGRAM_QUADWORD */
   return _status;
 }
 

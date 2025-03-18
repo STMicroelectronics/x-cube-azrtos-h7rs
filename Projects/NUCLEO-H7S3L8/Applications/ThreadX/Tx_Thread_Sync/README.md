@@ -1,5 +1,5 @@
 
-## <b>Tx_Thread_Sync application description</b>
+## <b>Tx_Thread_Sync Application Description</b>
 
 This application provides an example of Azure RTOS ThreadX stack usage, it shows how to develop an application using the ThreadX synchronization APIs.
 The main entry function tx_application_define() is called by ThreadX during kernel start, at this stage, the application creates 2 threads with the same priorities:
@@ -38,7 +38,7 @@ the compile flags in the file "app_threadx.h".
 
 #### <b>Error behaviors</b>
 
-  - 'LED_RED' toggles every 1 second if an error occurs.
+  - 'LED_RED' toggles every 1 second if an error occurs while the 'LED_GREEN' is turned OFF.
 
 #### <b>Assumptions if any</b>
 
@@ -82,7 +82,7 @@ Note that the boot part is automatically downloaded from the IDE environment via
          __RAM_segment_used_end__ = .;
          . = . + 64K;
          . = ALIGN(8);
-       } >RAM_D1 AT> RAM_D1
+       } >RAM AT> RAM
     ```
 
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
@@ -99,8 +99,8 @@ RTOS, ThreadX, Threading, Semaphore, Mutex
 
 ### <b>Hardware and Software environment</b>
 
-  - This example runs on NUCLEO-H7S3L8xx devices.
-  - This example has been tested with STMicroelectronics NUCLEO-H7S3L8 boards revision: MB1737-H7S3L8-B01
+  - This application runs on STM32H7S3L8xx devices.
+  - This application has been tested with STMicroelectronics NUCLEO-H7S3L8 boards revision: MB1737-H7S3L8-B02
     and can be easily tailored to any other supported device and development board.
   - A virtual COM port appears in the HyperTerminal:
       - Hyperterminal configuration:
@@ -114,8 +114,8 @@ RTOS, ThreadX, Threading, Semaphore, Mutex
 
 To configure STM32CubeIDE Debug Configuration, you must do the following :
 
-    1. Add the adequate external loader (MX25UW25645G_STM32H7R38-NUCLEO.stldr file) in Project->Debugger Configuration
-    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration
+    1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup
 
 In order to make the program work, you must do the following :

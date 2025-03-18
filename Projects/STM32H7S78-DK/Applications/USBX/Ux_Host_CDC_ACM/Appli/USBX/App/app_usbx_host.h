@@ -32,8 +32,9 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "ux_hcd_stm32.h"
-#include "usb_otg.h"
 #include "stm32h7s78_discovery.h"
+#include "usb_otg.h"
+
 #if defined(_TRACE)
 #include "usbpd_trace.h"
 #endif /* _TRACE */
@@ -84,6 +85,7 @@ extern "C" {
                            printf(__VA_ARGS__);\
                            printf("\n");
 #endif /* _TRACE */
+
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
@@ -92,6 +94,7 @@ UINT MX_USBX_Host_Init(VOID *memory_ptr);
 /* USER CODE BEGIN EFP */
 VOID USBX_APP_Host_Init(VOID);
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
+
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
@@ -116,7 +119,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
 #endif
 
 /* USER CODE BEGIN 1 */
-
 typedef enum
 {
   STOP_USB_HOST = 1,

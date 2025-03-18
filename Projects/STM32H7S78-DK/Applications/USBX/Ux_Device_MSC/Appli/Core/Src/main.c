@@ -102,14 +102,16 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_GPDMA1_Init();
-  MX_SDMMC1_SD_Init();
   MX_UCPD1_Init();
+  MX_SDMMC1_SD_Init();
   /* Call PreOsInit function */
   USBPD_PreInitOs();
   /* USER CODE BEGIN 2 */
-  while(HAL_GPIO_ReadPin(GPIOH,GPIO_PIN_14)==GPIO_PIN_SET)
-    {
-    }
+  /* Check if SD card is present */
+  if(HAL_GPIO_ReadPin(GPIOM, GPIO_PIN_14) == GPIO_PIN_SET)
+  {
+    Error_Handler();
+  }
 
   /* Get SD card info */
   status = HAL_SD_GetCardInfo(&hsd1, &USBD_SD_CardInfo);
@@ -207,7 +209,7 @@ static void MPU_Config(void)
   * @note   This function is called  when TIM6 interrupt took place, inside
   * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
   * a global variable "uwTick" used as application time base.
-  * @param  htim : TIM handle
+  * @param  htim TIM handle
   * @retval None
   */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)

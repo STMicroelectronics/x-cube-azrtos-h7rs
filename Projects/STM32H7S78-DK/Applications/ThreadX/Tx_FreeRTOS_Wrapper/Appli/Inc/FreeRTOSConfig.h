@@ -98,4 +98,10 @@
 #define portENABLE_INTERRUPTS()					__enable_interrupts()
 #endif
 
-#endif /* #ifndef FREERTOS_CONFIG_H */
+/* ThreadX FreeRTOS Port API*/
+void *txfr_malloc(size_t len);
+void txfr_free(void *p);
+void txfr_thread_wrapper(ULONG id);
+void txfr_timer_callback_wrapper(ULONG id);
+
+#endif /* FREERTOS_CONFIG_H */

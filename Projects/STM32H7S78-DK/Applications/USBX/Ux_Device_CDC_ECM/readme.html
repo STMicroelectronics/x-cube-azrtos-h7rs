@@ -27,7 +27,7 @@ vertical-align: middle;
 <body>
 <div class="row">
 <section id="ux_device_cdc_ecm-application-description" class="col-sm-12 col-lg-8">
-<h2><b>Ux_Device_CDC_ECM application description</b></h2>
+<h2><b>Ux_Device_CDC_ECM Application Description</b></h2>
 <p>This application provides an example of Azure RTOS CDC_ECM stack
 usage on STM32H7S78-DK board, it shows how to run web HTTP server based
 application stack over USB interface. The application is designed to
@@ -103,7 +103,7 @@ files to expose this memory location.
 <ul>
 <li>For EWARM add the following section into the .icf file:</li>
 </ul>
-<pre><code>place in RAM_region    { last section FREE_MEM };</code></pre>
+<pre><code>place in RAM_region { last section FREE_MEM };</code></pre>
 <ul>
 <li>For MDK-ARM:</li>
 </ul>
@@ -119,7 +119,7 @@ or modify the line below in &quot;tx_initialize_low_level.S to match the memory 
      __RAM_segment_used_end__ = .;
      . = . + 64K;
      . = ALIGN(8);
-   } &gt;RAM_D1 AT&gt; RAM_D1</code></pre>
+   } &gt;RAM</code></pre>
 <pre><code>The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
 In the example above the ThreadX heap size is set to 64KBytes.
 The ._threadx_heap must be located between the .bss and the ._user_heap_stack sections in the linker script.
@@ -154,7 +154,7 @@ environment</b></h3>
 <ul>
 <li>This application runs on STM32H7S7L8xx devices.</li>
 <li>This application has been tested with STMicroelectronics
-STM32H7S78-DK boards revision: MB1736-H7S7L8-C01 and can be easily
+STM32H7S78-DK boards revision: MB1736-H7S7L8-D01 and can be easily
 tailored to any other supported device and development board.</li>
 <li>This application uses USART4 to display logs, the hyperterminal
 configuration is as follows:
@@ -162,7 +162,7 @@ configuration is as follows:
 <li>BaudRate = 115200 baud</li>
 <li>Word Length = 8 Bits</li>
 <li>Stop Bit = 1</li>
-<li>Parity = none</li>
+<li>Parity = None</li>
 <li>Flow control = None</li>
 </ul></li>
 </ul>
@@ -170,7 +170,7 @@ configuration is as follows:
 <p>To configure STM32CubeIDE Debug Configuration, you must do the
 following :</p>
 <pre><code>1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project-&gt;Debugger Configuration
-2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration
+2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the "Load Symbols" option
 3. Move up the application in the startup</code></pre>
 <p>In order to make the program work, you must do the following :</p>
 <ul>

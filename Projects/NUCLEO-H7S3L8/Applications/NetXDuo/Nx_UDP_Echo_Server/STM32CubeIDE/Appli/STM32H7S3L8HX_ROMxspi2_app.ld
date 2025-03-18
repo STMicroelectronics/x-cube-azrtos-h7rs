@@ -48,7 +48,6 @@ __FLASH_SIZE   = 0x08000000;
 __RAM_BEGIN    = 0x24000000;
 __RAM_SIZE     = 0x71C00;
 
-
 /* Memories definition */
 MEMORY
 {

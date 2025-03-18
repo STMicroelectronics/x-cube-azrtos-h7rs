@@ -171,7 +171,7 @@ void MainThread_Entry(ULONG thread_input)
   /* Infinite loop */
   while(1)
   {
-    HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+    HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
 
     /* Thread sleep for 1s */
     tx_thread_sleep(100);
@@ -210,7 +210,7 @@ void ThreadOne_Entry(ULONG thread_input)
   /* Infinite loop */
   while(1)
   {
-    HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+    HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
 
     /* Delay for 500ms (App_Delay is used to avoid context change). */
     App_Delay(50);
@@ -238,7 +238,7 @@ void ThreadTwo_Entry(ULONG thread_input)
   /* Infinite loop */
   while (1)
   {
-    HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+    HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
     /* Delay for 200ms (App_Delay is used to avoid context change). */
     App_Delay(20);
     count ++;

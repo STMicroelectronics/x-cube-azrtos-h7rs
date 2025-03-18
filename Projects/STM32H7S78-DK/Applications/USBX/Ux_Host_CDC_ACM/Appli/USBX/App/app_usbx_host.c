@@ -33,7 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define APP_QUEUE_SIZE                               1
+#define APP_QUEUE_SIZE 1
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -50,12 +50,14 @@ TX_THREAD             cdc_acm_send_thread;
 TX_THREAD             cdc_acm_recieve_thread;
 TX_EVENT_FLAGS_GROUP  ux_app_EventFlag;
 UX_HOST_CLASS_CDC_ACM *cdc_acm;
-TX_QUEUE              ux_app_MsgQueue_UCPD;
 
+extern uint16_t                        RxSzeIdx;
+TX_QUEUE ux_app_MsgQueue_UCPD;
 #if defined ( __ICCARM__ ) /* IAR Compiler */
   #pragma data_alignment=4
 #endif /* defined ( __ICCARM__ ) */
-__ALIGN_BEGIN USB_MODE_STATE USB_Host_State_Msg   __ALIGN_END;
+__ALIGN_BEGIN USB_MODE_STATE USB_Host_State_Msg __ALIGN_END;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -212,7 +214,7 @@ static VOID app_ux_host_thread_entry(ULONG thread_input)
 
   while (1)
   {
-    /* wait for message queue from callback event */
+    /* Wait for message queue from callback event */
     if(tx_queue_receive(&ux_app_MsgQueue_UCPD, &USB_Host_State_Msg, TX_WAIT_FOREVER)!= TX_SUCCESS)
     {
      Error_Handler();
@@ -220,7 +222,7 @@ static VOID app_ux_host_thread_entry(ULONG thread_input)
     /* Check if received message equal to START_USB_HOST */
     if (USB_Host_State_Msg == START_USB_HOST)
     {
-      /* Start USB Host  */
+      /* Start USB Host */
       HAL_HCD_Start(&hhcd_USB_OTG_HS);
     }
     /* Check if received message equal to STOP_USB_HOST */
@@ -235,7 +237,7 @@ static VOID app_ux_host_thread_entry(ULONG thread_input)
       /*Error*/
       Error_Handler();
     }
-    tx_thread_sleep(MS_TO_TICK(10));
+   tx_thread_sleep(MS_TO_TICK(10));
   }
 
   /* USER CODE END app_ux_host_thread_entry */
@@ -298,9 +300,13 @@ UINT ux_host_event_callback(ULONG event, UX_HOST_CLASS *current_class, VOID *cur
       {
         /* Clear cdc instance */
         cdc_acm = UX_NULL;
+
+        /* Reinitialize reception block size index */
+        RxSzeIdx=0;
+
         USBH_UsrLog("\nUSB CDC ACM Device Removal");
 
-        /* Set NEW_RECEIVED_DATA flag */
+        /* Set REMOVED_CDC_INSTANCE flag */
         if (tx_event_flags_set(&ux_app_EventFlag, REMOVED_CDC_INSTANCE, TX_OR) != TX_SUCCESS)
         {
           Error_Handler();
@@ -398,6 +404,7 @@ VOID ux_host_error_callback(UINT system_level, UINT system_context, UINT error_c
 /**
   * @brief USBX_APP_Host_Init
   *        Initialization of USB Host.
+  * @param  None
   * @retval None
   */
 VOID USBX_APP_Host_Init(VOID)

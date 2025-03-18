@@ -153,6 +153,15 @@ void TRACER_EMB_Init(void)
   /* Initialize the lowpower aspect */
   TRACER_EMB_LowPowerInit();
 }
+/**
+  * @brief  Tracer DeInit
+  * @param  None.
+  * @retval None.
+  */
+void TRACER_EMB_DeInit(void)
+{
+  HW_TRACER_EMB_DeInit();
+}
 
 void TRACER_EMB_Add(uint8_t *Ptr, uint32_t Size)
 {

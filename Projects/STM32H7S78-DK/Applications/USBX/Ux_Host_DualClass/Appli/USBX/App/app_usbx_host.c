@@ -33,7 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define APP_QUEUE_SIZE                               1
+#define APP_QUEUE_SIZE 1
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -61,6 +61,7 @@ TX_QUEUE ux_app_MsgQueue_UCPD;
   #pragma data_alignment=4
 #endif /* defined ( __ICCARM__ ) */
 __ALIGN_BEGIN USB_MODE_STATE USB_Host_State_Msg __ALIGN_END;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -200,7 +201,7 @@ UINT MX_USBX_Host_Init(VOID *memory_ptr)
     return TX_THREAD_ERROR;
   }
 
-/* Allocate the stack for storrage app thread  */
+  /* Allocate the stack for storage app thread  */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer,
                        UX_HOST_APP_THREAD_STACK_SIZE*2, TX_NO_WAIT) != TX_SUCCESS)
   {
@@ -215,7 +216,7 @@ UINT MX_USBX_Host_Init(VOID *memory_ptr)
     return TX_THREAD_ERROR;
   }
 
-   /* Allocate Memory for the ux_app_Queue_UCPD  */
+  /* Allocate Memory for the ux_app_Queue_UCPD  */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer,
                        APP_QUEUE_SIZE * sizeof(ULONG), TX_NO_WAIT) != TX_SUCCESS)
   {
@@ -254,7 +255,7 @@ static VOID app_ux_host_thread_entry(ULONG thread_input)
 
   while (1)
   {
-    /* wait for message queue from callback event */
+    /* Wait for message queue from callback event */
     if(tx_queue_receive(&ux_app_MsgQueue_UCPD, &USB_Host_State_Msg, TX_WAIT_FOREVER)!= TX_SUCCESS)
     {
      Error_Handler();
@@ -569,7 +570,6 @@ VOID USBX_APP_Host_Init(VOID)
   ux_host_stack_hcd_register(_ux_system_host_hcd_stm32_name,
                              _ux_hcd_stm32_initialize, USB_OTG_HS_PERIPH_BASE,
                              (ULONG)&hhcd_USB_OTG_HS);
-
 
   /* USER CODE BEGIN USB_Host_Init_PreTreatment1 */
 

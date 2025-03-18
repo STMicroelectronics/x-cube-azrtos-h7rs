@@ -1,5 +1,5 @@
 
-## <b>Nx_UDP_Echo_Client application description</b>
+## <b>Nx_UDP_Echo_Client Application Description</b>
 
 This application provides an example of Azure RTOS NetX/NetXDuo stack usage .
 It shows how to develop a NetX udp client to communicate with a remote sever using the NetX UDP socket API.
@@ -36,12 +36,12 @@ The **AppUDPThread**, once started:
  + If the [echotool](https://github.com/PavelBansky/EchoTool/releases/tag/v1.5.0.0) utility is used the message sent by the client are displayed on the PC console.
  + A summary message similar to the following is printed on the HyperTerminal and the green LED is toggling.
  ```
-  SUCCESS : 10 / 10 packets sent
+  SUCCESS : 100 / 100 packets sent
 ```
 
 #### <b>Error behaviors</b>
 
-+ The red LED is toggling to indicate any error that have occurred.
++ The red LED is toggling to indicate any error that have occurred while the LED_GREEN switch off.
 + In case the message exchange is not completed a failure message is printed on the HyperTerminal showing the actual sent message compared to the expected ones.
 
 #### <b>Assumptions if any</b>
@@ -63,12 +63,12 @@ void MX_ETH_Init(void)
 
   /* USER CODE END ETH_Init 1 */
   heth.Instance = ETH;
-  heth.Init.MACAddr[0] = 0x00;
-  heth.Init.MACAddr[1] = 0x80;
-  heth.Init.MACAddr[2] = 0xE1;
-  heth.Init.MACAddr[3] = 0x00;
-  heth.Init.MACAddr[4] = 0x00;
-  heth.Init.MACAddr[5] = 0x00;
+  MACAddr[0] = 0x00;
+  MACAddr[1] = 0x80;
+  MACAddr[2] = 0xE1;
+  MACAddr[3] = 0x00;
+  MACAddr[4] = 0x00;
+  MACAddr[5] = 0x00;
 ```
 
 #### <b>Known limitations</b>
@@ -109,7 +109,7 @@ None
          __RAM_segment_used_end__ = .;
          . = . + 64K;
          . = ALIGN(8);
-       } >RAM_D1 AT> RAM_D1
+       } >RAM AT> RAM
     ```
 
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
@@ -124,7 +124,7 @@ None
 
 - The ETH TX And RX descriptors are accessed by the CPU and the ETH DMA IP, thus they should not be allocated into the DTCM RAM "0x20000000".
 - Make sure to allocate them into a "Non-Cacheable" memory region to always ensure data coherency between the CPU and ETH DMA.
-- Depending on the application scenario, the total TX and RX descriptors may need to be increased by updating respectively  the "ETH_TX_DESC_CNT" and "ETH_RX_DESC_CNT" in the "stm32h7rsxx_hal_conf.h", to guarantee the application correct behaviour, but this will cost extra memory to allocate.
+- Depending on the application scenario, the total TX and RX descriptors may need to be increased by updating respectively  the "ETH_TX_DESC_CNT" and "ETH_RX_DESC_CNT" in the "stm32h7rsxx_hal_conf.h", to guarantee the application's correct behavior, but this will cost extra memory to allocate.
 - The NetXDuo application needs to allocate the <b> <i> NX_PACKET </i> </b> pool in a dedicated section that is configured as "Cacheable Write-through". Below is an example of the declaration section for different IDEs.
    + For EWARM ".icf" file
    ```
@@ -135,7 +135,7 @@ None
    ```
    + For MDK-ARM
    ```
-    RW_NXDriverSection 0x24020100 0x14000  {
+    RW_NXDriverSection 0x24020100 0xFE00  {
   *(.NetXPoolSection)
   }
    ```
@@ -174,8 +174,8 @@ RTOS, Network, ThreadX, NetXDuo, UDP, UART
 
 ### <b>Hardware and Software environment</b>
 
-  - This application runs on NUCLEO-H7S3L8xx devices
-  - This application has been tested with STMicroelectronics NUCLEO-H7S3L8 boards revision MB1737-H7S3L8-B01
+  - This application runs on STM32H7S3L8xx devices
+  - This application has been tested with STMicroelectronics NUCLEO-H7S3L8 boards revision MB1737-H7S3L8-B02
     and can be easily tailored to any other supported device and development board.
   - This application uses USART3 to display logs, the hyperterminal configuration is as follows:
       - BaudRate = 115200 baud
@@ -188,9 +188,10 @@ RTOS, Network, ThreadX, NetXDuo, UDP, UART
 
 To configure STM32CubeIDE Debug Configuration, you must do the following :
 
-    1. Add the adequate external loader (MX25UW25645G_STM32H7R38-NUCLEO.stldr file) in Project->Debugger Configuration
-    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration
+    1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup
+
 In order to make the program work, you must do the following :
 
  - Open your preferred toolchain

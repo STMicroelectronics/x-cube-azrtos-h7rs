@@ -34,6 +34,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
+#define APP_QUEUE_SIZE             5
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -52,13 +53,17 @@ static TX_THREAD ux_device_app_thread;
 
 static TX_THREAD ux_cdc_read_thread;
 static TX_THREAD ux_cdc_write_thread;
-TX_QUEUE                        ux_app_MsgQueue;
 TX_EVENT_FLAGS_GROUP EventFlag;
+
+extern PCD_HandleTypeDef hpcd_USB_OTG_HS;
+
+/* ux app msg queue */
+TX_QUEUE     ux_app_MsgQueue;
+
 #if defined ( __ICCARM__ ) /* IAR Compiler */
   #pragma data_alignment=4
 #endif /* defined ( __ICCARM__ ) */
-__ALIGN_BEGIN USB_MODE_STATE                  USB_Device_State_Msg   __ALIGN_END;
-extern PCD_HandleTypeDef                      hpcd_USB_OTG_HS;
+__ALIGN_BEGIN USB_MODE_STATE                            USB_Device_State_Msg __ALIGN_END;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -187,7 +192,7 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
   /* USER CODE BEGIN MX_USBX_Device_Init1 */
 
   /* Allocate the stack for usbx cdc acm read thread */
-  if (tx_byte_allocate(byte_pool, (VOID **) &pointer, UX_DEVICE_APP_THREAD_STACK_SIZE , TX_NO_WAIT) != TX_SUCCESS)
+  if (tx_byte_allocate(byte_pool, (VOID **) &pointer, UX_DEVICE_APP_THREAD_STACK_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
@@ -195,14 +200,14 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
   /* Create the usbx cdc acm read thread */
   if (tx_thread_create(&ux_cdc_read_thread, "cdc_acm_read_usbx_app_thread_entry",
                        usbx_cdc_acm_read_thread_entry, 1, pointer,
-                       UX_DEVICE_APP_THREAD_STACK_SIZE , 20, 20, TX_NO_TIME_SLICE,
+                       UX_DEVICE_APP_THREAD_STACK_SIZE, 20, 20, TX_NO_TIME_SLICE,
                        TX_AUTO_START) != TX_SUCCESS)
   {
     return TX_THREAD_ERROR;
   }
 
   /* Allocate the stack for usbx cdc acm write thread */
-  if (tx_byte_allocate(byte_pool, (VOID **) &pointer, UX_DEVICE_APP_THREAD_STACK_SIZE , TX_NO_WAIT) != TX_SUCCESS)
+  if (tx_byte_allocate(byte_pool, (VOID **) &pointer, UX_DEVICE_APP_THREAD_STACK_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
@@ -210,7 +215,7 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
   /* Create the usbx_cdc_acm_write_thread_entry thread */
   if (tx_thread_create(&ux_cdc_write_thread, "cdc_acm_write_usbx_app_thread_entry",
                        usbx_cdc_acm_write_thread_entry, 1, pointer,
-                       UX_DEVICE_APP_THREAD_STACK_SIZE , 20, 20, TX_NO_TIME_SLICE,
+                       UX_DEVICE_APP_THREAD_STACK_SIZE, 20, 20, TX_NO_TIME_SLICE,
                        TX_AUTO_START) != TX_SUCCESS)
   {
     return TX_THREAD_ERROR;

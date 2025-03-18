@@ -242,8 +242,8 @@ typedef enum
 /** @} */ /* End of group Configuration_of_CMSIS */
 
 
-#include <core_cm7.h>                     /*!< ARM Cortex-M7 processor and core peripherals  */
-#include "system_stm32h7rsxx.h"             /*!< STM32H7RSxx System */
+#include "core_cm7.h"                     /*!< ARM Cortex-M7 processor and core peripherals  */
+#include "system_stm32h7rsxx.h"           /*!< STM32H7RSxx System */
 
 
 /* =========================================================================================================================== */
@@ -2428,9 +2428,6 @@ typedef struct
 
 /*!< Unique device ID register base address */
 #define UID_BASE                        (0x08FFF800UL)
-
-/*!< Flash size data register base address  */
-#define FLASHSIZE_BASE                  (0x08FFF80CUL)
 
 /*!< Package data register base address     */
 #define PACKAGE_BASE                    (0x08FFF80CUL)
@@ -14227,7 +14224,7 @@ typedef struct
 #define XSPI_CR_DMM_Msk                  (0x1UL << XSPI_CR_DMM_Pos)           /*!< 0x00000040 */
 #define XSPI_CR_DMM                      XSPI_CR_DMM_Msk                      /*!< Dual Memory Mode */
 #define XSPI_CR_FTHRES_Pos               (8U)
-#define XSPI_CR_FTHRES_Msk               (0x3FUL << XSPI_CR_FTHRES_Pos)       /*!< 0x00003F00 */
+#define XSPI_CR_FTHRES_Msk               (0x1FUL << XSPI_CR_FTHRES_Pos)       /*!< 0x00001F00 */
 #define XSPI_CR_FTHRES                   XSPI_CR_FTHRES_Msk                   /*!< FIFO Threshold Level */
 #define XSPI_CR_TEIE_Pos                 (16U)
 #define XSPI_CR_TEIE_Msk                 (0x1UL << XSPI_CR_TEIE_Pos)          /*!< 0x00010000 */
@@ -22865,8 +22862,8 @@ typedef struct
 #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1U << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
 #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
 #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1U << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
-#define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1U << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+#define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                   /*!< Single-Ended DM2 indicator DM voltage level  */
 #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
 #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1U << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
 #define USB_OTG_GCCFG_SESSVLD                    USB_OTG_GCCFG_SESSVLD_Msk                    /*!< VBUS session valid indicator Vbus voltage level  */
@@ -23519,6 +23516,9 @@ typedef struct
 #define USART_CR1_WAKE_Pos              (11U)
 #define USART_CR1_WAKE_Msk              (0x1UL << USART_CR1_WAKE_Pos)           /*!< 0x00000800 */
 #define USART_CR1_WAKE                  USART_CR1_WAKE_Msk                      /*!< Receiver Wakeup method */
+#define USART_CR1_M_Pos                 (12U)
+#define USART_CR1_M_Msk                 (0x10001UL << USART_CR1_M_Pos)         /*!< 0x10001000 */
+#define USART_CR1_M                     USART_CR1_M_Msk                        /*!< Word length */
 #define USART_CR1_M0_Pos                (12U)
 #define USART_CR1_M0_Msk                (0x1UL << USART_CR1_M0_Pos)             /*!< 0x00001000 */
 #define USART_CR1_M0                    USART_CR1_M0_Msk                        /*!< Word length - Bit 0 */
@@ -23556,7 +23556,6 @@ typedef struct
 #define USART_CR1_M1_Pos                (28U)
 #define USART_CR1_M1_Msk                (0x1UL << USART_CR1_M1_Pos)             /*!< 0x10000000 */
 #define USART_CR1_M1                    USART_CR1_M1_Msk                        /*!< Word length - Bit 1 */
-#define USART_CR1_M                     (uint32_t)(USART_CR1_M1 | USART_CR1_M0) /*!< Word length */
 #define USART_CR1_FIFOEN_Pos            (29U)
 #define USART_CR1_FIFOEN_Msk            (0x1UL << USART_CR1_FIFOEN_Pos)         /*!< 0x20000000 */
 #define USART_CR1_FIFOEN                USART_CR1_FIFOEN_Msk                    /*!< FIFO mode enable */

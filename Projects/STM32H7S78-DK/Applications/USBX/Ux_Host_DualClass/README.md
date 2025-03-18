@@ -1,5 +1,5 @@
 
-## <b>Ux_Host_DualClass application description</b>
+## <b>Ux_Host_DualClass Application Description</b>
 
 This application provides an example of Azure RTOS USBX stack usage.
 It shows how to develop USB Host Human Interface "HID" and Mass Storage "MSC" able to enumerate and communicates with:
@@ -15,7 +15,7 @@ The application is designed to behave as a:
 The main entry function tx_application_define() is then called by ThreadX during kernel start, at this stage, all USBx resources are initialized, the MSC and the HID class drivers are registered.
 The application creates four threads:
 
-  - usbx_app_thread_entry     (Priority : 10; Preemption threshold : 10) used to initialize USB OTG HAL HCD driver, start the host and proceed to file operations or HID reports once the device is properly enumerated.
+  - app_ux_host_thread_entry  (Priority : 10; Preemption threshold : 10) used to initialize USB OTG HAL HCD driver, start the host and proceed to file operations or HID reports once the device is properly enumerated.
   - hid_mouse_thread_entry    (Priority : 30; Preemption threshold : 30) used to decode HID reports received from a mouse.
   - hid_keyboard_thread_entry (Priority : 30; Preemption threshold : 30) used to decode HID reports received from a keyboard.
   - msc_process_thread_entry  (Priority : 30; Preemption threshold : 30) used to proceed to file operations.
@@ -93,7 +93,7 @@ Note that the boot part is automatically downloaded from the IDE environment via
          __RAM_segment_used_end__ = .;
          . = . + 64K;
          . = ALIGN(8);
-       } >RAM_D1 AT> RAM_D1
+       } >RAM AT> RAM
     ```
 
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
@@ -116,7 +116,7 @@ Connectivity, USBXHost, USBPD, FileX, ThreadX, HID, Mouse, Keyboard, MSC, Mass S
 ### <b>Hardware and Software environment</b>
 
   - This application runs on STM32H7S7L8xx devices.
-  - This application has been tested with STMicroelectronics STM32H7S78-DK boards revision: MB1736-H7S7L8-C01
+  - This application has been tested with STMicroelectronics STM32H7S78-DK boards revision: MB1736-H7S7L8-D01
     and can be easily tailored to any other supported device and development board.
 
   - STM32H7S78-DK Set-up
@@ -138,7 +138,7 @@ Connectivity, USBXHost, USBPD, FileX, ThreadX, HID, Mouse, Keyboard, MSC, Mass S
  To configure STM32CubeIDE Debug Configuration, you must do the following :
 
     1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration
-    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup
 
 In order to make the program work, you must do the following :
@@ -151,5 +151,5 @@ In order to make the program work, you must do the following :
 <b>Note</b>
 
    The user has to check the list of the COM ports in Device Manager to find out the number of the
-   COM ports that have been assigned (by OS) to the Stlink VCP .
+   COM ports that have been assigned (by OS) to the Stlink VCP.
    The application uses the external HSE clock as USB source clock.

@@ -176,21 +176,6 @@ SECTIONS
     __bss_end__ = _ebss;
   } >RAM
 
-  .usbx_data 0x24035000 (NOLOAD):
-  {
-    *(.UsbHpcdSection)
-  } >RAM
-
-  .uart_bss 0x24036000 (NOLOAD):
-  {
-    *(.UsbxAppSection)
-  } >RAM
-
-  .usbx_data 0x24036000 (NOLOAD):
-  {
-    *(.UsbxPoolSection)
-  } >RAM
-
   /* User_heap_stack section, used to check that there is enough "RAM" Ram  type memory left */
   ._user_heap_stack :
   {
@@ -201,6 +186,16 @@ SECTIONS
     . = . + _Min_Stack_Size;
     . = ALIGN(8);
   } >DTCM
+
+  .usbx_data 0x24035000 (NOLOAD):
+  {
+    *(.UsbHpcdSection)
+  } >RAM
+
+  .usbx_bss 0x24036000 (NOLOAD):
+  {
+    *(.UsbxPoolSection)
+  } >RAM
 
   /* Remove information from the compiler libraries */
   /DISCARD/ :

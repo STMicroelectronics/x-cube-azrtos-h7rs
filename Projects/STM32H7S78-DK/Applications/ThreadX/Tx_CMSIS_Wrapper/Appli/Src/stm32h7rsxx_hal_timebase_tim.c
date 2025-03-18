@@ -34,12 +34,12 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define TIM_CNT_FREQ 1000000U  /* Timer counter frequency : 1 MHz */
+#define TIM_CNT_FREQ 1000000U /* Timer counter frequency : 1 MHz */
 #define TIM_FREQ     1000U    /* Timer frequency : 1 kHz => to have 1 ms interrupt */
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
- TIM_HandleTypeDef htim6;
+TIM_HandleTypeDef htim6;
 
 /* Private function prototypes -----------------------------------------------*/
 #if (USE_HAL_TIM_REGISTER_CALLBACKS == 1U)

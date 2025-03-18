@@ -91,7 +91,6 @@ UINT MX_USBX_Host_Init(VOID *memory_ptr);
 
 /* USER CODE BEGIN EFP */
 VOID USBX_APP_Host_Init(VOID);
-
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

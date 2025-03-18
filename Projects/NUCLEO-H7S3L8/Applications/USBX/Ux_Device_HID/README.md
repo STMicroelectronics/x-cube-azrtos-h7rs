@@ -1,24 +1,30 @@
 
-# <b>Ux_Device_HID application description</b>
+# <b>Ux_Device_HID Application Description</b>
 
 This application provides an example of Azure RTOS USBX stack usage on NUCLEO-H7S3L8 board,
 it shows how to develop USB Device Human Interface "HID" mouse based application.
 
-The application is designed to emulate an USB HID mouse device, the code provides all required device descriptors framework
+The application is designed to emulate a USB HID mouse device, the code provides all required device descriptors framework
 and associated class descriptor report to build a compliant USB HID mouse device.
 
-At the beginning ThreadX calls the entry function tx_application_define(), at this stage, all USBX resources
-are initialized, the HID Class driver is registered and the application creates 2 threads with the same priorities :
+At the beginning ThreadX calls the entry function tx_application_define(), at this stage, all USBx resources
+are initialized, the HID class driver is registered and the application creates 2 threads with the same priorities :
 
   - app_ux_device_thread_entry (Prio : 10; PreemptionPrio : 10) used to initialize USB_OTG HAL PCD driver and start the device.
   - usbx_hid_thread_entry (Prio : 20; PreemptionPrio : 20) used to send HID reports to move automatically the PC host machine cursor.
-To customize the HID application by sending the mouse position step by step every 10ms.
+
+The thread usbx_app_thread_entry is responsible to start or stop the USB device.
+At Run mode the thread will be waiting on message queue form USB_PD interface, when the USB device is plugged to host PC
+a callback in USB_PD interface will send a message to usbx_app_thread_entry to start the USB device.
+By the same way when the USB device is unplugged, a callback in USB_PD interface will send a message to usbx_app_thread_entry to stop the USB device.
+
+To customize the HID application by sending the mouse position step by step every 10ms:
   - For each 10ms, the application calls the GetPointerData() API to update the mouse position (x, y) and send
-the report buffer through the ux_device_class_hid_event_set() API.
+    the report buffer through the ux_device_class_hid_event_set() API.
 
 #### <b>Expected success behavior</b>
 
-When plugged to PC host, the NUCLEO-H7S3L8 must be properly enumerated as an USB HID mouse device.
+When plugged to PC host, the NUCLEO-H7S3L8 must be properly enumerated as a USB HID mouse device.
 During the enumeration phase, device provides host with the requested descriptors (device, configuration, string).
 Those descriptors are used by host driver to identify the device capabilities.
 Once the NUCLEO-H7S3L8 USB device successfully completed the enumeration phase, the device sends a HID report after a user button press.
@@ -70,7 +76,7 @@ The remote wakeup feature is not yet implemented (used to bring the USB suspende
          __RAM_segment_used_end__ = .;
          . = . + 64K;
          . = ALIGN(8);
-       } >RAM_D1 AT> RAM_D1
+       } >RAM AT> RAM
     ```
 
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
@@ -83,23 +89,25 @@ The remote wakeup feature is not yet implemented (used to bring the USB suspende
 
 ### <b>Keywords</b>
 
-RTOS, ThreadX, USBXDevice, USBPD, USB_OTG, Full Speed, HID, Mouse.
+RTOS, ThreadX, USBXDevice, USB_OTG, Full Speed, HID, Mouse, USBPD.
 
 ### <b>Hardware and Software environment</b>
 
-  - This example runs on STM32H7S3L8xx devices.
-  - This example has been tested with STMicroelectronics NUCLEO-H7S3L8 boards Revision MB1737-H7S3L8-B01 and can be easily tailored to any other supported device and development board.
-
-  - NUCLEO-H7S3L8 board Set-up
-    -Connect the NUCLEO-H7S3L8 board CN1 to the PC through "TYPE-C" to "Standard A" cable.
+  - This application runs on STM32H7S3L8xx devices.
+  - This application has been tested with STMicroelectronics NUCLEO-H7S3L8 boards revision MB1737-H7S3L8-B02
+    and can be easily tailored to any other supported device and development board.
+  - NUCLEO-H7S3L8 board set-up:
+    - Connect the NUCLEO-H7S3L8 board CN1 to the PC through "TYPE-C" to "Standard A" cable.
     - Press the Tamper push-button to move the cursor.
+
+  - Note User shall remove the jumpers JP3 and JP4.
 
 ### <b>How to use it ?</b>
 
 To configure STM32CubeIDE Debug Configuration, you must do the following :
 
-    1. Add the adequate external loader (MX25UW25645G_STM32H7R38-NUCLEO.stldr file) in Project->Debugger Configuration
-    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration
+    1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup
 
 In order to make the program work, you must do the following :

@@ -695,7 +695,7 @@
                 </option>
                 <option>
                     <name>IlinkOutputFile</name>
-                    <state>Tx_Thread_MsgQueue_Appli.out</state>
+                    <state>Tx_Module_Manager.out</state>
                 </option>
                 <option>
                     <name>IlinkDebugInfoEnable</name>

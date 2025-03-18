@@ -19,13 +19,12 @@
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __APP_THREADX_H
-#define __APP_THREADX_H
+#ifndef __APP_THREADX_H__
+#define __APP_THREADX_H__
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
-
 /* Includes ------------------------------------------------------------------*/
 
 /* Private includes ----------------------------------------------------------*/
@@ -37,7 +36,6 @@
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -51,7 +49,7 @@
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
-void MX_AZURE_RTOS_Init(void);
+void MX_ThreadX_Init(void);
 
 /* USER CODE BEGIN EFP */
 

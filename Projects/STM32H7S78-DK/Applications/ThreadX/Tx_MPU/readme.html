@@ -132,7 +132,7 @@ the resident Module Manager to perform the call to the actual API
 function.</p></li>
 <li><p>The “TXM_MODULE_MANAGER_16_MPU” is a Preprocessor define that
 should be added in both C and Assembly preprocessor define list to allow
-the application on the stm32H7RSxx family to work properly.</p></li>
+the application on the stm32H7xx family to work properly.</p></li>
 <li><p>This application runs from the external flash memory.</p></li>
 <li><p>It boots from internal Flash (Template_XIP_Boot) then jumps to
 the application code in external Flash.</p></li>
@@ -142,10 +142,9 @@ the application code in external Flash.</p></li>
 <li>ThreadX uses the Systick as time base, thus it is mandatory that the
 HAL uses a separate time base through the TIM IPs.</li>
 <li>ThreadX is configured with 100 ticks/sec by default, this should be
-taken into account when using delays or timeouts at application.It is
-always possible to reconfigure it in the “tx_user.h”, the
-“TX_TIMER_TICKS_PER_SECOND” define,but this should be reflected in
-“tx_initialize_low_level.S” file too.</li>
+taken into account when using delays or timeouts at application. It is always possible
+to reconfigure it, by updating the "TX_TIMER_TICKS_PER_SECOND" define in the "tx_user.h" file.
+The update should be reflected in "tx_initialize_low_level.S" file too.</li>
 <li>ThreadX is disabling all interrupts during kernel start-up to avoid
 any unexpected behavior, therefore all system related calls (HAL, BSP)
 should be done either at the beginning of the application or inside the
@@ -158,27 +157,17 @@ way contain a system API call (HAL or BSP).</li>
 <li>Using dynamic memory allocation requires to apply some changes to
 the linker file. ThreadX needs to pass a pointer to the first free
 memory location in RAM to the tx_application_define() function, using
-the “first_unused_memory” argument. This require changes in the linker
+the “first_unused_memory” argument. This requires changes in the linker
 files to expose this memory location.
 <ul>
 <li>For EWARM add the following section into the .icf file:</li>
 </ul>
 <pre><code>place in RAM_region    { last section FREE_MEM };</code></pre>
 <ul>
-<li>For STM32CubeIDE add the following section into the .ld file:</li>
-</ul>
-<pre><code>._threadx_heap :
-  {
-     . = ALIGN(8);
-     __RAM_segment_used_end__ = .;
-     . = . + 64K;
-     . = ALIGN(8);
-   } &gt;RAM_D1 AT&gt; RAM_D1</code></pre>
 <pre><code>The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
 In the example above the ThreadX heap size is set to 64KBytes.
 The ._threadx_heap must be located between the .bss and the ._user_heap_stack sections in the linker script.
-Caution: Make sure that ThreadX does not need more than the provided heap memory (64KBytes in this example).
-Read more in STM32CubeIDE User Guide, chapter: &quot;Linker script&quot;.</code></pre>
+Caution: Make sure that ThreadX does not need more than the provided heap memory (64KBytes in this example).</code></pre>
 <ul>
 <li>The “tx_initialize_low_level.S” should be also modified to enable
 the “USE_DYNAMIC_MEMORY_ALLOCATION” flag.</li>
@@ -193,9 +182,8 @@ MPU</li>
 environment</b></h3>
 <ul>
 <li><p>This application runs on STM32H7S7xx devices.</p></li>
-<li><p>This application has been tested with the following
-environments:</p></li>
-<li><p>STM32H7S78-DK MB1736 Rev. C01 Set-up</p></li>
+<li><p>This application has been tested with STMicroelectronics STM32H7S78-DK boards revision MB1736-H7S7L8-D01
+and can be easily tailored to any other supported device and development board.</p></li>
 <li><p>This application uses UART4 to display logs, the hyperterminal
 configuration is as follows:</p>
 <ul>
@@ -225,7 +213,7 @@ by Tx_Module_Manager at address defined by
 “MODULE_FLASH_ADDRESS”)</p></li>
 <li><p>Rebuild Tx_Module_Manager project</p></li>
 <li><p>Set the Tx_Module_Manager as active application</p></li>
-<li><p>Run the example</p></li>
+<li><p>Run the application</p></li>
 </ul>
 </section>
 </div>
