@@ -38,8 +38,8 @@ during kernel start, at this stage, the application creates 3 threads
 with different priorities:</p>
 <ul>
 <li>MainThread (Prio : 5; Preemption Threshold : 5)</li>
-<li>ThreadOne (Prio : 10; Preemption Threshold : 10)</li>
-<li>ThreadTwo (Prio : 10; Preemption Threshold : 9)</li>
+<li>ThreadOne (Prio : 10; Preemption Threshold : 9)</li>
+<li>ThreadTwo (Prio : 10; Preemption Threshold : 10)</li>
 </ul>
 <p>Once started, the <b>MainThread</b> is suspended waiting for the
 event flag. The <em>ThreadOne</em> starts to toggle the
@@ -67,13 +67,12 @@ and toggles the <em>LED_GREEN</em> each 1 second for ever.</p>
 forever.</li>
 </ul>
 <h4 id="error-behaviors"><b>Error behaviors</b></h4>
-<p>LED_RED toggles every 1 second if an error occurs while the LED_GREEN switch off.</p> 
-<p>An error message is printed to the serial port.</p>
+<p>LED_RED toggles every 1 second if an error occurs while the LED_GREEN
+switch off. An error message is printed to the serial port.</p>
 <h4 id="assumptions-if-any"><b>Assumptions if any</b></h4>
 <p>None</p>
 <h4 id="known-limitations"><b>Known limitations</b></h4>
-<p>None</p>
-<h3 id="notes"><b>Notes</b></h3>
+<p>None ### <b>Notes</b></p>
 <p>This application runs from the external flash memory. It is launched
 from a first boot stage and inherits from this boot project
 configuration (caches, MPU regions [region 0 and 1], system clock at 600
@@ -139,9 +138,9 @@ the “USE_DYNAMIC_MEMORY_ALLOCATION” flag.</li>
 environment</b></h3>
 <ul>
 <li>This application runs on STM32H7S3L8xx devices.</li>
-<li>This application has been tested with STMicroelectronics NUCLEO-H7S3L8
-boards revision MB1737-H7S3L8-B02 and can be easily tailored to any
-other supported device and development board.</li>
+<li>This application has been tested with STMicroelectronics
+NUCLEO-H7S3L8 boards revision MB1737-H7S3L8-B02 and can be easily
+tailored to any other supported device and development board.</li>
 <li>This application uses USART3 to display logs, the hyperterminal
 configuration is as follows:
 <ul>
@@ -156,7 +155,7 @@ configuration is as follows:
 <p>To configure STM32CubeIDE Debug Configuration, you must do the
 following :</p>
 <pre><code>1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project-&gt;Debugger Configuration
-2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the "Load Symbols" option
+2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the &quot;Load Symbols&quot; option
 3. Move up the application in the startup</code></pre>
 <p>In order to make the program work, you must do the following :</p>
 <ul>

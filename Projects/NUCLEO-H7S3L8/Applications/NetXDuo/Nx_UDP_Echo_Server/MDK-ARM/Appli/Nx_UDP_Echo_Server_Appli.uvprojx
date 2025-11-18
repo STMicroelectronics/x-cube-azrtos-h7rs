@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32H7S3xx,TX_INCLUDE_USER_DEFINE_FILE,NX_INCLUDE_USER_DEFINE_FILE</Define>
               <Undefine></Undefine>
-              <IncludePath>../../Appli/Core/Inc;../../Appli/AZURE_RTOS/App;../../Appli/NetXDuo/App;../../Appli/NetXDuo/Target;../../../../../../../Drivers/BSP/Components/lan8742/;../../../../../../../Middlewares/ST/netxduo/common/drivers/ethernet/;../../../../../../../Middlewares/ST/netxduo/addons/dhcp/;../../../../../../../Middlewares/ST/netxduo/common/inc/;../../../../../../../Middlewares/ST/netxduo/ports/cortex_m7/ac5/inc/;../../../../../../../Middlewares/ST/threadx/common/inc/;../../../../../../../Middlewares/ST/threadx/ports/cortex_m7/ac6/inc/;../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc;../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc/Legacy;../../../../../../../Drivers/CMSIS/Device/ST/STM32H7RSxx/Include;../../../../../../../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../../Appli/Core/Inc;../../Appli/AZURE_RTOS/App;../../Appli/NetXDuo/App;../../Appli/NetXDuo/Target;../../../../../../../Drivers/BSP/Components/lan8742/;../../../../../../../Middlewares/ST/netxduo/common/drivers/ethernet/;../../../../../../../Middlewares/ST/netxduo/addons/dhcp/;../../../../../../../Middlewares/ST/netxduo/common/inc/;../../../../../../../Middlewares/ST/netxduo/ports/cortex_m7/ac5/inc/;../../../../../../../Middlewares/ST/netxduo/common/drivers/ethernet/;../../../../../../../Middlewares/ST/threadx/common/inc/;../../../../../../../Middlewares/ST/threadx/ports/cortex_m7/ac6/inc/;../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc;../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc/Legacy;../../../../../../../Drivers/CMSIS/Device/ST/STM32H7RSxx/Include;../../../../../../../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -356,9 +356,9 @@
             <ClangAsOpt>1</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define></Define>
+              <Define>TX_INCLUDE_USER_DEFINE_FILE</Define>
               <Undefine></Undefine>
-              <IncludePath></IncludePath>
+              <IncludePath>../../Appli/Core/Inc;../../Appli/AZURE_RTOS/App;../../Appli/NetXDuo/App;../../Appli/NetXDuo/Target;../../../../../../../Drivers/BSP/Components/lan8742/;../../../../../../../Middlewares/ST/netxduo/common/drivers/ethernet/;../../../../../../../Middlewares/ST/netxduo/addons/dhcp/;../../../../../../../Middlewares/ST/netxduo/common/inc/;../../../../../../../Middlewares/ST/netxduo/ports/cortex_m7/ac5/inc/;../../../../../../../Middlewares/ST/netxduo/common/drivers/ethernet/;../../../../../../../Middlewares/ST/threadx/common/inc/;../../../../../../../Middlewares/ST/threadx/ports/cortex_m7/ac6/inc/;../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc;../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc/Legacy;../../../../../../../Drivers/CMSIS/Device/ST/STM32H7RSxx/Include;../../../../../../../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Aads>
           <LDads>
@@ -371,7 +371,7 @@
             <TextAddressRange></TextAddressRange>
             <DataAddressRange></DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>stm32h7rsxx_ROMxspi2.sct</ScatterFile>
+            <ScatterFile>.\stm32h7rsxx_ROMxspi2.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc>--diag_suppress L6312,L6314,L6329W</Misc>

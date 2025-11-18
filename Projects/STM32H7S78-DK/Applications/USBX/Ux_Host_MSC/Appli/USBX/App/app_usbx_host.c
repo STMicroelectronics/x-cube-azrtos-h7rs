@@ -18,6 +18,10 @@
   */
 /* USER CODE END Header */
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "app_usbx_host.h"
 
@@ -51,6 +55,7 @@ UX_HOST_CLASS_STORAGE       *storage;
 UX_HOST_CLASS_STORAGE_MEDIA *storage_media;
 FX_MEDIA                    *media;
 TX_EVENT_FLAGS_GROUP        ux_app_EventFlag;
+
 TX_QUEUE                    ux_app_MsgQueue_UCPD;
 #if defined ( __ICCARM__ ) /* IAR Compiler */
   #pragma data_alignment=4
@@ -81,23 +86,6 @@ UINT MX_USBX_Host_Init(VOID *memory_ptr)
   /* USER CODE BEGIN MX_USBX_Host_Init0 */
 
   /* USER CODE END MX_USBX_Host_Init0 */
-
-  /* Allocate the stack for USBX Memory */
-  if (tx_byte_allocate(byte_pool, (VOID **) &pointer,
-                       USBX_HOST_MEMORY_STACK_SIZE, TX_NO_WAIT) != TX_SUCCESS)
-  {
-    /* USER CODE BEGIN USBX_ALLOCATE_STACK_ERROR */
-    return TX_POOL_ERROR;
-    /* USER CODE END USBX_ALLOCATE_STACK_ERROR */
-  }
-
-  /* Initialize USBX Memory */
-  if (ux_system_initialize(pointer, USBX_HOST_MEMORY_STACK_SIZE, UX_NULL, 0) != UX_SUCCESS)
-  {
-    /* USER CODE BEGIN USBX_SYSTEM_INITIALIZE_ERROR */
-    return UX_ERROR;
-    /* USER CODE END USBX_SYSTEM_INITIALIZE_ERROR */
-  }
 
   /* Install the host portion of USBX */
   if (ux_host_stack_initialize(ux_host_event_callback) != UX_SUCCESS)
@@ -220,6 +208,7 @@ static VOID app_ux_host_thread_entry(ULONG thread_input)
     }
    tx_thread_sleep(MS_TO_TICK(10));
   }
+
   /* USER CODE END app_ux_host_thread_entry */
 }
 
@@ -404,7 +393,7 @@ VOID ux_host_error_callback(UINT system_level, UINT system_context, UINT error_c
   /* USER CODE END ux_host_error_callback1 */
 }
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 /**
   * @brief  USBX_APP_Host_Init
   *         Initialization of USB Host.
@@ -440,4 +429,4 @@ VOID USBX_APP_Host_Init(VOID)
 
 }
 
-/* USER CODE END 1 */
+/* USER CODE END 2 */

@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "main.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -40,17 +40,16 @@ PROCESSING_FINISHED       = 44
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
 #define DEFAULT_STACK_SIZE         1024
 #define MODULE_DATA_SIZE           32*1024
 #define OBJECT_MEM_SIZE            16*1024
 
-#define READONLY_REGION            0x24020000
-#define READWRITE_REGION           0x24020100
+#define READONLY_REGION            0x24040000
+#define READWRITE_REGION           0x24040100
 #define SHARED_MEM_SIZE            0xFF
 
 #define MODULE_FLASH_ADDRESS       0x70020000
-/* USER CODE END PD */
+
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
@@ -61,14 +60,14 @@ PROCESSING_FINISHED       = 44
 /* USER CODE BEGIN PV */
 /* Define the ThreadX object control blocks */
 TX_THREAD               ModuleManager;
-TXM_MODULE_INSTANCE     ModuleOne;
+TXM_MODULE_INSTANCE ModuleOne;
 TX_QUEUE                ResidentQueue;
 
 /* Define the module data pool area. */
-static UCHAR  module_data_area[MODULE_DATA_SIZE];
+UCHAR  module_data_area[MODULE_DATA_SIZE];
 
 /* Define the object pool area.  */
-static UCHAR  object_memory[OBJECT_MEM_SIZE];
+UCHAR  object_memory[OBJECT_MEM_SIZE];
 
 /* Define the count of memory faults.  */
 ULONG                   memory_faults = 0;
@@ -86,8 +85,8 @@ VOID module_fault_handler(TX_THREAD *thread, TXM_MODULE_INSTANCE *module);
 /* USER CODE END PFP */
 
 /**
-  * @brief  Application ThreadX Initialization.
-  * @param memory_ptr: memory pointer
+  * @brief  Define the initial system.
+  * @param  first_unused_memory : Pointer to the first unused memory
   * @retval None
   */
 VOID tx_application_define(VOID *first_unused_memory)
@@ -103,14 +102,14 @@ VOID tx_application_define(VOID *first_unused_memory)
   else
   {
 
-    /* Allocate the stack for Module Manager Thread. */
+    /* Allocate the stack for Module Manager Thread.  */
     if (tx_byte_allocate(&ModuleManagerBytePool, (VOID **) &pointer,
                          DEFAULT_STACK_SIZE, TX_NO_WAIT) != TX_SUCCESS)
     {
       Error_Handler();
     }
 
-    /* Create Module Manager Thread. */
+    /* Create Module Manager Thread.  */
     if (tx_thread_create(&ModuleManager, "Module Manager Thread", ModuleManager_Entry, 0,
                          pointer, DEFAULT_STACK_SIZE,
                          MODULE_MANAGER_THREAD_PRIO, MODULE_MANAGER_THREAD_PREEMPTION_THRESHOLD,
@@ -135,22 +134,22 @@ VOID tx_application_define(VOID *first_unused_memory)
   }
 }
 
-/**
+ /**
   * @brief  MX_ThreadX_Init
-  * @param  None
-  * @retval None
-  */
+   * @param  None
+   * @retval None
+   */
 void MX_ThreadX_Init(void)
 {
-  /* USER CODE BEGIN Before_Kernel_Start */
+  /* USER CODE BEGIN  Before_Kernel_Start */
 
-  /* USER CODE END Before_Kernel_Start */
+  /* USER CODE END  Before_Kernel_Start */
 
   tx_kernel_enter();
 
-  /* USER CODE BEGIN Kernel_Start_Error */
+  /* USER CODE BEGIN  Kernel_Start_Error */
 
-  /* USER CODE END Kernel_Start_Error */
+  /* USER CODE END  Kernel_Start_Error */
 }
 
 /* USER CODE BEGIN 1 */
@@ -214,14 +213,6 @@ VOID ModuleManager_Entry(ULONG thread_input)
     Error_Handler();
   }
 
-  /* Configure an extra unneeded region to prevent loss of previously configured READWRITE_REGION. */
-  status = txm_module_manager_external_memory_enable(&ModuleOne, (void*)NULL, 0U, 0);
-
-  if(status != TX_SUCCESS)
-  {
-    Error_Handler();
-  }
-
   /* Get module properties. */
   status = txm_module_manager_properties_get(&ModuleOne, &module_properties);
 
@@ -239,7 +230,6 @@ VOID ModuleManager_Entry(ULONG thread_input)
   printf("  - MPU protection is %s\n", ((module_properties & 0x02) == 0)? "Disabled" : "Enabled");
   printf("  - %s mode execution is enabled for the module\n\n", ((module_properties & 0x01) == 0)? "Privileged" : "User");
 
-
   /* Start the modules. */
   status = txm_module_manager_start(&ModuleOne);
 
@@ -253,7 +243,7 @@ VOID ModuleManager_Entry(ULONG thread_input)
   /* Get Module's progress messages */
   while(r_msg != PROCESSING_FINISHED)
   {
-    if(tx_queue_receive(&ResidentQueue, &r_msg, TX_TIMER_TICKS_PER_SECOND) == TX_SUCCESS)
+    if(tx_queue_receive(&ResidentQueue, &r_msg, 10) == TX_SUCCESS)
     {
       /* Convert the message to a user friendly string */
       pretty_msg(p_msg, r_msg);
@@ -287,9 +277,10 @@ VOID ModuleManager_Entry(ULONG thread_input)
   }
 
   /* Toggle green LED to indicated success of operations */
-  while(1) {
+  while(1)
+  {
     HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
-    tx_thread_sleep(TX_TIMER_TICKS_PER_SECOND / 2);
+    tx_thread_sleep(50);
   }
 }
 
@@ -327,4 +318,3 @@ VOID pretty_msg(char *p_msg, ULONG r_msg)
 }
 
 /* USER CODE END 1 */
-

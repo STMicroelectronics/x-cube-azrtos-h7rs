@@ -80,10 +80,10 @@ __vector_table
         DCD     IWDG_IRQHandler                   ; Internal Watchdog
         DCD     WWDG_IRQHandler                   ; Window Watchdog
         DCD     RCC_IRQHandler                    ; RCC global interrupts through EXTI Line detection
-        DCD     LOOKUP_IRQHandler                 ; Processor_SAFETY_interrupt due lost LOOKUP
-        DCD     CACHE_ECC_IRQHandler              ; Error ECC cache
+        DCD     0                                 ; Reserved
+        DCD     0                                 ; Reserved
         DCD     FLASH_IRQHandler                  ; FLASH interrupts
-        DCD     ECC_FPU_IRQHandler                ; SRAM ECC flags, FPU errors
+        DCD     RAMECC_IRQHandler                 ; RAMECC interrupts
         DCD     FPU_IRQHandler                    ; FPU
         DCD     0                                 ; Reserved
         DCD     0                                 ; Reserved
@@ -318,25 +318,15 @@ WWDG_IRQHandler
 RCC_IRQHandler
         B RCC_IRQHandler
 
-        PUBWEAK LOOKUP_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-LOOKUP_IRQHandler
-        B LOOKUP_IRQHandler
-
-        PUBWEAK CACHE_ECC_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-CACHE_ECC_IRQHandler
-        B CACHE_ECC_IRQHandler
-
         PUBWEAK FLASH_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
 FLASH_IRQHandler
         B FLASH_IRQHandler
 
-        PUBWEAK ECC_FPU_IRQHandler
+        PUBWEAK RAMECC_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
-ECC_FPU_IRQHandler
-        B ECC_FPU_IRQHandler
+RAMECC_IRQHandler
+        B RAMECC_IRQHandler
 
         PUBWEAK FPU_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)

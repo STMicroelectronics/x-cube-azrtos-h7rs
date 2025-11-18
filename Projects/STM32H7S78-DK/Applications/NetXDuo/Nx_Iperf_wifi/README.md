@@ -83,7 +83,7 @@ The application then creates 4 threads with the same priorities :
          __RAM_segment_used_end__ = .;
          . = . + 64K;
          . = ALIGN(8);
-       } >RAM_D1 AT> RAM_D1
+       } >RAM AT> RAM
 	```
 
        The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
@@ -107,7 +107,7 @@ RTOS, Network, ThreadX, NetXDuo, WiFi, Station mode, Iperf, UART, MXCHIP, SPI, S
       - BaudRate = 115200 baud
       - Word Length = 8 Bits
       - Stop Bit = 1
-      - Parity = none
+      - Parity = None
       - Flow control = None
 
 ### <b>How to use it ?</b>
@@ -115,7 +115,7 @@ RTOS, Network, ThreadX, NetXDuo, WiFi, Station mode, Iperf, UART, MXCHIP, SPI, S
 To configure STM32CubeIDE Debug Configuration, you must do the following :
 
     1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration
-    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup
 
 In order to make the program work, you must do the following :

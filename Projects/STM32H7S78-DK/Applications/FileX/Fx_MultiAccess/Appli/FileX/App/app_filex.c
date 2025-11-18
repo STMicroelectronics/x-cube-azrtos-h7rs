@@ -19,6 +19,10 @@
   */
 /* USER CODE END Header */
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "app_filex.h"
 
@@ -114,7 +118,7 @@ UINT MX_FileX_Init(VOID *memory_ptr)
   ret = tx_byte_allocate(byte_pool, &pointer, FX_APP_THREAD_STACK_SIZE, TX_NO_WAIT);
 
   /* Check FX_APP_THREAD_STACK_SIZE allocation*/
-  if (ret != FX_SUCCESS)
+  if (ret != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
@@ -260,7 +264,7 @@ void fx_app_thread_entry(ULONG thread_input)
   /* USER CODE END fx_app_thread_entry 1 */
 }
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 
 VOID fx_thread_one_entry(ULONG thread_input)
 {
@@ -545,4 +549,4 @@ VOID App_Error_Handler(INT id)
   Error_Handler();
 
 }
-/* USER CODE END 1 */
+/* USER CODE END 2 */

@@ -13,8 +13,8 @@ The main entry function tx_application_define() is called by ThreadX during kern
 
 The application then creates 2 threads with the same priorities:
 
- + **NxAppThread** (priority 10, PreemtionThreashold 10) : created with the TX_AUTO_START flag to start automatically.
- + **AppUDPThread** (priority 10, PreemtionThreashold 10) : created with the TX_DONT_START flag to be started later.
+ + **NxAppThread** (priority 10, PreemptionThreshold 10) : created with the TX_AUTO_START flag to start automatically.
+ + **AppUDPThread** (priority 10, PreemptionThreshold 10) : created with the TX_DONT_START flag to be started later.
 
 The **NxAppThread** starts and performs the following actions:
 
@@ -77,8 +77,13 @@ None
 
 ### <b>Notes</b>
 
- 1.  This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed). 
-      Note that the boot part is automatically downloaded from the IDE environment via the board boot binary under Binary/Boot_XIP.hex file.
+ 1.  This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed).
+     Note that the boot part is automatically downloaded from the IDE environment via the board boot binary under Binary/Boot_XIP.hex file.
+
+ 2.  It is recommended to enable the cache and maintain its coherence:
+      - Depending on the use case it is also possible to configure the cache attributes using the MPU.
+      - Please refer to the **AN4838** "Managing memory protection unit (MPU) in STM32 MCUs".
+      - Please refer to the **AN4839** "Level 1 cache on STM32F7 Series and STM32H7 Series"
 
 #### <b>ThreadX usage hints</b>
 

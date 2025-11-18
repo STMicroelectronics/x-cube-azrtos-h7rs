@@ -18,6 +18,10 @@
   */
 /* USER CODE END Header */
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "app_netxduo.h"
 
@@ -302,12 +306,8 @@ static VOID ip_address_change_notify_callback(NX_IP *ip_instance, VOID *ptr)
   /* Release the semaphore as soon as an IP address is available */
   if (nx_ip_address_get(&NetXDuoEthIpInstance, &IpAddress, &NetMask) != NX_SUCCESS)
   {
-    /* USER CODE BEGIN IP address change callback error */
-
     /* Error, call error handler.*/
     Error_Handler();
-
-    /* USER CODE END IP address change callback error */
   }
   if(IpAddress != NULL_ADDRESS)
   {
@@ -376,7 +376,7 @@ static VOID nx_app_thread_entry (ULONG thread_input)
   /* USER CODE END Nx_App_Thread_Entry 2 */
 
 }
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 /**
 * @brief  Link thread entry
 * @param thread_input: ULONG thread parameter
@@ -453,4 +453,4 @@ static VOID App_Link_Thread_Entry(ULONG thread_input)
   }
 }
 
-/* USER CODE END 1 */
+/* USER CODE END 2 */

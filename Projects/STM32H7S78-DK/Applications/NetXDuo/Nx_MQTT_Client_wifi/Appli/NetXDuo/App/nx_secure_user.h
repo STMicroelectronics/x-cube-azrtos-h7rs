@@ -24,7 +24,7 @@
 /*  PORT SPECIFIC C INFORMATION                            RELEASE        */
 /*                                                                        */
 /*    nx_secure_user.h                                    PORTABLE C      */
-/*                                                           6.2.1        */
+/*                                                           6.2.0        */
 /*                                                                        */
 /*  AUTHOR                                                                */
 /*                                                                        */
@@ -55,7 +55,7 @@
 /*                                            resulting in version 6.1.9  */
 /*  10-31-2022     Yanwu Cai                Modified comment(s), added    */
 /*                                            macro to custom secret size,*/
-/*                                            resulting in version 6.2.1  */
+/*                                            resulting in version 6.2.0  */
 /*                                                                        */
 /**************************************************************************/
 

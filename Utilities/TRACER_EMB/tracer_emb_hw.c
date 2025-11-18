@@ -363,7 +363,9 @@ void HW_TRACER_EMB_Init(void)
   */
 void HW_TRACER_EMB_DeInit(void)
 {
+#if (TRACER_EMB_IS_INSTANCE_LPUART_TYPE == 0UL)
   uint32_t _isrflags = 0;
+#endif /* TRACER_EMB_IS_INSTANCE_LPUART_TYPE */
 
   trace_initialized = 0;
 

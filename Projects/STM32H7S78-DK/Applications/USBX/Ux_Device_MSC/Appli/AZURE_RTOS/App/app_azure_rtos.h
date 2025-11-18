@@ -25,12 +25,16 @@
 extern "C" {
 #endif
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "app_azure_rtos_config.h"
 
 #include "app_threadx.h"
 
-#include "app_usbx_device.h"
+#include "app_usbx.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -60,6 +64,10 @@ extern "C" {
 /* USER CODE BEGIN PD */
 
 /* USER CODE END PD */
+
+/* USER CODE BEGIN 2 */
+
+/* USER CODE END 2 */
 
 #ifdef __cplusplus
 }

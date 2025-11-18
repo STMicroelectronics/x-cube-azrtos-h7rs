@@ -14,8 +14,12 @@
 #define NX_STM32_ETH_CONFIG_H
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
+
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32h7rsxx_hal.h"
@@ -64,9 +68,9 @@ extern void MX_ETH_Init(void);
 
 /* USER CODE END PD */
 
-/* USER CODE BEGIN 0 */
+/* USER CODE BEGIN 2 */
 
-/* USER CODE END 0 */
+/* USER CODE END 2 */
 
 #ifdef __cplusplus
 }

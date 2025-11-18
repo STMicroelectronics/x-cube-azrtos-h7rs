@@ -80,10 +80,10 @@ __Vectors       DCD     __initial_sp                     ; Top of Stack
                 DCD     IWDG_IRQHandler                  ; Internal Watchdog
                 DCD     WWDG_IRQHandler                  ; Window Watchdog
                 DCD     RCC_IRQHandler                   ; RCC global interrupts through EXTI Line detection
-                DCD     LOOKUP_IRQHandler                ; Processor_SAFETY_interrupt due lost LOOKUP
-                DCD     CACHE_ECC_IRQHandler             ; Error ECC cache
+                DCD     0                                ; Reserved
+                DCD     0                                ; Reserved
                 DCD     FLASH_IRQHandler                 ; FLASH interrupts
-                DCD     ECC_FPU_IRQHandler               ; SRAM ECC flags, FPU errors
+                DCD     RAMECC_IRQHandler                ; RAMECC interrupts
                 DCD     FPU_IRQHandler                   ; FPU
                 DCD     0                                ; Reserved
                 DCD     0                                ; Reserved
@@ -225,7 +225,7 @@ __Vectors       DCD     __initial_sp                     ; Top of Stack
                 DCD     HPDMA1_Channel15_IRQHandler      ; HPDMA1 Channel 15
                 DCD     0                                ; Reserved
                 DCD     0                                ; Reserved
-                DCD     0                                ; Reserved
+                DCD     0                                ; Reserved                
                 DCD     FDCAN1_IT0_IRQHandler            ; FDCAN1 Interrupt 0
                 DCD     FDCAN1_IT1_IRQHandler            ; FDCAN1 Interrupt 1
                 DCD     FDCAN2_IT0_IRQHandler            ; FDCAN2 Interrupt 0
@@ -307,10 +307,8 @@ Default_Handler PROC
                 EXPORT  IWDG_IRQHandler                  [WEAK]
                 EXPORT  WWDG_IRQHandler                  [WEAK]
                 EXPORT  RCC_IRQHandler                   [WEAK]
-                EXPORT  LOOKUP_IRQHandler                [WEAK]
-                EXPORT  CACHE_ECC_IRQHandler             [WEAK]
                 EXPORT  FLASH_IRQHandler                 [WEAK]
-                EXPORT  ECC_FPU_IRQHandler               [WEAK]
+                EXPORT  RAMECC_IRQHandler                [WEAK]
                 EXPORT  FPU_IRQHandler                   [WEAK]
                 EXPORT  TAMP_IRQHandler                  [WEAK]
                 EXPORT  EXTI0_IRQHandler                 [WEAK]
@@ -452,10 +450,8 @@ DTS_IRQHandler
 IWDG_IRQHandler
 WWDG_IRQHandler
 RCC_IRQHandler
-LOOKUP_IRQHandler
-CACHE_ECC_IRQHandler
 FLASH_IRQHandler
-ECC_FPU_IRQHandler
+RAMECC_IRQHandler
 FPU_IRQHandler
 TAMP_IRQHandler
 EXTI0_IRQHandler

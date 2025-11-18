@@ -42,9 +42,11 @@ the compile flags in the file "app_tx_cmsisrtos.h".
 'LED_RED' toggles every 1 second if any error occurs.
 
 #### <b>Assumptions if any</b>
+
 None
 
 #### <b>Known limitations</b>
+
 None
 
 #### <b>ThreadX usage hints</b>

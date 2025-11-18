@@ -18,6 +18,10 @@
   */
 /* USER CODE END Header */
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "ux_device_msc.h"
 
@@ -315,7 +319,7 @@ ULONG USBD_STORAGE_GetMediaBlocklength(VOID)
   return MediaBlockLen;
 }
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 
 /**
   * @brief  BSP_SD_WriteCpltCallback
@@ -366,4 +370,4 @@ static int32_t check_sd_status(VOID)
   return HAL_ERROR;
 }
 
-/* USER CODE END 1 */
+/* USER CODE END 2 */

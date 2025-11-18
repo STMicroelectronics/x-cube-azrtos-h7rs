@@ -356,9 +356,9 @@
             <ClangAsOpt>1</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define></Define>
+              <Define>TX_INCLUDE_USER_DEFINE_FILE</Define>
               <Undefine></Undefine>
-              <IncludePath></IncludePath>
+              <IncludePath>../../Appli/Core/Inc;../../Appli/AZURE_RTOS/App;../../Appli/FileX/App;../../Appli/FileX/Target;../../../../../../../Middlewares/ST/filex/common/inc/;../../../../../../../Middlewares/ST/filex/ports/generic/inc/;../../../../../../../Middlewares/ST/threadx/common/inc/;../../../../../../../Middlewares/ST/threadx/ports/cortex_m7/ac6/inc/;../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc;../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc/Legacy;../../../../../../../Drivers/CMSIS/Device/ST/STM32H7RSxx/Include;../../../../../../../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Aads>
           <LDads>
@@ -503,21 +503,6 @@
               <FileName>stm32h7rsxx_hal_sd_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_sd_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7rsxx_hal_mmc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_mmc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7rsxx_hal_mmc_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_mmc_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7rsxx_hal_sdio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_sdio.c</FilePath>
             </File>
             <File>
               <FileName>stm32h7rsxx_hal_rcc.c</FileName>

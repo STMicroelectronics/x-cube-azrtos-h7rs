@@ -19,23 +19,24 @@
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __APP_THREADX_H__
-#define __APP_THREADX_H__
+#ifndef __APP_THREADX_H
+#define __APP_THREADX_H
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
+
 /* Includes ------------------------------------------------------------------*/
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "main.h"
 #include "txm_module.h"
-#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -49,7 +50,9 @@ extern "C" {
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
+UINT App_ThreadX_Init(VOID *memory_ptr);
 void MX_ThreadX_Init(void);
+void MX_ThreadX_Process(void);
 
 /* USER CODE BEGIN EFP */
 
@@ -69,4 +72,4 @@ void MX_ThreadX_Init(void);
 #ifdef __cplusplus
 }
 #endif
-#endif /* __APP_THREADX_H__ */
+#endif /* __APP_THREADX_H */

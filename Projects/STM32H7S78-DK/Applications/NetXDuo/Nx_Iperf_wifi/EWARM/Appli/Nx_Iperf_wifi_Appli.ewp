@@ -531,7 +531,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>TX_INCLUDE_USER_DEFINE_FILE</state>
         </option>
         <option>
           <name>AList</name>
@@ -623,7 +623,27 @@
         </option>
         <option>
           <name>AUserIncludes</name>
-          <state></state>
+          <state>$PROJ_DIR$/../../Appli/Core/Inc</state>
+          <state>$PROJ_DIR$/../../Appli/AZURE_RTOS/App</state>
+          <state>$PROJ_DIR$/../../Appli/FileX/App</state>
+          <state>$PROJ_DIR$/../../Appli/NetXDuo/App</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/filex/common/inc/</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/filex/ports/generic/inc/</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/netxduo/addons/dhcp/</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/netxduo/common/inc/</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/netxduo/ports/cortex_m7/iar/inc/</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/netxduo/addons/web/</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/threadx/common/inc/</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/threadx/ports/cortex_m7/iar/inc/</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/netxduo/addons/BSD</state>
+          <state>$PROJ_DIR$/../../../../../../../Drivers/BSP/Components/mx_wifi</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/netxduo/common/drivers/wifi/mxchip</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/netxduo/utility/iperf</state>
+          <state>$PROJ_DIR$/../../Appli/NetXDuo/Target</state>
+          <state>$PROJ_DIR$/../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc</state>
+          <state>$PROJ_DIR$/../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc/Legacy</state>
+          <state>$PROJ_DIR$/../../../../../../../Drivers/CMSIS/Device/ST/STM32H7RSxx/Include</state>
+          <state>$PROJ_DIR$/../../../../../../../Drivers/CMSIS/Include</state>
         </option>
         <option>
           <name>AExtraOptionsCheckV2</name>
@@ -4020,3 +4040,4 @@
     </group>
   </group>
 </project>
+

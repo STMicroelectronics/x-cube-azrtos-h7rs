@@ -13,8 +13,8 @@ The main entry function tx_application_define() is called by ThreadX during kern
 
 The application then creates 2 threads with the same priorities:
 
- + **NxAppThread** (priority 10, PreemtionThreashold 10) : created with the TX_AUTO_START flag to start automatically.
- + **AppUDPThread** (priority 10, PreemtionThreashold 10) : created with the TX_DONT_START flag to be started later.
+ + **NxAppThread** (priority 10, PreemptionThreshold 10) : created with the TX_AUTO_START flag to start automatically.
+ + **AppUDPThread** (priority 10, PreemptionThreshold 10) : created with the TX_DONT_START flag to be started later.
 
 The **NxAppThread** starts and performs the following actions:
 

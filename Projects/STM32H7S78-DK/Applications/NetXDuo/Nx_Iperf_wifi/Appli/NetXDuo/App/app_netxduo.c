@@ -19,6 +19,10 @@
 
 /* USER CODE END Header */
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "app_netxduo.h"
 
@@ -135,9 +139,9 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
 #else
     const char wifi_io[] = "UART";
 #endif /* MX_WIFI_USE_SPI */
-    
+
   MSG_INFO("\nNx_Iperf_wifi application started.\n");
-  
+
   MSG_INFO("# build: %s-%s, %s, %s %s\n",
              wifi_io,
              "RTOS",
@@ -154,7 +158,7 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
     MSG_INFO("\n[%" PRIu32 "] MX_NetXDuo_Init(): %s\n\n", HAL_GetTick(), the_thread_safe_strategy);
   }
 #endif /* STM32_THREAD_SAFE_STRATEGY */
-  
+
   /* Initialize the NetX system. */
   nx_system_initialize();
 
@@ -355,7 +359,7 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
     }
     MSG_DEBUG("tx_thread_create() done\n");
   }
-  
+
   /* Set DHCP notification callback */
   tx_semaphore_create(&DhcpSemaphore, DhcpSemaphoreName, 0);
   /* USER CODE END MX_NetXDuo_Init */
@@ -363,7 +367,7 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
   return ret;
 }
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 /**
   * @brief ip address change callback.
   * @param ip_instance: NX_IP instance
@@ -599,4 +603,4 @@ static VOID App_Iperf_Thread_Entry(ULONG thread_input)
     nx_iperf_entry(&IperfPacketPool, &IpInstance, http_stack, http_stack_size, iperf_stack, iperf_stack_size);
   }
 }
-/* USER CODE END 1 */
+/* USER CODE END 2 */

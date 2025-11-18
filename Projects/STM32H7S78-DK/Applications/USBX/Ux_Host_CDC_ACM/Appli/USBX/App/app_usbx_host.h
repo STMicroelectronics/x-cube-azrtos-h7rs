@@ -25,6 +25,10 @@
 extern "C" {
 #endif
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "ux_api.h"
 #include "main.h"
@@ -46,7 +50,6 @@ extern "C" {
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
-#define USBX_HOST_MEMORY_STACK_SIZE     1024 * 10
 
 #define UX_HOST_APP_THREAD_STACK_SIZE   1024
 #define UX_HOST_APP_THREAD_PRIO         10
@@ -118,13 +121,13 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
 #define UX_HOST_APP_THREAD_START_OPTION  TX_AUTO_START
 #endif
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 typedef enum
 {
   STOP_USB_HOST = 1,
   START_USB_HOST,
 } USB_MODE_STATE;
-/* USER CODE END 1 */
+/* USER CODE END 2 */
 
 #ifdef __cplusplus
 }

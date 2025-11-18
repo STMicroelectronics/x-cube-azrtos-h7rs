@@ -30,6 +30,18 @@
 
 /* USER CODE END Includes */
 
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+#define DEFAULT_STACK_SIZE         512
+#define DEFAULT_BYTE_POOL_SIZE     2048
+
+#define READONLY_REGION            0x24040000
+#define READWRITE_REGION           0x24040100
+
+#define MAIN_THREAD_PRIO                 2
+#define MAIN_THREAD_PREEMPTION_THRESHOLD MAIN_THREAD_PRIO
+/* USER CODE END PD */
+
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 typedef enum {
@@ -42,25 +54,13 @@ PROCESSING_FINISHED       = 44
 } ProgressState;
 /* USER CODE END PTD */
 
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-/* Define constants. */
-#define DEFAULT_STACK_SIZE         1024
-#define DEFAULT_BYTE_POOL_SIZE     2048
-
-#define READONLY_REGION            0x24020000
-#define READWRITE_REGION           0x24020100
-
-#define MAIN_THREAD_PRIO                         2
-#define MAIN_THREAD_PREEMPTION_THRESHOLD         MAIN_THREAD_PRIO
-/* USER CODE END PD */
-
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 #define UNUSED(x) (void)(x)
+void default_module_start(ULONG id);
 /* Define the pool space in the bss section of the module. ULONG is used to
    get word alignment. */
-#if defined(__GNUC__) || defined(__CC_ARM) || defined(__ARMCC_VERSION)
+#if defined(__GNUC__) || defined(__CC_ARM)
 ULONG  default_module_pool_space[DEFAULT_BYTE_POOL_SIZE / 4] __attribute__ ((aligned(32)));
 #else /* __ICCARM__ */
 _Pragma("data_alignment=32") ULONG  default_module_pool_space[DEFAULT_BYTE_POOL_SIZE / 4];
@@ -69,16 +69,14 @@ _Pragma("data_alignment=32") ULONG  default_module_pool_space[DEFAULT_BYTE_POOL_
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-/* Define the ThreadX object control block pointers. */
-TX_THREAD               *MainThread;
-TX_BYTE_POOL            *ModuleBytePool;
-TX_BLOCK_POOL           *ModuleBlockPool;
-TX_QUEUE                *ResidentQueue;
+TX_THREAD     *MainThread;
+TX_BYTE_POOL  *ModuleBytePool;
+TX_BLOCK_POOL *ModuleBlockPool;
+TX_QUEUE      *ResidentQueue;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
-void default_module_start(ULONG id);
 void MainThread_Entry(ULONG thread_input);
 void Error_Handler(void);
 /* USER CODE END PFP */
@@ -90,27 +88,26 @@ void Error_Handler(void);
   */
 void    default_module_start(ULONG id)
 {
-  CHAR    *pointer;
+    CHAR    *pointer;
 
-  /* Allocate all the objects. In MPU mode, modules cannot allocate control blocks within
-  their own memory area so they cannot corrupt the resident portion of ThreadX by overwriting
-  the control block(s).  */
+    /* Allocate all the objects. In MPU mode, modules cannot allocate control blocks within
+       their own memory area so they cannot corrupt the resident portion of ThreadX by overwriting
+       the control block(s).  */
   txm_module_object_allocate((void*)&MainThread, sizeof(TX_THREAD));
   txm_module_object_allocate((void*)&ModuleBytePool, sizeof(TX_BYTE_POOL));
+  txm_module_object_allocate((void*)&ModuleBlockPool, sizeof(TX_BLOCK_POOL));
 
-  /* Create a byte memory pool from which to allocate the thread stacks. */
+    /* Create a byte memory pool from which to allocate the thread stacks.  */
   tx_byte_pool_create(ModuleBytePool, "Module Byte Pool", (UCHAR*)default_module_pool_space, DEFAULT_BYTE_POOL_SIZE);
 
-  /* Allocate the stack for thread 0. */
+    /* Allocate the stack for thread 0.  */
   tx_byte_allocate(ModuleBytePool, (VOID **) &pointer, DEFAULT_STACK_SIZE, TX_NO_WAIT);
 
-  /* Create the main thread. */
+    /* Create the main thread.  */
   tx_thread_create(MainThread, "Module Main Thread", MainThread_Entry, 0,
-                   pointer, DEFAULT_STACK_SIZE,
+            pointer, DEFAULT_STACK_SIZE,
                    MAIN_THREAD_PRIO, MAIN_THREAD_PREEMPTION_THRESHOLD, TX_NO_TIME_SLICE, TX_AUTO_START);
-
 }
-
 /**
   * @brief  Module main thread.
   * @param  thread_input: thread id
@@ -154,16 +151,19 @@ void MainThread_Entry(ULONG thread_input)
   *(ULONG *)READONLY_REGION = 0xABABABAB;
   tx_thread_sleep(TX_TIMER_TICKS_PER_SECOND / 10);
 
+  /* Notify module manager about job finish */
+  s_msg = PROCESSING_FINISHED;
+  tx_queue_send(ResidentQueue, &s_msg, TX_NO_WAIT);
+
   /* Suppress unused variable warning */
   UNUSED(readbuffer);
 
-  /* Stay here, waiting for the module manager to stop and loading the module*/
+  /* Stay here, waiting for the module manager to stop and loading the module */
   while(1)
   {
     tx_thread_sleep(10);
   }
 }
-
 /**
   * @brief  This function is executed in case of error occurrence.
   * @retval None

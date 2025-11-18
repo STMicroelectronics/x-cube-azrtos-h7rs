@@ -25,6 +25,10 @@
 extern "C" {
 #endif
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "ux_api.h"
 #include "ux_device_descriptors.h"
@@ -43,7 +47,6 @@ extern "C" {
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
-#define USBX_DEVICE_MEMORY_STACK_SIZE       38 * 1024
 
 #define UX_DEVICE_APP_THREAD_STACK_SIZE   1024
 #define UX_DEVICE_APP_THREAD_PRIO         10
@@ -85,13 +88,13 @@ void USBX_APP_Device_Init(void);
 #define UX_DEVICE_APP_THREAD_START_OPTION  TX_AUTO_START
 #endif
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 typedef enum
 {
   STOP_USB_DEVICE = 1,
   START_USB_DEVICE,
 } USB_MODE_STATE;
-/* USER CODE END 1 */
+/* USER CODE END 2 */
 
 #ifdef __cplusplus
 }

@@ -146,13 +146,13 @@ typedef struct
 /**
   * @brief STM32H7S78 Discovery BSP Driver version number
   */
-#define STM32H7S78_DK_BSP_VERSION_MAIN   (0x01U) /*!< [31:24] main version */
-#define STM32H7S78_DK_BSP_VERSION_SUB1   (0x00U) /*!< [23:16] sub1 version */
-#define STM32H7S78_DK_BSP_VERSION_SUB2   (0x01U) /*!< [15:8]  sub2 version */
-#define STM32H7S78_DK_BSP_VERSION_RC     (0x00U) /*!< [7:0]  release candidate */
+#define STM32H7S78_DK_BSP_VERSION_MAIN   (0x01UL) /*!< [31:24] main version */
+#define STM32H7S78_DK_BSP_VERSION_SUB1   (0x00UL) /*!< [23:16] sub1 version */
+#define STM32H7S78_DK_BSP_VERSION_SUB2   (0x02UL) /*!< [15:8]  sub2 version */
+#define STM32H7S78_DK_BSP_VERSION_RC     (0x00UL) /*!< [7:0]  release candidate */
 #define STM32H7S78_DK_BSP_VERSION        ((STM32H7S78_DK_BSP_VERSION_MAIN << 24)\
                                           |(STM32H7S78_DK_BSP_VERSION_SUB1 << 16)\
-                                          |(STM32H7S78_DK_BSP_VERSION_SUB2 << 8 )\
+                                          |(STM32H7S78_DK_BSP_VERSION_SUB2 << 8)\
                                           |(STM32H7S78_DK_BSP_VERSION_RC))
 
 #define STM32H7S78_DK_BSP_BOARD_NAME  "STM32H7S78-DK"

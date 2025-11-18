@@ -23,7 +23,7 @@
 
 //#define USE_DYNAMIC_MEMORY_ALLOCATION
 
-#if defined(__clang__)
+#if defined (__ARMCC_VERSION) /* For arm compiler 5 & 6 */
 @/**************************************************************************/
 @/*                                                                        */
 @/*       Copyright (c) Microsoft Corporation. All rights reserved.        */
@@ -47,6 +47,11 @@
 @/**************************************************************************/
 @
 @
+
+#ifdef TX_INCLUDE_USER_DEFINE_FILE
+#include "tx_user.h"
+#endif
+
     .global     _tx_thread_system_stack_ptr
     .global     _tx_initialize_unused_memory
     .global     _tx_timer_interrupt
@@ -193,14 +198,12 @@ __tx_BadHandler:
 __tx_HardfaultHandler:
     B       __tx_HardfaultHandler
 
-
 @ /* added to catch the SVC */
 
     .global  __tx_SVCallHandler
     .thumb_func
 __tx_SVCallHandler:
     B       __tx_SVCallHandler
-
 
 @ /* Generic interrupt handler template */
     .global  __tx_IntHandler
@@ -280,6 +283,11 @@ __tx_DBGHandler:
 ;/**************************************************************************/
 ;/**************************************************************************/
 ;
+
+#ifdef TX_INCLUDE_USER_DEFINE_FILE
+#include "tx_user.h"
+#endif
+
     EXTERN  _tx_thread_system_stack_ptr
     EXTERN  _tx_initialize_unused_memory
     EXTERN  _tx_timer_interrupt
@@ -430,7 +438,7 @@ SysTick_Handler:
     END
 #endif
 
-#if defined (__GNUC__) && !defined(__clang__)
+#if (defined(__GNUC__) && !defined(__ARMCC_VERSION))
 /**************************************************************************/
 /*                                                                        */
 /*       Copyright (c) Microsoft Corporation. All rights reserved.        */
@@ -442,7 +450,6 @@ SysTick_Handler:
 /*                                                                        */
 /**************************************************************************/
 
-
 /**************************************************************************/
 /**************************************************************************/
 /**                                                                       */
@@ -453,6 +460,9 @@ SysTick_Handler:
 /**************************************************************************/
 /**************************************************************************/
 
+#ifdef TX_INCLUDE_USER_DEFINE_FILE
+#include "tx_user.h"
+#endif
 
    .global     _tx_thread_system_stack_ptr
    .global     _tx_initialize_unused_memory
@@ -469,8 +479,6 @@ SysTick_Handler:
    .global     __tx_PendSVHandler                    // PendSV
    .global     __tx_SysTickHandler                   // SysTick
    .global     __tx_IntHandler                       // Int 0
-
-
 
 SYSTEM_CLOCK      =   600000000
 SYSTICK_CYCLES    =   ((SYSTEM_CLOCK / 1000) -1)
@@ -587,7 +595,6 @@ _tx_initialize_low_level:
 
     BX      lr
 // }
-
 
 /* Define shells for each of the unused vectors.  */
  

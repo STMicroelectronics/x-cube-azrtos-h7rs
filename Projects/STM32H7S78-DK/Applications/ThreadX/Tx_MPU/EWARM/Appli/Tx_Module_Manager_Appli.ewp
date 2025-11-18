@@ -519,6 +519,7 @@
                 <option>
                     <name>ADefines</name>
                     <state>TXM_MODULE_MANAGER_16_MPU</state>
+                    <state>TX_INCLUDE_USER_DEFINE_FILE</state>
                 </option>
                 <option>
                     <name>AList</name>
@@ -610,7 +611,8 @@
                 </option>
                 <option>
                     <name>AUserIncludes</name>
-                    <state></state>
+                    <state>$PROJ_DIR$/../../Appli/Inc
+</state>
                 </option>
                 <option>
                     <name>AExtraOptionsCheckV2</name>
@@ -695,7 +697,7 @@
                 </option>
                 <option>
                     <name>IlinkOutputFile</name>
-                    <state>Tx_Module_Manager.out</state>
+                    <state>Tx_Thread_MsgQueue_Appli.out</state>
                 </option>
                 <option>
                     <name>IlinkDebugInfoEnable</name>

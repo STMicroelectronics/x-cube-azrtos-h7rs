@@ -27,7 +27,7 @@ vertical-align: middle;
 <body>
 <div class="row">
 <section id="nx_iperf-application-description" class="col-sm-12 col-lg-8">
-<h2><b>Nx_Iperf application description</b></h2>
+<h2><b>Nx_Iperf Application Description</b></h2>
 <p>This application provides an example of Azure RTOS NetXDuo stack
 usage . It shows performance when using different modes : TCP_server,
 UDP_server, TCP_client and UDP_client. The main entry function
@@ -44,7 +44,7 @@ instance</li>
 </ul>
 <p>The application creates 1 thread :</p>
 <ul>
-<li><strong>NxAppThread</strong> (priority 4, PreemtionThreashold 4) :
+<li><strong>NxAppThread</strong> (priority 4, PreemptionThreshold 4) :
 created with the <i>TX_AUTO_START</i> flag to start automatically.</li>
 </ul>
 <p>The <strong>NxAppThread</strong> starts and performs the following
@@ -61,16 +61,16 @@ actions:</p>
 <p>The application then creates 4 threads with the same priorities :</p>
 <ul>
 <li><strong>thread_tcp_rx_iperf</strong> (priority 1,
-PreemtionThreashold 1) : created with the <i>TX_AUTO_START</i> flag to
+PreemptionThreshold 1) : created with the <i>TX_AUTO_START</i> flag to
 start automatically.</li>
 <li><strong>thread_tcp_tx_iperf</strong> (priority 1,
-PreemtionThreashold 1) : created with the <i>TX_AUTO_START</i> flag to
+PreemptionThreshold 1) : created with the <i>TX_AUTO_START</i> flag to
 start automatically.</li>
 <li><strong>thread_udp_rx_iperf</strong> (priority 1,
-PreemtionThreashold 1) : created with the <i>TX_AUTO_START</i> flag to
+PreemptionThreshold 1) : created with the <i>TX_AUTO_START</i> flag to
 start automatically.</li>
 <li><strong>thread_udp_tx_iperf</strong> (priority 1,
-PreemtionThreashold 1) : created with the <i>TX_AUTO_START</i> flag to
+PreemptionThreshold 1) : created with the <i>TX_AUTO_START</i> flag to
 start automatically.</li>
 </ul>
 <h4 id="expected-success-behavior"><b>Expected success behavior</b></h4>
@@ -81,7 +81,7 @@ test the performance on the web browser after entering the url
 http://<span class="citation" data-cites="IP">@IP</span>.</li>
 <li>To execute each Iperf test you must do the following steps and have
 the expected result in this link
-https://docs.microsoft.com/en-us/azure/rtos/netx-duo/netx-duo-iperf/chapter3
+https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/netx-duo/netx-duo-iperf/chapter3.md
 .</li>
 </ul>
 <h4 id="error-behaviors"><b>Error behaviors</b></h4>
@@ -117,7 +117,7 @@ traffic issues.</li>
   MACAddr[3] = 0x00;
   MACAddr[4] = 0x00;
   MACAddr[5] = 0x00;
-  heth.Init.MACAddr = &MACAddr[0];;</code></pre>
+  heth.Init.MACAddr = &amp;MACAddr[0];</code></pre>
 <h4 id="known-limitations"><b>Known limitations</b></h4>
 <ul>
 <li>The packet pool is not optimized. It can be less than that by
@@ -165,7 +165,7 @@ way contain a system API call (HAL or BSP).</li>
 <li>Using dynamic memory allocation requires to apply some changes to
 the linker file. ThreadX needs to pass a pointer to the first free
 memory location in RAM to the tx_application_define() function, using
-the “first_unused_memory” argument. This require changes in the linker
+the “first_unused_memory” argument. This requires changes in the linker
 files to expose this memory location.
 <ul>
 <li>For EWARM add the following section into the .icf file:</li>
@@ -186,7 +186,7 @@ or modify the line below in &quot;tx_initialize_low_level.S to match the memory 
      __RAM_segment_used_end__ = .;
      . = . + 64K;
      . = ALIGN(8);
-   } &gt;RAM_D1 AT&gt; RAM_D1</code></pre>
+   } &gt;RAM AT&gt; RAM</code></pre>
 <pre><code>The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
 In the example above the ThreadX heap size is set to 64KBytes.
 The ._threadx_heap must be located between the .bss and the ._user_heap_stack sections in the linker script.
@@ -269,7 +269,7 @@ environment</b></h3>
 <ul>
 <li>This application runs on STM32H7S3L8xx devices</li>
 <li>This application has been tested with STMicroelectronics
-NUCLEO-H7S3L8xx boards Revision MB1737-H7S3L8-B02 and can be easily
+NUCLEO-H7S3L8 boards revision: MB1737-H7S3L8-B02 and can be easily
 tailored to any other supported device and development board.</li>
 <li>This application uses USART3 to display logs, the hyperterminal
 configuration is as follows:
@@ -285,7 +285,7 @@ configuration is as follows:
 <p>To configure STM32CubeIDE Debug Configuration, you must do the
 following :</p>
 <pre><code>1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project-&gt;Debugger Configuration
-2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the "Load Symbols" option
+2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the &quot;Load Symbols&quot; option
 3. Move up the application in the startup</code></pre>
 <p>In order to make the program work, you must do the following :</p>
 <ul>
@@ -293,8 +293,7 @@ following :</p>
 <li>Rebuild all files and load your image into target memory</li>
 <li>Run the application</li>
 <li>Run the [iperf tool] by following steps described in this link
-https://docs.microsoft.com/en-us/azure/rtos/netx-duo/netx-duo-iperf/chapter3
-.</li>
+https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/netx-duo/netx-duo-iperf/chapter3.md.</li>
 </ul>
 </section>
 </div>

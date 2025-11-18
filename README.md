@@ -27,7 +27,7 @@ Azure RTOS is a professional grade, highly reliable and market proven Middleware
 One of the following toolchains:
 
 - IAR Embedded Workbench for ARM (EWARM) toolchain 9.20.1 + ST-LINKV3
-- [STM32CubeIDE V1.18.0](https://www.st.com/en/development-tools/stm32cubeide.html) + ST-LINKV3
+- [STM32CubeIDE V2.0.0](https://www.st.com/en/development-tools/stm32cubeide.html) + ST-LINKV3
 - RealView Microcontroller Development Kit (MDK-ARM) toolchain V5.39 + ST-LINKV3
 
 ## Supported Devices and Boards by applications
@@ -87,6 +87,8 @@ Details about the content of this release are available in the release note [her
 |USBX    | Ux_Device_HID_CDC_ACM         | It demonstrates how to develop a composite USB Device application. The application is designed to emulate a USB HID mouse combined with an USB-to-UART bridge following the Virtual COM Port (VCP) implementation, the code provides all required device descriptors framework and associated Class descriptor report to build a compliant composite USB HID and CDC_ACM device. [readme](./Projects/NUCLEO-H7S3L8/Applications/USBX/Ux_Device_HID_CDC_ACM/README.md). |
 |FileX   | Fx_uSD_File_Edit              | It demonstrates how to develop a basic SD card file operations application. The application is designed to handle SD card insertion/removal events, and depending on that state, it starts and stops file operations from and into the SD card. [readme](./Projects/STM32H7S78-DK/Applications/FileX/Fx_uSD_File_Edit/README.md)  |
 |FileX   | Fx_MultiAccess                | It demonstrates how the FileX's concurrent file access capabilities. The application is designed to execute file operations on the SD card device, the code provides all required software code for handling SD card I/O operations. [readme](./Projects/STM32H7S78-DK/Applications/FileX/Fx_MultiAccess/README.md) |
+|FileX   | Fx_Nand_Write_Read_File       | It demonstrates how to create a Fat File system on the NAND flash using FileX alongside LevelX. The application is designed to execute file operations on the Winbond W25N01GVZEIG NAND flash device, the code provides all required software code for properly managing it [readme](./Projects/STM32H7S78-DK/Applications/FileX/Fx_Nand_Write_Read_File/README.md) |
+|FileX   | Fx_Nor_Write_Read_File        | It demonstrates how to create a Fat File system on the NOR flash using FileX alongside LevelX. The application is designed to execute file operations on the Winbond W25Q128JV NOR flash device, the code provides all required software code for properly managing it [readme](./Projects/STM32H7S78-DK/Applications/FileX/Fx_Nor_Write_Read_File/README.md) |
 |NetXDuo | Nx_TCP_Echo_Server            | It demonstrates how to develop a NetX TCP server to communicate with a remote client using the NetX TCP socket API. [readme](./Projects/NUCLEO-H7S3L8/Applications/NetXDuo/Nx_TCP_Echo_Server/README.md) |
 |NetXDuo | Nx_TCP_Echo_Client            | It demonstrates how to develop a NetX TCP client to communicate with a remote sever using the NetX TCP socket API. [readme](./Projects/NUCLEO-H7S3L8/Applications/NetXDuo/Nx_TCP_Echo_Client/README.md) |
 |NetXDuo | Nx_UDP_Echo_Server            | It demonstrates how to develop a NetX UDP server to communicate with a remote client using the NetX UDP socket API. [readme](./Projects/NUCLEO-H7S3L8/Applications/NetXDuo/Nx_UDP_Echo_Server/README.md) |
@@ -96,7 +98,7 @@ Details about the content of this release are available in the release note [her
 |NetXDuo | Nx_Iperf                      | It shows the performance of NetX IPerf stack when using different modes: TCP_server, UDP_server, TCP_client and UDP_client. [readme](./Projects/NUCLEO-H7S3L8/Applications/NetXDuo/Nx_Iperf/README.md) |
 |NetXDuo | Nx_SNTP_Client                | It demonstrates how to develop a NetX SNTP client and connect with an STNP server to get a time update. [readme](./Projects/NUCLEO-H7S3L8/Applications/NetXDuo/Nx_SNTP_Client/README.md) |
 |NetXDuo | Nx_MQTT_Client_wifi           | It demonstrates how to exchange data between client and server using MQTT protocol in an encrypted mode supporting TLS v1.2. [readme](./Projects/STM32H7S78-DK/Applications/NetXDuo/Nx_MQTT_Client_wifi/README.md) |
-|NetXDuo | Nx_Iperf_wifi                 | It shows the performance of NetX IPerf stack when using different modes: TCP_server, UDP_server, TCP_client and UDP_client. [readme](./Projects/STM32H7S78-DK/Applications/NetXDuo/Nx_Iperf_wifi/README.md) |
+|NetXDuo | Nx_Iperf_wifi                 | It shows the performance of NetX IPerf stack when using different modes: TCP_server, UDP_server, TCP_client and UDP_client. [readme](./Projects/NUCLEO-H7S3L8/Applications/NetXDuo/Nx_Iperf_wifi/README.md) |
 |NetXDuo | Nx_WebServer_wifi             | It demonstrates how to develop Web HTTP server based application. It is designed to load files and static web pages stored in SD card using a Web HTTP server, the code provides all required features to build a compliant Web HTTP Server.  [readme](./Projects/STM32H7S78-DK/Applications/NetXDuo/Nx_WebServer_wifi/README.md) |
 
 ## Troubleshooting

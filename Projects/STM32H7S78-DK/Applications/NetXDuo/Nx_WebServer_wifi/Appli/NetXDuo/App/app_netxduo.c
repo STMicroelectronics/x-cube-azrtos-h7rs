@@ -19,6 +19,10 @@
 
 /* USER CODE END Header */
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "app_netxduo.h"
 
@@ -337,7 +341,7 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
   return ret;
 }
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 /**
 * @brief  ip address change callback
 * @param  ip_instance : NX_IP instance registered for this callback
@@ -361,7 +365,7 @@ static VOID ip_address_change_notify_callback(NX_IP *ip_instance, VOID *ptr)
 static VOID App_Main_Thread_Entry(ULONG thread_input)
 {
   UINT ret;
-  
+
   ret = nx_ip_address_change_notify(&IpInstance, ip_address_change_notify_callback, NULL);
   if (ret != NX_SUCCESS)
   {
@@ -566,4 +570,4 @@ void LedThread_Entry(ULONG thread_input)
     tx_thread_sleep(500);
   }
 }
-/* USER CODE END 1 */
+/* USER CODE END 2 */

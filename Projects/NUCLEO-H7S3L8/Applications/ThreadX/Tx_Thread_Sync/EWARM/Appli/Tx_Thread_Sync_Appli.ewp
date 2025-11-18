@@ -515,7 +515,7 @@
                 </option>
                 <option>
                     <name>ADefines</name>
-                    <state></state>
+                    <state>TX_INCLUDE_USER_DEFINE_FILE</state>
                 </option>
                 <option>
                     <name>AList</name>
@@ -591,7 +591,7 @@
                 </option>
                 <option>
                     <name>AOutputFile</name>
-                    <state>$FILE_BNAME$.o</state>
+                    <state></state>
                 </option>
                 <option>
                     <name>ALimitErrorsCheck</name>
@@ -607,7 +607,13 @@
                 </option>
                 <option>
                     <name>AUserIncludes</name>
-                    <state></state>
+                    <state>$PROJ_DIR$/../../Appli/Inc</state>
+                    <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/threadx/common/inc/</state>
+                    <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/threadx/ports/cortex_m7/iar/inc/</state>
+                    <state>$PROJ_DIR$/../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc</state>
+                    <state>$PROJ_DIR$/../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc/Legacy</state>
+                    <state>$PROJ_DIR$/../../../../../../../Drivers/CMSIS/Device/ST/STM32H7RSxx/Include</state>
+                    <state>$PROJ_DIR$/../../../../../../../Drivers/CMSIS/Include</state>
                 </option>
                 <option>
                     <name>AExtraOptionsCheckV2</name>
@@ -989,7 +995,7 @@
                 </option>
                 <option>
                     <name>IlinkTrustzoneImportLibraryOut</name>
-                    <state>Tx_Thread_Sync_Appli_import_lib.o</state>
+                    <state></state>
                 </option>
                 <option>
                     <name>OILinkExtraOption</name>

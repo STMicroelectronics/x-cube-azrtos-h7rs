@@ -25,6 +25,10 @@
 extern "C" {
 #endif
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "ux_api.h"
 #include "main.h"
@@ -35,6 +39,7 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 #include "ux_hcd_stm32.h"
 #include "usb_otg.h"
+
 #if defined(_TRACE)
 #include "usbpd_trace.h"
 #endif /* _TRACE */
@@ -46,7 +51,6 @@ extern "C" {
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
-#define USBX_HOST_MEMORY_STACK_SIZE     1024 * 46
 
 #define UX_HOST_APP_THREAD_STACK_SIZE   1024
 #define UX_HOST_APP_THREAD_PRIO         10
@@ -115,14 +119,13 @@ VOID USBX_APP_Host_Init(VOID);
 #define UX_HOST_APP_THREAD_START_OPTION  TX_AUTO_START
 #endif
 
-/* USER CODE BEGIN 1 */
-
+/* USER CODE BEGIN 2 */
 typedef enum
 {
   STOP_USB_HOST = 1,
   START_USB_HOST,
 } USB_MODE_STATE;
-/* USER CODE END 1 */
+/* USER CODE END 2 */
 
 #ifdef __cplusplus
 }

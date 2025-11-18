@@ -18,6 +18,10 @@
   */
 /* USER CODE END Header */
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "app_usbx_host.h"
 
@@ -82,23 +86,6 @@ UINT MX_USBX_Host_Init(VOID *memory_ptr)
   /* USER CODE BEGIN MX_USBX_Host_Init0 */
 
   /* USER CODE END MX_USBX_Host_Init0 */
-
-  /* Allocate the stack for USBX Memory */
-  if (tx_byte_allocate(byte_pool, (VOID **) &pointer,
-                       USBX_HOST_MEMORY_STACK_SIZE, TX_NO_WAIT) != TX_SUCCESS)
-  {
-    /* USER CODE BEGIN USBX_ALLOCATE_STACK_ERROR */
-    return TX_POOL_ERROR;
-    /* USER CODE END USBX_ALLOCATE_STACK_ERROR */
-  }
-
-  /* Initialize USBX Memory */
-  if (ux_system_initialize(pointer, USBX_HOST_MEMORY_STACK_SIZE, UX_NULL, 0) != UX_SUCCESS)
-  {
-    /* USER CODE BEGIN USBX_SYSTEM_INITIALIZE_ERROR */
-    return UX_ERROR;
-    /* USER CODE END USBX_SYSTEM_INITIALIZE_ERROR */
-  }
 
   /* Install the host portion of USBX */
   if (ux_host_stack_initialize(ux_host_event_callback) != UX_SUCCESS)
@@ -187,7 +174,6 @@ UINT MX_USBX_Host_Init(VOID *memory_ptr)
   {
     return TX_THREAD_ERROR;
   }
-
 /* Allocate Memory for the ux_app_Queue_UCPD  */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer,
                        APP_QUEUE_SIZE * sizeof(ULONG), TX_NO_WAIT) != TX_SUCCESS)
@@ -201,7 +187,6 @@ UINT MX_USBX_Host_Init(VOID *memory_ptr)
   {
     return TX_QUEUE_ERROR;
   }
-
   /* USER CODE END MX_USBX_Host_Init1 */
 
   return ret;
@@ -218,7 +203,6 @@ static VOID app_ux_host_thread_entry(ULONG thread_input)
 
   /* Initialization of USB host */
   USBX_APP_Host_Init();
-
   while (1)
   {
     /* wait for message queue from callback event */
@@ -451,7 +435,7 @@ VOID ux_host_error_callback(UINT system_level, UINT system_context, UINT error_c
   /* USER CODE END ux_host_error_callback1 */
 }
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 
 /**
   * @brief  USBX_APP_Host_Init
@@ -485,4 +469,4 @@ VOID USBX_APP_Host_Init(VOID)
 
   /* USER CODE END USB_Host_Init_PostTreatment1 */
 }
-/* USER CODE END 1 */
+/* USER CODE END 2 */

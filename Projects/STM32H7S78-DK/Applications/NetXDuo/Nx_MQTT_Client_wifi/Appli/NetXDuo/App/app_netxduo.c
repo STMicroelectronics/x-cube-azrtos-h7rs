@@ -18,6 +18,10 @@
   */
 /* USER CODE END Header */
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "app_netxduo.h"
 
@@ -274,7 +278,7 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
   return ret;
 }
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 /**
 * @brief  ip address change callback.
 * @param ip_instance: NX_IP instance
@@ -718,4 +722,4 @@ static VOID App_MQTT_Client_Thread_Entry(ULONG thread_input)
   /* test OK -> success Handler */
   Success_Handler();
 }
-/* USER CODE END 1 */
+/* USER CODE END 2 */

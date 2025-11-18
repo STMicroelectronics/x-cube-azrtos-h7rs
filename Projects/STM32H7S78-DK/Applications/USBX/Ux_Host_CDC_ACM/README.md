@@ -84,7 +84,7 @@ None
 
 ### <b>Keywords</b>
 
-Connectivity, USBX Host, USBPD,  ThreadX, USB, CDC_ACM, UART, USART
+Connectivity, USBX Host, USBPD, ThreadX, USB, CDC_ACM, UART, USART
 
 ### <b>Hardware and Software environment</b>
 
@@ -132,5 +132,6 @@ In order to make the program work, you must do the following :
  - Click the user button to send predefined data from the Host board to the CDC device.
 
 ### <b>Notes</b>
+
 - The user has to check the list of the COM ports in Device Manager to find out the number of the COM ports that have been assigned (by OS) to the Stlink VCP.
 - The application uses the external HSE clock as USB source clock.

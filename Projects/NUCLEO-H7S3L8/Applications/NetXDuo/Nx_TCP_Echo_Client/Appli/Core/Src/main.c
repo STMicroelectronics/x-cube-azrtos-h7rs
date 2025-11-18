@@ -345,10 +345,11 @@ void Success_Handler(void)
   while(1)
   {
     HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
-    tx_thread_sleep(50);
+    HAL_Delay(1000);
   }
   /* USER CODE END Success_Handler_Debug */
 }
+
 
 /* USER CODE END 4 */
 
@@ -453,8 +454,7 @@ void Error_Handler(void)
   }
   /* USER CODE END Error_Handler_Debug */
 }
-
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.

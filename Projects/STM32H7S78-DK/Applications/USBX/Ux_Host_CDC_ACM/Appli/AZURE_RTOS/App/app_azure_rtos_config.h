@@ -26,6 +26,10 @@
 extern "C" {
 #endif
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 
 /* Private includes ----------------------------------------------------------*/
@@ -45,7 +49,7 @@ extern "C" {
 
 #define TX_APP_MEM_POOL_SIZE                     1024
 
-#define UX_HOST_APP_MEM_POOL_SIZE                18*1024
+#define UX_APP_MEM_POOL_SIZE                     18*1024
 
 #define USBPD_APP_MEM_POOL_SIZE 6144
 
@@ -67,6 +71,10 @@ extern "C" {
 /* USER CODE BEGIN PD */
 
 /* USER CODE END PD */
+
+/* USER CODE BEGIN 2 */
+
+/* USER CODE END 2 */
 
 #ifdef __cplusplus
 }

@@ -1,7 +1,7 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file    ThreadX/Tx_CMSIS_Wrapper/CM7/Inc/app_tx_cmsisrtos.h
+  * @file    ThreadX/Tx_CMSIS_Wrapper/Appli/Inc/app_tx_cmsisrtos.h
   * @author  MCD Application Team
   * @brief   ThreadX CMSIS RTOS Wrapper applicative header file
   ******************************************************************************
@@ -24,6 +24,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
 
 /* Includes ------------------------------------------------------------------*/
 /* Private includes ----------------------------------------------------------*/
@@ -86,11 +89,11 @@ uint32_t App_TX_CmsisRTOS_Init(void);
 #define APP_THREAD_STACK_SIZE    2*256
 /* USER CODE END Private defines */
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 
-/* USER CODE END 1 */
+/* USER CODE END 2 */
 
 #ifdef __cplusplus
- }
+}
 #endif
 #endif /* __APP_THREADX_H__ */

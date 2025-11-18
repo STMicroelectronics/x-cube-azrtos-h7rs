@@ -25,6 +25,10 @@
 extern "C" {
 #endif
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "nx_api.h"
 
@@ -114,12 +118,12 @@ extern "C" {
 
 /* Exported functions prototypes ---------------------------------------------*/
 UINT MX_NetXDuo_Init(VOID *memory_ptr);
+
+/* USER CODE BEGIN EFP */
 UINT tls_setup_callback(NXD_MQTT_CLIENT *client_pt,
                         NX_SECURE_TLS_SESSION *TLS_session_ptr,
                         NX_SECURE_X509_CERT *certificate_ptr,
                         NX_SECURE_X509_CERT *trusted_certificate_ptr);
-/* USER CODE BEGIN EFP */
-
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
@@ -127,9 +131,9 @@ UINT tls_setup_callback(NXD_MQTT_CLIENT *client_pt,
 
 /* USER CODE END PD */
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 
-/* USER CODE END 1 */
+/* USER CODE END 2 */
 
 #ifdef __cplusplus
 }

@@ -356,9 +356,9 @@
             <ClangAsOpt>1</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define></Define>
+              <Define>TX_INCLUDE_USER_DEFINE_FILE</Define>
               <Undefine></Undefine>
-              <IncludePath></IncludePath>
+              <IncludePath>../../Appli/Core/Inc;../../Appli/AZURE_RTOS/App;../../Appli/FileX/App;../../Appli/FileX/Target;../../Appli/USBX/App;../../Appli/USBX/Target;../../Appli/NetXDuo/App;../../Appli/USBPD/App;../../Appli/USBPD/Target;../../../../../../../Middlewares/ST/filex/common/inc/;../../../../../../../Middlewares/ST/filex/ports/generic/inc/;../../../../../../../Middlewares/ST/usbx/common/core/inc/;../../../../../../../Middlewares/ST/usbx/ports/generic/inc/;../../../../../../../Middlewares/ST/usbx/common/usbx_network/inc/;../../../../../../../Middlewares/ST/usbx/common/usbx_device_classes/inc/;../../../../../../../Middlewares/ST/usbx/common/core/inc/;../../../../../../../Middlewares/ST/usbx/ports/generic/inc/;../../../../../../../Middlewares/ST/usbx/common/usbx_stm32_device_controllers/;../../../../../../../Middlewares/ST/netxduo/addons/dhcp/;../../../../../../../Middlewares/ST/netxduo/common/inc/;../../../../../../../Middlewares/ST/netxduo/ports/cortex_m7/ac5/inc/;../../../../../../../Middlewares/ST/netxduo/addons/web/;../../../../../../../Middlewares/ST/threadx/common/inc/;../../../../../../../Middlewares/ST/threadx/ports/cortex_m7/ac6/inc/;../../../../../../../Drivers/BSP/STM32H7S78-DK;../../../../../../../Drivers/BSP/Components/tcpp0203;../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc;../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc/Legacy;../../../../../../../Middlewares/ST/STM32_USBPD_Library/Core/inc;../../../../../../../Middlewares/ST/STM32_USBPD_Library/Devices/STM32H7RSXX/inc;../../../../../../../Drivers/CMSIS/Device/ST/STM32H7RSxx/Include;../../../../../../../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Aads>
           <LDads>
@@ -564,6 +564,11 @@
               <FileType>1</FileType>
               <FilePath>../../Appli/USBX/App/app_usbx_device.c</FilePath>
             </File>
+            <File>
+              <FileName>app_usbx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../Appli/USBX/App/app_usbx.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -723,21 +728,6 @@
               <FileName>stm32h7rsxx_hal_sd_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_sd_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7rsxx_hal_mmc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_mmc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7rsxx_hal_mmc_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_mmc_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7rsxx_hal_sdio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_sdio.c</FilePath>
             </File>
             <File>
               <FileName>stm32h7rsxx_ll_ucpd.c</FileName>

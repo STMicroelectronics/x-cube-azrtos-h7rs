@@ -533,7 +533,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>TX_INCLUDE_USER_DEFINE_FILE</state>
         </option>
         <option>
           <name>AList</name>
@@ -609,7 +609,7 @@
         </option>
         <option>
           <name>AOutputFile</name>
-          <state>$FILE_BNAME$.o</state>
+          <state></state>
         </option>
         <option>
           <name>ALimitErrorsCheck</name>
@@ -625,7 +625,28 @@
         </option>
         <option>
           <name>AUserIncludes</name>
-          <state></state>
+          <state>$PROJ_DIR$/../../Appli/Core/Inc</state>
+          <state>$PROJ_DIR$/../../Appli/AZURE_RTOS/App</state>
+          <state>$PROJ_DIR$/../../Appli/USBX/App</state>
+          <state>$PROJ_DIR$/../../Appli/USBX/Target</state>
+          <state>$PROJ_DIR$/../../Appli/USBPD/App</state>
+          <state>$PROJ_DIR$/../../Appli/USBPD/Target</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/usbx/common/core/inc/</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/usbx/ports/generic/inc/</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/usbx/common/core/inc/</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/usbx/ports/generic/inc/</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/usbx/common/usbx_stm32_device_controllers/</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/usbx/common/usbx_device_classes/inc/</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/threadx/common/inc/</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/threadx/ports/cortex_m7/iar/inc/</state>
+          <state>$PROJ_DIR$/../../../../../../../Drivers/BSP/STM32H7RSxx_Nucleo</state>
+          <state>$PROJ_DIR$/../../../../../../../Drivers/BSP/Components/tcpp0203</state>
+          <state>$PROJ_DIR$/../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc</state>
+          <state>$PROJ_DIR$/../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc/Legacy</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/STM32_USBPD_Library/Core/inc</state>
+          <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/STM32_USBPD_Library/Devices/STM32H7RSXX/inc</state>
+          <state>$PROJ_DIR$/../../../../../../../Drivers/CMSIS/Device/ST/STM32H7RSxx/Include</state>
+          <state>$PROJ_DIR$/../../../../../../../Drivers/CMSIS/Include</state>
         </option>
         <option>
           <name>AExtraOptionsCheckV2</name>
@@ -1012,7 +1033,7 @@
         </option>
         <option>
           <name>IlinkTrustzoneImportLibraryOut</name>
-          <state>Ux_Device_HID_Appli_import_lib.o</state>
+          <state></state>
         </option>
         <option>
           <name>OILinkExtraOption</name>
@@ -1195,6 +1216,9 @@
             </file>
             <file>
               <name>$PROJ_DIR$/../../Appli/USBX/App/app_usbx_device.c</name>
+            </file>
+            <file>
+              <name>$PROJ_DIR$/../../Appli/USBX/App/app_usbx.c</name>
             </file>
           </group>
         </group>
@@ -2191,9 +2215,6 @@
       <name>STM32_USBPD_Library</name>
       <file>
         <name>$PROJ_DIR$/../../../../../../../Middlewares/ST/STM32_USBPD_Library/Core/lib/USBPDCORE_NOPD_CM7_wc32.a</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$/../../../../../../../Middlewares/ST/STM32_USBPD_Library/Core/lib/USBPDCORE_NOPD_CM7_Keil.lib</name>
       </file>
       <file>
         <name>$PROJ_DIR$/../../../../../../../Middlewares/ST/STM32_USBPD_Library/Core/src/usbpd_trace.c</name>

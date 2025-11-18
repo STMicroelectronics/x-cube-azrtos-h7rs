@@ -132,8 +132,8 @@ In order to make the program work, you must do the following :
  - Rebuild all files and load your image into target memory
  - Run the application
 
-<b>Note</b>
+### <b>Note</b>
 
  - The user has to check the list of the COM ports in Device Manager to find out the number of the COM ports that have been assigned (by OS) to the Stlink VCP .
  - The application uses the external HSE clock as USB source clock.
- - When Using a keyboard with multiple interfaces user must increase the size of USBX stack to avoid memory insufficient, increase the value of "USBX_HOST_MEMORY_STACK_SIZE", "UX_HOST_APP_MEM_POOL_SIZE" and "UX_HOST_CLASS_HID_USAGES".
+ - When Using a keyboard with multiple interfaces user must increase the size of USBX stack to avoid memory insufficient, increase the value of "USBX_HOST_MEMORY_STACK_SIZE", "UX_APP_MEM_POOL_SIZE" and "UX_HOST_CLASS_HID_USAGES".

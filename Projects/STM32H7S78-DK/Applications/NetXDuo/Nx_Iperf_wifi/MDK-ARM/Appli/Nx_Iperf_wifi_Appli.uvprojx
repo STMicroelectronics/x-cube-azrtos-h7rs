@@ -356,9 +356,9 @@
             <ClangAsOpt>1</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define></Define>
+              <Define>TX_INCLUDE_USER_DEFINE_FILE</Define>
               <Undefine></Undefine>
-              <IncludePath></IncludePath>
+              <IncludePath>../../../../../../../Drivers/CMSIS/Include;..\..\Appli\Core\Inc</IncludePath>
             </VariousControls>
           </Aads>
           <LDads>

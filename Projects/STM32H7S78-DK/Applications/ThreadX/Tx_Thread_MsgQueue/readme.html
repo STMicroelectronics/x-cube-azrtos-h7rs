@@ -58,6 +58,7 @@ LED</i> is toggled once.</li>
 <h4 id="expected-success-behavior"><b>Expected success behavior</b></h4>
 <p><i>GREEN_LED</i> toggles every 200ms and <i>RED_LED</i> toggles every
 500ms indefinitely.</p>
+<p>Information regarding the message queue processing progress printed to the serial port.</p>
 <h4 id="error-behaviors"><b>Error behaviors</b></h4>
 <p>On failure, an error message is printed to the serial port while the
 <i>GREEN_LED</i> is turned OFF. <i>RED_LED</i> toggles every 1 second if
@@ -132,10 +133,10 @@ the “USE_DYNAMIC_MEMORY_ALLOCATION” flag.</li>
 environment</b></h3>
 <ul>
 <li>This application runs on STM32H7S7L8xx devices.</li>
-<li>This application has been tested with STMicroelectronics STM32H7S78-DK
-boards revision MB1736-H7S7L8-D01 and can be easily tailored to any
-other supported device and development board.</li>
-<li>This application uses USART3 to display logs, the hyperterminal
+<li>This application has been tested with STMicroelectronics
+STM32H7S78-DK boards revision MB1736-H7S7L8-D01 and can be easily
+tailored to any other supported device and development board.</li>
+<li>This application uses USART4 to display logs, the hyperterminal
 configuration is as follows:
 <ul>
 <li>BaudRate = 115200 baud</li>
@@ -149,9 +150,9 @@ configuration is as follows:
 <p>To configure STM32CubeIDE Debug Configuration, you must do the
 following :</p>
 <pre><code>1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project-&gt;Debugger Configuration
-2. Add in the startup the Boot_XIP.elf in Project-&gt;Debugger Configuration and uncheck the "Load Symbols" option
+2. Add in the startup the Boot_XIP.elf in Project-&gt;Debugger Configuration and uncheck the &quot;Load Symbols&quot; option
 3. Move up the application in the startup</code></pre>
-<p>In order to make the program work, you must do the following :</p>
+<p>In order to make the program work, you must do the following:</p>
 <ul>
 <li>Open your preferred toolchain</li>
 <li>Rebuild all files and load your image into target memory</li>

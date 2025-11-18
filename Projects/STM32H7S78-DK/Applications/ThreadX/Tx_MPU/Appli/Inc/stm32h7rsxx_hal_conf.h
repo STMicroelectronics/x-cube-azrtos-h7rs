@@ -48,7 +48,6 @@
 /* #define HAL_FDCAN_MODULE_ENABLED   */
 /* #define HAL_GFXMMU_MODULE_ENABLED   */
 /* #define HAL_GFXTIM_MODULE_ENABLED   */
-#define HAL_GPIO_MODULE_ENABLED
 /* #define HAL_GPU2D_MODULE_ENABLED   */
 /* #define HAL_HASH_MODULE_ENABLED   */
 /* #define HAL_HCD_MODULE_ENABLED   */
@@ -75,6 +74,7 @@
 /* #define HAL_RTC_MODULE_ENABLED   */
 /* #define HAL_SAI_MODULE_ENABLED   */
 /* #define HAL_SD_MODULE_ENABLED   */
+/* #define HAL_SDIO_MODULE_ENABLED   */
 /* #define HAL_SDRAM_MODULE_ENABLED   */
 /* #define HAL_SMARTCARD_MODULE_ENABLED   */
 /* #define HAL_SMBUS_MODULE_ENABLED   */
@@ -86,6 +86,7 @@
 /* #define HAL_USART_MODULE_ENABLED   */
 /* #define HAL_WWDG_MODULE_ENABLED   */
 /* #define HAL_XSPI_MODULE_ENABLED   */
+#define HAL_GPIO_MODULE_ENABLED
 #define HAL_PWR_MODULE_ENABLED
 #define HAL_DMA_MODULE_ENABLED
 #define HAL_RCC_MODULE_ENABLED
@@ -163,7 +164,7 @@
   *        frequency. This clock source is inserted directly through I2S_CKIN pad.
   */
 #if !defined  (EXTERNAL_CLOCK_VALUE)
-#define EXTERNAL_CLOCK_VALUE      12288000UL /*!< Value of the external clock source in Hz */
+#define EXTERNAL_CLOCK_VALUE      48000UL /*!< Value of the external clock source in Hz */
 #endif /* EXTERNAL_CLOCK_VALUE */
 
 /* Tip: To avoid modifying this file each time you need to use different HSE,
@@ -236,7 +237,7 @@
 /* CRC FEATURE: Use to activate CRC feature inside HAL SPI Driver
 * Activated: CRC code is present inside driver
 * Deactivated: CRC code cleaned from driver
-*/
+  */
 
 #define USE_SPI_CRC                   1U
 

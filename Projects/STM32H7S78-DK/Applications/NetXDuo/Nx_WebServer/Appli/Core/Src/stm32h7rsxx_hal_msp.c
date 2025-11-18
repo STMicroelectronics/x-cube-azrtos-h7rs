@@ -102,8 +102,9 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef* heth)
 
   /** Initializes the peripherals clock
   */
-    PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ETH1REF;
+    PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ETH1REF|RCC_PERIPHCLK_ETH1PHY;
     PeriphClkInit.Eth1RefClockSelection = RCC_ETH1REFCLKSOURCE_PHY;
+    PeriphClkInit.Eth1PhyClockSelection = RCC_ETH1PHYCLKSOURCE_PLL3S;
 
   /* USER CODE BEGIN MACADDRESS */
 

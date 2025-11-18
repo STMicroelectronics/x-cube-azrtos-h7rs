@@ -18,6 +18,10 @@
   */
 /* USER CODE END Header */
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "app_threadx.h"
 
@@ -165,7 +169,7 @@ void App_ThreadX_LowPower_Exit(void)
   /* USER CODE END  App_ThreadX_LowPower_Exit */
 }
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 /**
   * @brief EXTI line detection callbacks
   * @param GPIO_Pin: Specifies the pins connected EXTI line
@@ -252,4 +256,4 @@ void SystemClock_Restore(void)
   /* Re-enable clock protection */
   HAL_RCCEx_EnableClockProtection(RCC_CLOCKPROTECT_XSPI);
 }
-/* USER CODE END 1 */
+/* USER CODE END 2 */

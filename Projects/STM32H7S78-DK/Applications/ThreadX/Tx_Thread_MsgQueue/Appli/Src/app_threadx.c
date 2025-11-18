@@ -18,6 +18,10 @@
   */
 /* USER CODE END Header */
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "app_threadx.h"
 
@@ -183,7 +187,7 @@ void MX_ThreadX_Init(void)
   /* USER CODE END  Kernel_Start_Error */
 }
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 /**
   * @brief  Function implementing the MsgSenderThreadTwo thread.
   * @param  thread_input: Not used
@@ -254,4 +258,4 @@ void MsgReceiverThread_Entry(ULONG thread_input)
     }
   }
 }
-/* USER CODE END 1 */
+/* USER CODE END 2 */

@@ -18,6 +18,10 @@
   */
 /* USER CODE END Header */
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "ux_host_mouse.h"
 
@@ -56,8 +60,7 @@ extern UX_HOST_CLASS_HID_MOUSE *mouse;
 
 /* USER CODE END 0 */
 
-/* USER CODE BEGIN 1 */
-
+/* USER CODE BEGIN 2 */
 /**
   * @brief  Function implementing hid_mouse_thread_entry.
   * @param  thread_input: Not used
@@ -80,6 +83,7 @@ VOID hid_mouse_thread_entry(ULONG thread_input)
     if ((mouse != NULL) &&
         (mouse -> ux_host_class_hid_mouse_state == (ULONG) UX_HOST_CLASS_INSTANCE_LIVE))
     {
+
       /* Get Mouse position */
       if (ux_host_class_hid_mouse_position_get(mouse, &actual_Pos_x, &actual_Pos_y) == UX_SUCCESS)
       {
@@ -150,4 +154,4 @@ VOID hid_mouse_thread_entry(ULONG thread_input)
     }
   }
 }
-/* USER CODE END 1 */
+/* USER CODE END 2 */

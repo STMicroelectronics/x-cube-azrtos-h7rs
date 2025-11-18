@@ -521,7 +521,7 @@
                 </option>
                 <option>
                     <name>ADefines</name>
-                    <state></state>
+                    <state>TX_INCLUDE_USER_DEFINE_FILE</state>
                 </option>
                 <option>
                     <name>AList</name>
@@ -613,7 +613,18 @@
                 </option>
                 <option>
                     <name>AUserIncludes</name>
-                    <state></state>
+                    <state>$PROJ_DIR$/../../Appli/Core/Inc</state>
+                    <state>$PROJ_DIR$/../../Appli/AZURE_RTOS/App</state>
+                    <state>$PROJ_DIR$/../../Appli/FileX/App</state>
+                    <state>$PROJ_DIR$/../../Appli/FileX/Target</state>
+                    <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/filex/common/inc/</state>
+                    <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/filex/ports/generic/inc/</state>
+                    <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/threadx/common/inc/</state>
+                    <state>$PROJ_DIR$/../../../../../../../Middlewares/ST/threadx/ports/cortex_m7/iar/inc/</state>
+                    <state>$PROJ_DIR$/../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc</state>
+                    <state>$PROJ_DIR$/../../../../../../../Drivers/STM32H7RSxx_HAL_Driver/Inc/Legacy</state>
+                    <state>$PROJ_DIR$/../../../../../../../Drivers/CMSIS/Device/ST/STM32H7RSxx/Include</state>
+                    <state>$PROJ_DIR$/../../../../../../../Drivers/CMSIS/Include</state>
                 </option>
                 <option>
                     <name>AExtraOptionsCheckV2</name>
@@ -762,7 +773,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$PROJ_DIR$/stm32h7rsxx_RAMxspi1_ROMxspi2.icf</state>
+                    <state>$PROJ_DIR$\stm32h7rsxx_RAMxspi1_ROMxspi2.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -995,7 +1006,7 @@
                 </option>
                 <option>
                     <name>IlinkTrustzoneImportLibraryOut</name>
-                    <state></state>
+                    <state>Fx_uSD_File_Edit_Appli_import_lib.o</state>
                 </option>
                 <option>
                     <name>OILinkExtraOption</name>
@@ -1173,12 +1184,6 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\..\..\..\..\..\Drivers\STM32H7RSxx_HAL_Driver\Src\stm32h7rsxx_hal_gpio.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\..\..\Drivers\STM32H7RSxx_HAL_Driver\Src\stm32h7rsxx_hal_mmc.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\..\..\Drivers\STM32H7RSxx_HAL_Driver\Src\stm32h7rsxx_hal_mmc_ex.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\..\..\..\..\..\Drivers\STM32H7RSxx_HAL_Driver\Src\stm32h7rsxx_hal_pwr.c</name>

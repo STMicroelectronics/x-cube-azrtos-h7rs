@@ -49,11 +49,11 @@ instance</li>
 </ul>
 <p>The application then creates 2 threads with different priorities:</p>
 <ul>
-<li><strong>NxAppThread</strong> (priority 10, PreemtionThreashold 10) :
+<li><strong>NxAppThread</strong> (priority 10, PreemptionThreshold 10) :
 created with the TX_AUTO_START flag to start automatically.</li>
-<li><strong>AppServerThread</strong> (priority 5, PreemtionThreashold 5)
+<li><strong>AppServerThread</strong> (priority 5, PreemptionThreshold 5)
 : created with the TX_DONT_START flag to be started later.</li>
-<li><strong>LedThread</strong> (priority 15, PreemtionThreashold 15) :
+<li><strong>LedThread</strong> (priority 15, PreemptionThreshold 15) :
 created with the TX_DONT_START flag to be started later.</li>
 </ul>
 <p>The <strong>NxAppThread</strong> starts and performs the following
@@ -104,6 +104,11 @@ configuration (caches, MPU regions [region 0 and 1], system clock at 600
 MHz and external memory interface at the highest speed). Note that the
 boot part is automatically downloaded from the IDE environment via the
 board boot binary under Binary/Boot_XIP.hex file.</li>
+<li>It is recommended to enable the cache and maintain its coherence:
+<ul>Depending on the use case it is also possible to configure the cache attributes using the MPU.</ul>
+<ul>Please refer to the **AN4838** "Managing memory protection unit (MPU) in STM32 MCUs".</ul>
+<ul>Please refer to the **AN4839** "Level 1 cache on STM32F7 Series and STM32H7 Series".</ul>
+</li>
 </ol>
 <h4 id="threadx-usage-hints"><b>ThreadX usage hints</b></h4>
 <ul>

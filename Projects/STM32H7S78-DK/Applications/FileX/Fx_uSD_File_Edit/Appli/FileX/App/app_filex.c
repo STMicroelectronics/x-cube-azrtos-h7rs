@@ -19,6 +19,10 @@
   */
 /* USER CODE END Header */
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "app_filex.h"
 
@@ -106,7 +110,7 @@ UINT MX_FileX_Init(VOID *memory_ptr)
   ret = tx_byte_allocate(byte_pool, &pointer, FX_APP_THREAD_STACK_SIZE, TX_NO_WAIT);
 
   /* Check FX_APP_THREAD_STACK_SIZE allocation*/
-  if (ret != FX_SUCCESS)
+  if (ret != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
@@ -352,7 +356,7 @@ void fx_app_thread_entry(ULONG thread_input)
   /* USER CODE END fx_app_thread_entry 1 */
 }
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 
 /**
  * @brief  Detects if SD card is correctly plugged in the memory slot or not.
@@ -408,4 +412,4 @@ static VOID media_close_callback(FX_MEDIA *media_ptr)
   media_status = MEDIA_CLOSED;
 }
 
-/* USER CODE END 1 */
+/* USER CODE END 2 */

@@ -128,7 +128,7 @@
                 </option>
                 <option>
                     <name>OCImagesPath2</name>
-                    <state>$PROJ_DIR$\Tx_Module_Appli\Exe\Tx_Module_Appli.out</state>
+                    <state></state>
                 </option>
                 <option>
                     <name>OCImagesSuppressCheck3</name>
@@ -148,7 +148,7 @@
                 </option>
                 <option>
                     <name>OCImagesOffset2</name>
-                    <state>0x70020000</state>
+                    <state></state>
                 </option>
                 <option>
                     <name>OCImagesOffset3</name>
@@ -160,7 +160,7 @@
                 </option>
                 <option>
                     <name>OCImagesUse2</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>OCImagesUse3</name>

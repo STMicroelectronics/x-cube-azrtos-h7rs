@@ -344,13 +344,12 @@ void Error_Handler(void)
   printf("** Error occurred ** \n\r");
   while (1)
   {
-  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-  HAL_Delay(1000);
+    HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+    HAL_Delay(1000);
   }
   /* USER CODE END Error_Handler_Debug */
 }
-
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.
