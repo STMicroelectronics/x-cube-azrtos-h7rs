@@ -164,7 +164,7 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer,  NX_PACKET_POOL_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
-  }  
+  }
 
   /* Create the Packet pool to be used for packet allocation */
   ret = nx_packet_pool_create(&NxAppPool, "Main Packet Pool", PAYLOAD_SIZE, pointer, NX_PACKET_POOL_SIZE);
@@ -186,7 +186,7 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
 
   /* Create the server packet pool. */
   ret = nx_packet_pool_create(&WebServerPool, "HTTP Server Packet Pool", SERVER_PACKET_SIZE, nx_server_pool, SERVER_POOL_SIZE);
-  
+
   /* Check for server pool creation status. */
   if (ret != NX_SUCCESS)
   {
@@ -221,7 +221,7 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
   if (ret != NX_SUCCESS)
   {
     return NX_NOT_ENABLED;
-  } 
+  }
 
   /* Enable the ICMP */
   ret = nx_icmp_enable(&IpInstance);
@@ -237,7 +237,7 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
   if (ret != NX_SUCCESS)
   {
     return NX_NOT_ENABLED;
-  }  
+  }
 
   /* Enable the TCP protocol */
   ret = nx_tcp_enable(&IpInstance);
@@ -450,7 +450,7 @@ UINT webserver_request_notify_callback(NX_WEB_HTTP_SERVER *server_ptr, UINT requ
   {
     tx_thread_info_get(&AppMainThread, &main_thread_name, NULL, &main_thread_count, NULL, NULL, NULL, NULL, NULL);
     tx_thread_info_get(&AppWebServerThread, &server_thread_name, NULL, &server_thread_count, NULL, NULL, NULL, NULL, NULL);
-    tx_thread_info_get(&LedThread, &led_thread_name, NULL, &led_thread_count, NULL, NULL, NULL, NULL, NULL);  
+    tx_thread_info_get(&LedThread, &led_thread_name, NULL, &led_thread_count, NULL, NULL, NULL, NULL, NULL);
     sprintf (data, "%s,%lu ,%s,%lu,%s,%lu", main_thread_name, main_thread_count, server_thread_name, server_thread_count, led_thread_name, led_thread_count);
 
   }

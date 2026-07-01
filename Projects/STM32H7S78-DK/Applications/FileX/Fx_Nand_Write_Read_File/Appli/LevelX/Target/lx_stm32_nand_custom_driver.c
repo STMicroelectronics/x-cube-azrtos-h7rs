@@ -145,7 +145,6 @@ UINT lx_stm32_nand_custom_driver_initialize(LX_NAND_FLASH *nand_flash)
   /* USER CODE BEGIN Init_Section_2 */
 
   /*USER CODE END Init_Section_2 */
-
   return ret;
 
 }

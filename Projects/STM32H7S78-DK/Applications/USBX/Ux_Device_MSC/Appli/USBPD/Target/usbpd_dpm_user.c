@@ -212,7 +212,7 @@ void USBPD_DPM_Notification(uint8_t PortNum, USBPD_NotifyEventValue_TypeDef Even
     }
 
   default:
-	break;
+    break;
   }
 /* USER CODE END USBPD_DPM_Notification */
 }

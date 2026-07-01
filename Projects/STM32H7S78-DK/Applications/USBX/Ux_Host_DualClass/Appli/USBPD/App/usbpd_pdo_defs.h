@@ -76,7 +76,6 @@
 /* Exported variables --------------------------------------------------------*/
 
 /* USER CODE BEGIN variables */
-
 /* USER CODE END variables */
 
 #ifndef __USBPD_PWR_IF_C

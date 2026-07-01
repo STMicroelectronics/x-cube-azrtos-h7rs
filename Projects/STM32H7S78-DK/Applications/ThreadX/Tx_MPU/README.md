@@ -131,6 +131,11 @@ RTOS, ThreadX, Threading, Message Queue, Module Manager, Module, MPU
 
 ###  <b>How to use it ?</b>
 
+To configure STM32CubeIDE Debug/Release settings for Tx_Module and Tx_Module_Manager, you must do the following :
+    1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration
+    2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
+    3. Move up the application in the startup
+
 In order to make the program work, you must do the following :
 
 EWARM

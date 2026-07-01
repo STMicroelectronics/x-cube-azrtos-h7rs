@@ -25,7 +25,7 @@
 #define STM32H7RSxx_HAL_CONF_H
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 /* Exported types ------------------------------------------------------------*/

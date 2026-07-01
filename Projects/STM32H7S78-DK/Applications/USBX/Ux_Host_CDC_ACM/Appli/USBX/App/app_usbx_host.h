@@ -33,9 +33,9 @@ extern "C" {
 #include "ux_api.h"
 #include "main.h"
 #include "ux_host_cdc_acm.h"
+#include "ux_hcd_stm32.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "ux_hcd_stm32.h"
 #include "stm32h7s78_discovery.h"
 #include "usb_otg.h"
 
@@ -93,9 +93,10 @@ extern "C" {
 
 /* Exported functions prototypes ---------------------------------------------*/
 UINT MX_USBX_Host_Init(VOID *memory_ptr);
+UINT MX_USBX_Host_Stack_Init(void);
+UINT MX_USBX_Host_Stack_DeInit(void);
 
 /* USER CODE BEGIN EFP */
-VOID USBX_APP_Host_Init(VOID);
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
 
 /* USER CODE END EFP */

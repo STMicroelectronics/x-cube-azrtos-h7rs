@@ -32,7 +32,7 @@ The **AppTCPThread**, once started:
 ####  <b>Expected success behavior</b>
 
  + The board IP address is printed on the HyperTerminal
- + The response messages sent by the server are printed on the HyerTerminal
+ + The response messages sent by the server are printed on the HyperTerminal
  + If the [echotool](https://github.com/PavelBansky/EchoTool/releases/tag/v1.5.0.0) utility is used, the message sent by the client are displayed on the PC console.
  + A summary message similar to the following is printed on the HyperTerminal and the green LED is toggling.
  ```
@@ -77,7 +77,7 @@ None
 
 ### <b>Notes</b>
 
- 1.  This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed). 
+ 1.  This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed).
      Note that the boot part is automatically downloaded from the IDE environment via the board boot binary under Binary/Boot_XIP.hex file.
 
  2.  It is recommended to enable the cache and maintain its coherence:
@@ -191,7 +191,7 @@ RTOS, Network, ThreadX, NetXDuo, TCP, UART
 
 ###  <b>How to use it ?</b>
 
-To configure STM32CubeIDE Debug Configuration, you must do the following :
+To configure STM32CubeIDE Debug/Release settings, you must do the following :
 
     1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project->Debugger Configuration
     2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option

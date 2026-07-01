@@ -2,6 +2,10 @@
 
 ![latest tag](https://img.shields.io/github/v/tag/STMicroelectronics/x-cube-azrtos-h7rs.svg?color=brightgreen)
 
+> [!IMPORTANT]
+> This repository has been created using the `git submodule` command. Please refer to the ["How to use"](README.md#how-to-use) section for more details.
+
+
 With Azure RTOS complementing the extensive STM32Cube ecosystem providing free development tools, software bricks, and software expansion packages, STM32 users can also leverage the rich services of Azure RTOS, which meet the needs of tiny, smart, connected devices.
 
 **X-CUBE-AZRT-H7RS** (Azure RTOS Software Expansion for STM32Cube) provides a full integration of **Microsoft Azure RTOS** in the STM32Cube environment for the STM32H7RS series of microcontrollers. Ready-to-run applicative examples are also provided for the *NUCLEO-H7S3L8*, *STM32H7S78-DK* evaluation boards, thus **reducing the learning curve** and ensuring a **smooth application development experience** with Azure RTOS and STM32H7RS MCUs.
@@ -27,7 +31,7 @@ Azure RTOS is a professional grade, highly reliable and market proven Middleware
 One of the following toolchains:
 
 - IAR Embedded Workbench for ARM (EWARM) toolchain 9.20.1 + ST-LINKV3
-- [STM32CubeIDE V2.0.0](https://www.st.com/en/development-tools/stm32cubeide.html) + ST-LINKV3
+- [STM32CubeIDE V2.2.0](https://www.st.com/en/development-tools/stm32cubeide.html) + ST-LINKV3
 - RealView Microcontroller Development Kit (MDK-ARM) toolchain V5.39 + ST-LINKV3
 
 ## Supported Devices and Boards by applications
@@ -100,6 +104,28 @@ Details about the content of this release are available in the release note [her
 |NetXDuo | Nx_MQTT_Client_wifi           | It demonstrates how to exchange data between client and server using MQTT protocol in an encrypted mode supporting TLS v1.2. [readme](./Projects/STM32H7S78-DK/Applications/NetXDuo/Nx_MQTT_Client_wifi/README.md) |
 |NetXDuo | Nx_Iperf_wifi                 | It shows the performance of NetX IPerf stack when using different modes: TCP_server, UDP_server, TCP_client and UDP_client. [readme](./Projects/NUCLEO-H7S3L8/Applications/NetXDuo/Nx_Iperf_wifi/README.md) |
 |NetXDuo | Nx_WebServer_wifi             | It demonstrates how to develop Web HTTP server based application. It is designed to load files and static web pages stored in SD card using a Web HTTP server, the code provides all required features to build a compliant Web HTTP Server.  [readme](./Projects/STM32H7S78-DK/Applications/NetXDuo/Nx_WebServer_wifi/README.md) |
+
+## How to use
+
+This repository intrinsically contains the applications (projects and source files) located under folder `./Projects`.
+It also contains the CMSIS Core files under folder `./Drivers/CMSIS/Include` for size optimization reason.
+Other dependencies such as the HAL and BSP drivers, or the middleware libraries themselves are linked using the `git submodule` command.
+Please check the instructions below for a proper use.
+
+
+* To **clone** the repository, run the command below
+```
+git clone --recursive https://github.com/STMicroelectronics/x-cube-azrtos-h7rs.git
+```
+* To **pull** the latest updates, run the commands below from the root of the repository
+```
+git pull
+git submodule update --init --recursive
+```
+
+> [!NOTE]
+> * If GitHub "Download ZIP" option is used instead of the `git clone` command, then the different submodules have to be **collected** and **added manually**.
+
 
 ## Troubleshooting
 **Caution**  : The issues are  **strictly limited**  to submit problems or suggestions related to the software delivered in this repository.

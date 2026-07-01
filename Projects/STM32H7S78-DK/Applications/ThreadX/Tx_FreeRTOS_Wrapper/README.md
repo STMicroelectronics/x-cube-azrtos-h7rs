@@ -89,7 +89,7 @@ RTOS, ThreadX, Threading, RTOS compatibility layers
 
 ### <b>How to use it ?</b>
 
-To configure STM32CubeIDE Debug Configuration, you must do the following :
+To configure STM32CubeIDE Debug/Release settings, you must do the following :
     1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration
     2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup

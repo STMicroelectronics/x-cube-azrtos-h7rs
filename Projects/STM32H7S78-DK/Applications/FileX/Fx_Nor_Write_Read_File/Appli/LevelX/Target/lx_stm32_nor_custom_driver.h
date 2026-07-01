@@ -34,7 +34,24 @@ extern "C" {
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
+#if !defined(LX_NOR_DISABLE_EXTENDED_CACHE) && (defined(LX_NOR_ENABLE_OBSOLETE_COUNT_CACHE) || defined(LX_NOR_ENABLE_MAPPING_BITMAP))
+#error "[This error was thrown on purpose] : define the flags below related to the NOR Flash memory used"
+#define LX_STM32_CUSTOM_SECTOR_SIZE                 1
+#define LX_STM32_CUSTOM_FLASH_SIZE                  1
 
+#ifdef LX_NOR_ENABLE_MAPPING_BITMAP
+#define LX_STM32_CUSTOM_MAPPING_BITMAP_CACHE_SIZE ((LX_STM32_CUSTOM_FLASH_SIZE / LX_STM32_CUSTOM_SECTOR_SIZE) + 31) / 32
+#else
+#define LX_STM32_CUSTOM_MAPPING_BITMAP_CACHE_SIZE   0
+#endif
+
+#ifdef LX_NOR_ENABLE_OBSOLETE_COUNT_CACHE
+#define LX_STM32_CUSTOM_OBSOLETE_COUNT_CACHE_SIZE (LX_STM32_CUSTOM_FLASH_SIZE / LX_STM32_CUSTOM_SECTOR_SIZE) * sizeof(LX_NOR_OBSOLETE_COUNT_CACHE_TYPE) / 4
+#else
+#define LX_STM32_CUSTOM_OBSOLETE_COUNT_CACHE_SIZE  0
+#endif
+
+#endif
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

@@ -32,7 +32,7 @@ The **AppTCPThread**, once started:
 ####  <b>Expected success behavior</b>
 
  + The board IP address is printed on the HyperTerminal
- + The response messages sent by the server are printed on the HyerTerminal
+ + The response messages sent by the server are printed on the HyperTerminal
  + if the [echotool](https://github.com/PavelBansky/EchoTool/releases/tag/v1.5.0.0) utility  messages similar to the shown below can be seen on the console:
 
 ```
@@ -83,7 +83,7 @@ None
 
 ### <b>Notes</b>
 
- 1.  This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed). 
+ 1.  This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed).
      Note that the boot part is automatically downloaded from the IDE environment via the board boot binary under Binary/Boot_XIP.hex file.
 
  2.  It is recommended to enable the cache and maintain its coherence:
@@ -130,6 +130,7 @@ None
        Read more in STM32CubeIDE User Guide, chapter: "Linker script".
 
     + The "tx_initialize_low_level.S" should be also modified to enable the "USE_DYNAMIC_MEMORY_ALLOCATION" flag.
+
 #### <b>NetX Duo usage hints</b>
 
 - The ETH TX And RX descriptors are accessed by the CPU and the ETH DMA IP, thus they should not be allocated into the DTCM RAM "0x20000000".
@@ -196,7 +197,7 @@ RTOS, Network, ThreadX, NetXDuo, TCP, UART
 
 ###  <b>How to use it ?</b>
 
-To configure STM32CubeIDE Debug Configuration, you must do the following :
+To configure STM32CubeIDE Debug/Release settings, you must do the following :
 
     1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project->Debugger Configuration
     2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option

@@ -1,9 +1,8 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file    ThreadX/Tx_CMSIS_Wrapper/Appli/Src/main.c
-  * @author  MCD Application Team
-  * @brief   Main program body
+  * @file           : main.c
+  * @brief          : Main program body
   ******************************************************************************
   * @attention
   *

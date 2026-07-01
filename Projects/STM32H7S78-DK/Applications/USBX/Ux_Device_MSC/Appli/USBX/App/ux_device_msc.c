@@ -118,7 +118,7 @@ UINT USBD_STORAGE_Read(VOID *storage_instance, ULONG lun, UCHAR *data_pointer,
   ULONG ReadFlags = 0U;
 
   /* Check if the SD card is present */
-  if (HAL_GPIO_ReadPin(GPIOM, GPIO_PIN_14) != GPIO_PIN_SET)
+  if (HAL_GPIO_ReadPin(SD_DETECT_GPIO_Port, SD_DETECT_Pin) != GPIO_PIN_SET)
   {
     /* Check id SD card is ready */
     if(check_sd_status() != HAL_OK)
@@ -171,7 +171,7 @@ UINT USBD_STORAGE_Write(VOID *storage_instance, ULONG lun, UCHAR *data_pointer,
   ULONG WriteFlags = 0U;
 
   /* Check if the SD card is present */
-  if (HAL_GPIO_ReadPin(GPIOM, GPIO_PIN_14) != GPIO_PIN_SET)
+  if (HAL_GPIO_ReadPin(SD_DETECT_GPIO_Port, SD_DETECT_Pin) != GPIO_PIN_SET)
   {
     /* Check if SD card is ready */
     if(check_sd_status() != HAL_OK)

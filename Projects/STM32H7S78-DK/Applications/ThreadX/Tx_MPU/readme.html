@@ -211,6 +211,11 @@ template:</p></li>
 </ul></li>
 </ul>
 <h3 id="how-to-use-it"><b>How to use it ?</b></h3>
+<p>To configure STM32CubeIDE Debug/Release settings for Tx_Module and Tx_Module_Manager, you must do the
+following :</p>
+<pre><code>1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project-&gt;Debugger Configuration
+2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the "Load Symbols" option
+3. Move up the application in the startup</code></pre>
 <p>In order to make the program work, you must do the following :</p>
 <p>EWARM</p>
 <ul>

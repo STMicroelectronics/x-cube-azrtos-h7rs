@@ -597,7 +597,7 @@ _tx_initialize_low_level:
 // }
 
 /* Define shells for each of the unused vectors.  */
- 
+
     .global  __tx_BadHandler
     .thumb_func
 __tx_BadHandler:

@@ -18,6 +18,10 @@
   */
 /* USER CODE END Header */
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "app_threadx.h"
 
@@ -152,7 +156,7 @@ void MX_ThreadX_Init(void)
   /* USER CODE END  Kernel_Start_Error */
 }
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 /**
   * @brief  Module Manager main thread.
   * @param  thread_input: thread id
@@ -164,6 +168,7 @@ VOID ModuleManager_Entry(ULONG thread_input)
   CHAR   p_msg[64];
   ULONG  r_msg = PROCESSING_NOT_STARTED;
   ULONG  module_properties;
+  memory_faults = 0;
 
   /* Initialize the module manager. */
   status = txm_module_manager_initialize((VOID *) module_data_area, MODULE_DATA_SIZE);
@@ -286,8 +291,8 @@ VOID ModuleManager_Entry(ULONG thread_input)
 
 VOID module_fault_handler(TX_THREAD *thread, TXM_MODULE_INSTANCE *module)
 {
-    /* Just increment the fault counter.   */
-    memory_faults++;
+  /* Just increment the fault counter.   */
+  memory_faults++;
 }
 
 VOID pretty_msg(char *p_msg, ULONG r_msg)
@@ -317,4 +322,4 @@ VOID pretty_msg(char *p_msg, ULONG r_msg)
   }
 }
 
-/* USER CODE END 1 */
+/* USER CODE END 2 */

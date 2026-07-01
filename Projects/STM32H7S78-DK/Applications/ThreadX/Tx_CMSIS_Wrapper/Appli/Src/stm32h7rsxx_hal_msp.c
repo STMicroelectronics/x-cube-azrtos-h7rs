@@ -70,6 +70,9 @@ void HAL_MspInit(void)
 
   /* System interrupt init*/
 
+  /* Enable the XSPIM_P1 interface */
+  HAL_PWREx_EnableXSPIM1();
+
   /* USER CODE BEGIN MspInit 1 */
 
   /* USER CODE END MspInit 1 */

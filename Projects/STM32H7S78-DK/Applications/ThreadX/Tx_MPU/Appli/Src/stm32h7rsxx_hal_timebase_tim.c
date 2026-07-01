@@ -93,8 +93,7 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
     {
       uwTimclock = 4UL * HAL_RCC_GetPCLK1Freq();
     }
-
-    }
+  }
 
   /* Compute the prescaler value to have TIM6 counter clock equal to TIM_CNT_FREQ */
   uwPrescalerValue = (uint32_t)((uwTimclock / TIM_CNT_FREQ) - 1U);

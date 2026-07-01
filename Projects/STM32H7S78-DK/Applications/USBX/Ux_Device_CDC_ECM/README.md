@@ -91,7 +91,7 @@ RTOS, ThreadX, USBXDevice, CDC_ECM, Network, NetxDuo, FileX, File ,SDMMC, UART
   - This application runs on STM32H7S7L8xx devices.
   - This application has been tested with STMicroelectronics STM32H7S78-DK boards revision: MB1736-H7S7L8-D01
     and can be easily tailored to any other supported device and development board.
-  - This application uses USART4 to display logs, the hyperterminal configuration is as follows:
+  - This application uses UART4 to display logs, the hyperterminal configuration is as follows:
       - BaudRate = 115200 baud
       - Word Length = 8 Bits
       - Stop Bit = 1
@@ -100,7 +100,7 @@ RTOS, ThreadX, USBXDevice, CDC_ECM, Network, NetxDuo, FileX, File ,SDMMC, UART
 
 ### <b>How to use it ?</b>
 
- To configure STM32CubeIDE Debug Configuration, you must do the following :
+To configure STM32CubeIDE Debug/Release settings, you must do the following :
 
     1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration
     2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option

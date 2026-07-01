@@ -37,6 +37,9 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+#if defined(LX_NOR_ENABLE_OBSOLETE_COUNT_CACHE) || defined(LX_NOR_ENABLE_MAPPING_BITMAP)
+UCHAR lx_stm32_nor_custom_extended_cache_memory[LX_STM32_CUSTOM_OBSOLETE_COUNT_CACHE_SIZE + LX_STM32_CUSTOM_MAPPING_BITMAP_CACHE_SIZE];
+#endif
 /* USER CODE BEGIN PV */
 extern SPI_HandleTypeDef hspi4;
 /* USER CODE END PV */

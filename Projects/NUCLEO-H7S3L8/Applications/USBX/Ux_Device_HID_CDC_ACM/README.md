@@ -145,7 +145,7 @@ RTOS, ThreadX, USBX, USBXDevice, USBPD, USB_OTG, High Speed, CDC, HID, VCP, USAR
   - The USART3 interface available on PD8 and PD9 of the microcontroller are connected to ST-LINK MCU.
     By default the USART3 communication between the target MCU and ST-LINK MCU is enabled.
 
-  Its configuration is as follows:
+  It's configuration is as following:
     - BaudRate = 115200 baud
     - Word Length = 8 Bits
     - Stop Bit = 1
@@ -158,7 +158,7 @@ RTOS, ThreadX, USBX, USBXDevice, USBPD, USB_OTG, High Speed, CDC, HID, VCP, USAR
 
 ### <b>How to use it ?</b>
 
-To configure STM32CubeIDE Debug Configuration, you must do the following :
+To configure STM32CubeIDE Debug/Release settings, you must do the following :
 
     1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project->Debugger Configuration
     2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option

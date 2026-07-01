@@ -225,7 +225,7 @@ __Vectors       DCD     __initial_sp                     ; Top of Stack
                 DCD     HPDMA1_Channel15_IRQHandler      ; HPDMA1 Channel 15
                 DCD     0                                ; Reserved
                 DCD     0                                ; Reserved
-                DCD     0                                ; Reserved                
+                DCD     0                                ; Reserved
                 DCD     FDCAN1_IT0_IRQHandler            ; FDCAN1 Interrupt 0
                 DCD     FDCAN1_IT1_IRQHandler            ; FDCAN1 Interrupt 1
                 DCD     FDCAN2_IT0_IRQHandler            ; FDCAN2 Interrupt 0

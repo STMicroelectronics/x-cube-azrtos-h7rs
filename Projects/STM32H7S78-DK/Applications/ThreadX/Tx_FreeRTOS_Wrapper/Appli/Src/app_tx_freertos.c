@@ -18,6 +18,10 @@
   */
 /* USER CODE END Header */
 
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
 /* Includes ------------------------------------------------------------------*/
 #include "app_tx_freertos.h"
 
@@ -97,7 +101,7 @@ VOID tx_application_define(VOID *first_unused_memory)
 
 /* USER CODE END Private user code */
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 2 */
 /**
   * @brief  Function implementing the LEDThread thread.
   * @param  argument: Not used
@@ -114,4 +118,4 @@ void LEDThread_Entry(void *argument)
     vTaskDelay(500);
   }
 }
-/* USER CODE END 1 */
+/* USER CODE END 2 */

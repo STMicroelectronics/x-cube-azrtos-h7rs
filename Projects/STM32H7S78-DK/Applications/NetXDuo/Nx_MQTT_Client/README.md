@@ -59,7 +59,7 @@ client disconnected from server
 
 #### <b> Error behaviors</b>
 
-+ The red LED is toggling to indicate any error that has occurred while the Green LED switch off.
++ The red LED is toggling to indicate any error that has occurred while the green LED switch off.
 
 #### <b> Assumptions if any</b>
 
@@ -224,7 +224,7 @@ RTOS, Network, ThreadX, NetXDuo, MQTT, TLS, UART
 
 ###  <b>How to use it ?</b>
 
-To configure STM32CubeIDE Debug Configuration, you must do the following :
+To configure STM32CubeIDE Debug/Release settings, you must do the following :
     1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration
     2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
     3. Move up the application in the startup

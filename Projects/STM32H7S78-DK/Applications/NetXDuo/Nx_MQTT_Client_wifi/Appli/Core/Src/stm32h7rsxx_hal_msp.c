@@ -17,7 +17,6 @@
   ******************************************************************************
   */
 /* USER CODE END Header */
-
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 /* USER CODE BEGIN Includes */
@@ -98,7 +97,7 @@ void HAL_RNG_MspInit(RNG_HandleTypeDef* hrng)
   if(hrng->Instance==RNG)
   {
     /* USER CODE BEGIN RNG_MspInit 0 */
-    
+
     RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
     RCC_OscInitTypeDef RCC_OscInitStruct;

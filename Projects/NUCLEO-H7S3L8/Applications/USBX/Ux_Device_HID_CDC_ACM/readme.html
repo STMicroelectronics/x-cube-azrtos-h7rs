@@ -41,23 +41,25 @@ resources are initialized, the CDC_ACM and HID class driver is
 registered and the application creates 4 threads with the same
 priorities :</p>
 <ul>
-<li><p>app_ux_device_thread_entry (Prio : 10; PreemptionPrio : 10) used
-to initialize USB_OTG HAL PCD driver and start the device.</p></li>
-<li><p>usbx_cdc_acm_read_thread_entry (Prio : 20; PreemptionPrio : 20)
-used to read the received data from Virtual COM Port.</p></li>
-<li><p>usbx_cdc_acm_write_thread_entry (Prio : 20; PreemptionPrio : 20)
-used to send the received data over UART .</p></li>
-<li><p>usbx_hid_thread_entry (Prio : 20; PreemptionPrio : 20) used to
-send HID reports to move automatically the PC host machine cursor. The
-thread usbx_app_thread_entry is responsible to start or stop the USB
-device. At run mode the thread will be waiting on message queue from
+<li>app_ux_device_thread_entry (Prio : 10; PreemptionPrio : 10) used to
+initialize USB_OTG HAL PCD driver and start the device.</li>
+<li>usbx_cdc_acm_read_thread_entry (Prio : 20; PreemptionPrio : 20) used
+to read the received data from Virtual COM Port.</li>
+<li>usbx_cdc_acm_write_thread_entry (Prio : 20; PreemptionPrio : 20)
+used to send the received data over UART .</li>
+<li>usbx_hid_thread_entry (Prio : 20; PreemptionPrio : 20) used to send
+HID reports to move automatically the PC host machine cursor.</li>
+</ul>
+<p>The thread usbx_app_thread_entry is responsible to start or stop the
+USB device. At run mode the thread will be waiting on message queue from
 USB_PD interface, when the USB device is plugged to host PC a callback
 in USB_PD interface will send a message to usbx_app_thread_entry to
 start the USB device. By the same way when the USB device is unplugged a
 callback in USB_PD interface will send a message to
-usbx_app_thread_entry to stop the USB device. During enumeration phase,
-four communication pipes “endpoints” are declared in the CDC class and
-HID implementations :</p></li>
+usbx_app_thread_entry to stop the USB device.</p>
+<p>During enumeration phase, four communication pipes “endpoints” are
+declared in the CDC class and HID implementations :</p>
+<ul>
 <li><p>1 x Bulk IN endpoint for receiving data from STM32 device to PC
 host: When data are received over UART they are saved in the buffer
 “UserTxBufferFS”. Periodically, in a usbx_cdc_acm_write_thread_entry the
@@ -82,39 +84,39 @@ The other requests (send break, control line state) are not implemented.</code><
 <li>1 x Interrupt IN endpoint for setting the HID position: When the
 User Button is pressed the application calls the GetPointerData() API to
 update the mouse position (x, y) and send the report buffer through the
-ux_device_class_hid_event_set() API. USBPD Consumer:</li>
+ux_device_class_hid_event_set() API.</li>
 </ul>
-<p>This application initialize the type C port 1 in sink mode with only
+<p>USBPD Consumer :</p>
+<p>This application initializes the type C port 1 in sink mode with only
 one PDO at 5V.</p>
 <p><b>Note</b></p>
 <ul>
-<li><p>Receiving data over UART is handled by interrupt while
-transmitting is handled by DMA allowing hence the application to receive
-data at the same time it is transmitting another data (full-duplex
-feature).</p></li>
-<li><p>The support of the VCP interface is managed through the ST
-Virtual COM Port driver available for download from www.st.com.</p></li>
-<li><p>The user has to check the list of HID and the COM ports in Device
+<li>Receiving data over UART is handled by interrupt while transmitting
+is handled by DMA allowing hence the application to receive data at the
+same time it is transmitting another data (full-duplex feature).</li>
+<li>The support of the VCP interface is managed through the ST Virtual
+COM Port driver available for download from www.st.com.</li>
+<li>The user has to check the list of HID and the COM ports in Device
 Manager to find out the HID device and the COM port number that have
-been assigned (by OS) to the VCP interface.</p></li>
+been assigned (by OS) to the VCP interface.</li>
 </ul>
 <h4 id="expected-success-behavior"><b>Expected success behavior</b></h4>
 <p>When plugged to PC host, the NUCLEO-H7S3L8 must be properly
-enumerated a composite device as an HID, USB Serial device and an STlink
+enumerated a composite device as an HID, USB serial device and an STlink
 COM port. During the enumeration phase, the device must provide host
 with the requested descriptors (device descriptor, configuration
 descriptor, string descriptors). Those descriptors are used by host
 driver to identify the device capabilities. Once NUCLEO-H7S3L8 USB
-device successfully completed the enumeration phase:</p>
-<li>Connect USB cableto Host , Open two hyperterminals
-(USB com port and UART com port) to send/receive data to/from host to/from device.</li>
-<li>When USER_Button is pressed, the device sneds an HID report.
-Each report sent should move the PC host machine mouse cursor by one step.</li>
+device successfully completed the enumeration phase: - Connect USB cable
+to Host , Open two hyperterminals (USB com port and UART com port) to
+send/receive data to/from host to/from device. - When USER_Button is
+pressed, the device sends an HID report. Each report sent should move
+the PC host machine mouse cursor by one step.</p>
 <h4 id="error-behaviors"><b>Error behaviors</b></h4>
 <p>Host PC shows that USB device does not operate as designed
 (enumeration failed, for example PC cursor doesn’t move or COM port
-enumeration failed).</p>
-<p>The LED_RED is toggling to indicate any error that has occurred.</p>
+enumeration failed). The LED_RED is toggling to indicate any error that
+has occurred.</p>
 <h4 id="assumptions-if-any"><b>Assumptions if any</b></h4>
 <p>User is familiar with USB 2.0 “Universal Serial BUS” specification
 and CDC_ACM class specification.</p>
@@ -195,10 +197,11 @@ HID, VCP, USART, DMA, Mouse.</p>
 environment</b></h3>
 <ul>
 <li>This application runs on STM32H7S3L8xx devices</li>
-<li>This application has been tested with STMicroelectronics NUCLEO-H7S3L8
-boards revision MB1737-H7S3L8-B02 and can be easily tailored to any
-other supported device and development board.</li>
-<li>NUCLEO-H7S3L8 set-up:</li>
+<li>This application has been tested with STMicroelectronics
+NUCLEO-H7S3L8 boards revision MB1737-H7S3L8-B02 and can be easily
+tailored to any other supported device and development board.</li>
+<li>NUCLEO-H7S3L8 set-up:
+<ul>
 <li>Connect the NUCLEO-H7S3L8 board CN1 to the PC through “TYPE-C” to
 “Standard A” cable.</li>
 <li>For VCP the configuration is dynamic for example it can be :
@@ -209,28 +212,23 @@ other supported device and development board.</li>
 <li>Parity = None</li>
 <li>Flow control = None</li>
 </ul></li>
+</ul></li>
 <li>The USART3 interface available on PD8 and PD9 of the microcontroller
 are connected to ST-LINK MCU. By default the USART3 communication
 between the target MCU and ST-LINK MCU is enabled.</li>
-<li>Its configuration is as follows:
-<ul>
-<li>BaudRate = 115200 baud</li>
-<li>Word Length = 8 Bits</li>
-<li>Stop Bit = 1</li>
-<li>Parity = None</li>
-<li>Flow control = None</li>
-</ul></li>
 </ul>
+<p>It’s configuration is as following: - BaudRate = 115200 baud - Word
+Length = 8 Bits - Stop Bit = 1 - Parity = None - Flow control = None</p>
 <p><b>Note</b></p>
 <ul>
 <li>When we configure the VCP baudrate under 9600 the USART3 baudrate
 shall be set to 9600.</li>
 </ul>
 <h3 id="how-to-use-it"><b>How to use it ?</b></h3>
-<p>To configure STM32CubeIDE Debug Configuration, you must do the
+<p>To configure STM32CubeIDE Debug/Release settings, you must do the
 following :</p>
 <pre><code>1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project-&gt;Debugger Configuration
-2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the "Load Symbols" option
+2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the &quot;Load Symbols&quot; option
 3. Move up the application in the startup</code></pre>
 <p>In order to make the program work, you must do the following :</p>
 <ul>

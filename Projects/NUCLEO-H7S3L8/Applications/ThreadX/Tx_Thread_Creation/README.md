@@ -27,7 +27,7 @@ After repeating the sequence above 3 times, the <b>MainThread</b> should destroy
 
 #### <b>Error behaviors</b>
 
-LED_RED toggles every 1 second if an error occurs while the LED_GREEN switch off.
+'LED_RED' toggles every 1 second if an error occurs while the 'LED_GREEN' is turned OFF.
 An error message is printed to the serial port.
 
 #### <b>Assumptions if any</b>
@@ -100,7 +100,7 @@ RTOS, ThreadX, Threading, Event flags, Preemption threshold
 
 ###  <b>How to use it ?</b>
 
-To configure STM32CubeIDE Debug Configuration, you must do the following :
+To configure STM32CubeIDE Debug/Release settings, you must do the following :
 
     1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project->Debugger Configuration
     2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option

@@ -1,9 +1,8 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file    ThreadX/Tx_MPU/Appli/Src/main.c
-  * @author  MCD Application Team
-  * @brief   Main program body
+  * @file           : main.c
+  * @brief          : Main program body
   ******************************************************************************
   * @attention
   *
@@ -41,6 +40,17 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 
+#if defined(__ICCARM__)
+/* New definition from EWARM V9, compatible with EWARM8 */
+int iar_fputc(int ch);
+#define PUTCHAR_PROTOTYPE int iar_fputc(int ch)
+#elif defined ( __CC_ARM ) || defined(__ARMCC_VERSION)
+/* ARM Compiler 5/6*/
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#elif defined(__GNUC__)
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#endif /* __ICCARM__ */
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -56,16 +66,6 @@ static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_UART4_Init(void);
 /* USER CODE BEGIN PFP */
-#if defined(__ICCARM__)
-/* New definition from EWARM V9, compatible with EWARM8 */
-int iar_fputc(int ch);
-#define PUTCHAR_PROTOTYPE int iar_fputc(int ch)
-#elif defined ( __CC_ARM ) || defined(__ARMCC_VERSION)
-/* ARM Compiler 5/6*/
-#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-#elif defined(__GNUC__)
-#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-#endif /* __ICCARM__ */
 
 /* USER CODE END PFP */
 
@@ -207,14 +207,14 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : LED2_Pin */
+  /*Configure GPIO pin : LED_RED_Pin */
   GPIO_InitStruct.Pin = LED_RED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(LED_RED_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : LED1_Pin */
+  /*Configure GPIO pin : LED_GREEN_Pin */
   GPIO_InitStruct.Pin = LED_GREEN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -342,7 +342,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL         error return state */
   HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
   /* Error message */
   printf("** Error occurred ** \n\r");

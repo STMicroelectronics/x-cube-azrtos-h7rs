@@ -2346,6 +2346,10 @@
 
 /* USER CODE BEGIN 2 */
 
+/* Defined, NX_PACKET structure is padded for alignment purpose. The default is no padding. */
+#define NX_PACKET_HEADER_PAD
+#define NX_PACKET_HEADER_PAD_SIZE   4
+
 /* USER CODE END 2 */
 
 #endif /* NX_USER_H */

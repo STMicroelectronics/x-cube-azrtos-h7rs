@@ -77,7 +77,7 @@ TX_QUEUE      *ResidentQueue;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
-void MainThread_Entry(ULONG thread_input);
+static void MainThread_Entry(ULONG thread_input);
 void Error_Handler(void);
 /* USER CODE END PFP */
 
@@ -88,32 +88,50 @@ void Error_Handler(void);
   */
 void    default_module_start(ULONG id)
 {
-    CHAR    *pointer;
+  CHAR    *pointer;
 
     /* Allocate all the objects. In MPU mode, modules cannot allocate control blocks within
        their own memory area so they cannot corrupt the resident portion of ThreadX by overwriting
        the control block(s).  */
-  txm_module_object_allocate((void*)&MainThread, sizeof(TX_THREAD));
-  txm_module_object_allocate((void*)&ModuleBytePool, sizeof(TX_BYTE_POOL));
-  txm_module_object_allocate((void*)&ModuleBlockPool, sizeof(TX_BLOCK_POOL));
+  if (txm_module_object_allocate((void*)&MainThread, sizeof(TX_THREAD)) != TX_SUCCESS)
+  {
+    Error_Handler();
+  }
+
+  if (txm_module_object_allocate((void*)&ModuleBytePool, sizeof(TX_BYTE_POOL)) != TX_SUCCESS)
+  {
+    Error_Handler();
+  }
+
+  if (txm_module_object_allocate((void*)&ModuleBlockPool, sizeof(TX_BLOCK_POOL)) != TX_SUCCESS)
+  {
+    Error_Handler();
+  }
 
     /* Create a byte memory pool from which to allocate the thread stacks.  */
-  tx_byte_pool_create(ModuleBytePool, "Module Byte Pool", (UCHAR*)default_module_pool_space, DEFAULT_BYTE_POOL_SIZE);
+  if (tx_byte_pool_create(ModuleBytePool, "Module Byte Pool", (UCHAR*)default_module_pool_space, DEFAULT_BYTE_POOL_SIZE) != TX_SUCCESS)
+  {
+    Error_Handler();
+  }
 
     /* Allocate the stack for thread 0.  */
-  tx_byte_allocate(ModuleBytePool, (VOID **) &pointer, DEFAULT_STACK_SIZE, TX_NO_WAIT);
+  if (tx_byte_allocate(ModuleBytePool, (VOID **) &pointer, DEFAULT_STACK_SIZE, TX_NO_WAIT) != TX_SUCCESS)
+  {
+    Error_Handler();
+  }
 
     /* Create the main thread.  */
-  tx_thread_create(MainThread, "Module Main Thread", MainThread_Entry, 0,
-            pointer, DEFAULT_STACK_SIZE,
-                   MAIN_THREAD_PRIO, MAIN_THREAD_PREEMPTION_THRESHOLD, TX_NO_TIME_SLICE, TX_AUTO_START);
+  if (tx_thread_create(MainThread, "Module Main Thread", MainThread_Entry, 0, pointer, DEFAULT_STACK_SIZE, MAIN_THREAD_PRIO, MAIN_THREAD_PREEMPTION_THRESHOLD, TX_NO_TIME_SLICE, TX_AUTO_START) != TX_SUCCESS)
+  {
+    Error_Handler();
+  }
 }
 /**
   * @brief  Module main thread.
   * @param  thread_input: thread id
   * @retval none
   */
-void MainThread_Entry(ULONG thread_input)
+static void MainThread_Entry(ULONG thread_input)
 {
   UINT status;
   ULONG s_msg;

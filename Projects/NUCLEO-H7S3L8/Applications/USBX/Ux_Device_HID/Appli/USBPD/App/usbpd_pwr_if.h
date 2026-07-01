@@ -22,7 +22,7 @@
 #define __USBPD_PW_IF_H
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/

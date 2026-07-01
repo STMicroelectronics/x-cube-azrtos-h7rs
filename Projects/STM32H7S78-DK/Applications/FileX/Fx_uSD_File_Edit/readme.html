@@ -38,8 +38,7 @@ initialisation or any SD card insertion/removal mechanisms are
 implemented using HAL drivers without any reference to BSP.</p>
 <p>The main entry function, tx_application_define(), is called by
 ThreadX during kernel start. At this stage, all FileX resources are
-initialized,</p>
-<p>the SD card detection event is registered and drivers are
+initialized, the SD card detection event is registered and drivers are
 initialized.</p>
 <p>A single thread is created:</p>
 <ul>
@@ -68,26 +67,31 @@ to reset the STM32H7S78-DK. That is why MX_SDMMC1_SD_Init() should be
 public to initialize the newly plugged SD card.</p>
 <h4 id="expected-success-behavior"><b>Expected success behavior</b></h4>
 <ul>
-<li>A file named STM32.TXT should be visible in the root directory of
-the SD card.</li>
-<li>A blinking green LED light marks the success of the file
-operations.</li>
-<li>A red LED light is ON when the SD card is unplugged.</li>
-</ul>
-<h4 id="error-behaviors"><b>Error behaviors</b></h4>
-<ul>
-<li>On failure, the red LED should start blinking.</li>
-<li>Error handler is called at the spot where the error occurred.</li>
+<li><p>A file named STM32.TXT should be visible in the root directory of
+the SD card.</p></li>
+<li><p>A blinking green LED light marks the success of the file
+operations.</p></li>
+<li><p>A red LED light is ON when the SD card is unplugged. ####
+<b>Error behaviors</b></p></li>
+<li><p>On failure, the red LED should start blinking.</p></li>
+<li><p>Error handler is called at the spot where the error
+occurred.</p></li>
 </ul>
 <h4 id="assumptions-if-any"><b>Assumptions if any</b></h4>
 <ul>
 <li>The SD card should be plugged prior to run the application.</li>
 </ul>
 <h4 id="known-limitations"><b>Known limitations</b></h4>
-<p>None</p>
-<h4 id="Notes"><b>Notes</b></h4>
-<p>This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed).</p>
-<p>Note that the boot part is automatically downloaded from the IDE environment via the board boot binary under Binary/Boot_XIP.hex file.</p>
+<p>None.</p>
+<h3 id="notes"><b>Notes</b></h3>
+<ol type="1">
+<li>This application runs from the external flash memory. It is launched
+from a first boot stage and inherits from this boot project
+configuration (caches, MPU regions [region 0 and 1], system clock at 600
+MHz and external memory interface at the highest speed). Note that the
+boot part is automatically downloaded from the IDE environment via the
+board boot binary under Binary/Boot_XIP.hex file.</li>
+</ol>
 <h4 id="threadx-usage-hints"><b>ThreadX usage hints</b></h4>
 <ul>
 <li>ThreadX uses the Systick as time base, thus it is mandatory that the
@@ -165,10 +169,10 @@ STM32H7S78-DK boards revision: MB1736-H7S7L8-D01 and can be easily
 tailored to any other supported device and development board.</li>
 </ul>
 <h3 id="how-to-use-it"><b>How to use it ?</b></h3>
-<p>To configure STM32CubeIDE Debug Configuration, you must do the
+<p>To configure STM32CubeIDE Debug/Release settings, you must do the
 following :</p>
 <pre><code>1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project-&gt;Debugger Configuration
-2. Add in the startup the Boot_XIP.elf in Project-&gt;Debugger Configuration and uncheck the "Load Symbols" option
+2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the &quot;Load Symbols&quot; option
 3. Move up the application in the startup</code></pre>
 <p>In order to make the program work, you must do the following :</p>
 <ul>

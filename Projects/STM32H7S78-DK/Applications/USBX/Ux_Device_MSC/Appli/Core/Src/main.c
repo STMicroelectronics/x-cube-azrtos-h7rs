@@ -20,14 +20,13 @@
 #include "app_threadx.h"
 #include "main.h"
 #include "gpdma.h"
-#include "sdmmc.h"
 #include "ucpd.h"
 #include "gpio.h"
 #include "usbpd.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "sdmmc.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -69,7 +68,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-  UINT status;
+
   /* USER CODE END 1 */
 
   /* MPU Configuration--------------------------------------------------------*/
@@ -103,23 +102,10 @@ int main(void)
   MX_GPIO_Init();
   MX_GPDMA1_Init();
   MX_UCPD1_Init();
-  MX_SDMMC1_SD_Init();
   /* Call PreOsInit function */
   USBPD_PreInitOs();
   /* USER CODE BEGIN 2 */
-  /* Check if SD card is present */
-  if(HAL_GPIO_ReadPin(GPIOM, GPIO_PIN_14) == GPIO_PIN_SET)
-  {
-    Error_Handler();
-  }
 
-  /* Get SD card info */
-  status = HAL_SD_GetCardInfo(&hsd1, &USBD_SD_CardInfo);
-
-  if (status != HAL_OK)
-  {
-    Error_Handler();
-  }
   /* USER CODE END 2 */
 
   MX_ThreadX_Init();

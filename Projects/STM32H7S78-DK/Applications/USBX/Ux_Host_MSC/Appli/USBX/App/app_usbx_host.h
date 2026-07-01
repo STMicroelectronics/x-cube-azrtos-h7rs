@@ -33,9 +33,9 @@ extern "C" {
 #include "ux_api.h"
 #include "main.h"
 #include "ux_host_msc.h"
+#include "ux_hcd_stm32.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "ux_hcd_stm32.h"
 #include "usb_otg.h"
 #include "app_azure_rtos_config.h"
 #if defined(_TRACE)
@@ -50,7 +50,7 @@ extern "C" {
 
 /* Exported constants --------------------------------------------------------*/
 
-#define UX_HOST_APP_THREAD_STACK_SIZE   1024
+#define UX_HOST_APP_THREAD_STACK_SIZE   1024 * 2
 #define UX_HOST_APP_THREAD_PRIO         10
 
 /* USER CODE BEGIN EC */
@@ -92,9 +92,10 @@ extern "C" {
 
 /* Exported functions prototypes ---------------------------------------------*/
 UINT MX_USBX_Host_Init(VOID *memory_ptr);
+UINT MX_USBX_Host_Stack_Init(void);
+UINT MX_USBX_Host_Stack_DeInit(void);
 
 /* USER CODE BEGIN EFP */
-VOID USBX_APP_Host_Init(VOID);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

@@ -152,32 +152,32 @@ void USBPD_DPM_UserExecute(void const *argument)
 void USBPD_DPM_UserCableDetection(uint8_t PortNum, USBPD_CAD_EVENT State)
 {
 /* USER CODE BEGIN USBPD_DPM_UserCableDetection */
-   DPM_USER_DEBUG_TRACE(PortNum, "ADVICE: update USBPD_DPM_UserCableDetection");
-   switch(State)
-   {
-   case USBPD_CAD_EVENT_ATTACHED:
-   case USBPD_CAD_EVENT_ATTEMC:
-     {
-       if (USBPD_OK != USBPD_PWR_IF_VBUSEnable(PortNum))
-       {
-         /* Should not occur */
-         HAL_Delay(6000);
-         NVIC_SystemReset();
-       }
-       break;
-     }
-   case USBPD_CAD_EVENT_DETACHED :
-   case USBPD_CAD_EVENT_EMC :
-   default :
-     {
-       if (USBPD_OK != USBPD_PWR_IF_VBUSDisable(PortNum))
-       {
-         /* Should not occur */
-         while(1);
-       }
-       break;
-     }
-   }
+  DPM_USER_DEBUG_TRACE(PortNum, "ADVICE: update USBPD_DPM_UserCableDetection");
+  switch(State)
+  {
+    case USBPD_CAD_EVENT_ATTACHED:
+    case USBPD_CAD_EVENT_ATTEMC:
+    {
+      if (USBPD_OK != USBPD_PWR_IF_VBUSEnable(PortNum))
+      {
+        /* Should not occur */
+        HAL_Delay(6000);
+        NVIC_SystemReset();
+      }
+      break;
+    }
+    case USBPD_CAD_EVENT_DETACHED :
+    case USBPD_CAD_EVENT_EMC :
+    default :
+    {
+      if (USBPD_OK != USBPD_PWR_IF_VBUSDisable(PortNum))
+      {
+        /* Should not occur */
+        while(1);
+      }
+      break;
+    }
+  }
 /* USER CODE END USBPD_DPM_UserCableDetection */
 }
 

@@ -33,11 +33,11 @@ extern "C" {
 #include "ux_api.h"
 #include "ux_device_descriptors.h"
 #include "ux_device_cdc_ecm.h"
+#include "ux_dcd_stm32.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "usb_otg.h"
-#include "ux_dcd_stm32.h"
 #include "ux_network_driver.h"
 /* USER CODE END Includes */
 
@@ -62,9 +62,11 @@ extern "C" {
 
 /* Exported functions prototypes ---------------------------------------------*/
 UINT MX_USBX_Device_Init(VOID *memory_ptr);
+UINT MX_USBX_Device_Stack_Init(void);
+UINT MX_USBX_Device_Stack_DeInit(void);
 
 /* USER CODE BEGIN EFP */
-void USBX_APP_Device_Init(void);
+
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
@@ -89,11 +91,13 @@ void USBX_APP_Device_Init(void);
 #endif
 
 /* USER CODE BEGIN 2 */
+
 typedef enum
 {
   STOP_USB_DEVICE = 1,
   START_USB_DEVICE,
 } USB_MODE_STATE;
+
 /* USER CODE END 2 */
 
 #ifdef __cplusplus

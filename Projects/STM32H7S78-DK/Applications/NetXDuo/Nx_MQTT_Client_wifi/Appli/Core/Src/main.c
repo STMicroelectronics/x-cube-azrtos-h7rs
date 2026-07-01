@@ -218,7 +218,7 @@ static void MX_SPI4_Init(void)
   /* USER CODE END SPI4_Init 0 */
 
   /* USER CODE BEGIN SPI4_Init 1 */
-  
+
   /* USER CODE END SPI4_Init 1 */
   /* SPI4 parameter configuration*/
   hspi4.Instance = SPI4;
@@ -248,7 +248,7 @@ static void MX_SPI4_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN SPI4_Init 2 */
-  
+
   /* USER CODE END SPI4_Init 2 */
 
 }
@@ -312,7 +312,7 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
   /* USER CODE BEGIN MX_GPIO_Init_1 */
   __HAL_RCC_SBS_CLK_ENABLE();
-  
+
   /* For the RED led. */
   PWR->CSR2 |= PWR_CSR2_USB33DEN;
   /* USER CODE END MX_GPIO_Init_1 */

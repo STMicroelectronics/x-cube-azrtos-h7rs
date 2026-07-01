@@ -2,8 +2,7 @@
 /**
   ******************************************************************************
   * @file    stm32h7rsxx_it.h
-  * @author  MCD Application Team
-  * @brief   This file contains the headers of the interrupt handlers for Cortex-M7.
+  * @brief   This file contains the headers of the interrupt handlers.
   ******************************************************************************
   * @attention
   *

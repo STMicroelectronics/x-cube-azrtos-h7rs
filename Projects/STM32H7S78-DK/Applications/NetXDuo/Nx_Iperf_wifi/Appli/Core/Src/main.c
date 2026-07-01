@@ -180,7 +180,7 @@ static void MX_SPI4_Init(void)
   /* USER CODE END SPI4_Init 0 */
 
   /* USER CODE BEGIN SPI4_Init 1 */
-  
+
   /* USER CODE END SPI4_Init 1 */
   /* SPI4 parameter configuration*/
   hspi4.Instance = SPI4;

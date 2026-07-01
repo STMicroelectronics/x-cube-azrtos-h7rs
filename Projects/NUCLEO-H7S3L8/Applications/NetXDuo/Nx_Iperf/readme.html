@@ -207,8 +207,8 @@ always ensure data coherency between the CPU and ETH DMA.</li>
 <li>Depending on the application scenario, the total TX and RX
 descriptors may need to be increased by updating respectively the
 “ETH_TX_DESC_CNT” and “ETH_RX_DESC_CNT” in the “stm32h7rsxx_hal_conf.h”,
-to guarantee the application correct behaviour, but this will cost extra
-memory to allocate.</li>
+to guarantee the application’s correct behavior, but this will cost
+extra memory to allocate.</li>
 <li>The NetXDuo application needs to allocate the <b> <i> NX_PACKET </i>
 </b> pool in a dedicated section that is configured as “Cacheable
 Write-through”. Below is an example of the declaration section for
@@ -282,7 +282,7 @@ configuration is as follows:
 </ul></li>
 </ul>
 <h3 id="how-to-use-it"><b>How to use it ?</b></h3>
-<p>To configure STM32CubeIDE Debug Configuration, you must do the
+<p>To configure STM32CubeIDE Debug/Release settings, you must do the
 following :</p>
 <pre><code>1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project-&gt;Debugger Configuration
 2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the &quot;Load Symbols&quot; option
@@ -292,8 +292,8 @@ following :</p>
 <li>Open your preferred toolchain</li>
 <li>Rebuild all files and load your image into target memory</li>
 <li>Run the application</li>
-<li>Run the [iperf tool] by following steps described in this link
-https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/netx-duo/netx-duo-iperf/chapter3.md.</li>
+<li>Run the [iperf tool] by following steps described in this <a href="https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/netx-duo/netx-duo-iperf/chapter3.md">link</a>
+.</li>
 </ul>
 </section>
 </div>

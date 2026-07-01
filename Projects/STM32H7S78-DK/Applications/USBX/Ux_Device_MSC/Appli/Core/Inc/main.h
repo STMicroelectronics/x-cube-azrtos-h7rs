@@ -70,6 +70,9 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define LED_RED_Pin GPIO_PIN_2
 #define LED_RED_GPIO_Port GPIOM
+#define SD_DETECT_Pin GPIO_PIN_14
+#define SD_DETECT_GPIO_Port GPIOM
+#define SD_DETECT_EXTI_IRQn EXTI14_IRQn
 #define LED_GREEN_Pin GPIO_PIN_1
 #define LED_GREEN_GPIO_Port GPIOO
 

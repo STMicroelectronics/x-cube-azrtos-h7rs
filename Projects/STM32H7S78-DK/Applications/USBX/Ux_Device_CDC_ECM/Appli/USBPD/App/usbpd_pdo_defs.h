@@ -22,7 +22,7 @@
 #define __USBPD_PDO_DEF_H
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -50,7 +50,6 @@ extern "C" {
   * @brief  USBPD Port PDO Structure definition
   *
   */
-
 /* USER CODE END typedef */
 
 /* Exported define -----------------------------------------------------------*/
@@ -77,7 +76,6 @@ extern "C" {
 /* Exported variables --------------------------------------------------------*/
 
 /* USER CODE BEGIN variables */
-
 /* USER CODE END variables */
 
 #ifndef __USBPD_PWR_IF_C

@@ -23,7 +23,7 @@
 /* USER CODE END 1 */
 
 /* Includes ------------------------------------------------------------------*/
-#include "app_usbx_host.h"
+#include "app_usbx.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -48,6 +48,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 static TX_THREAD ux_host_app_thread;
+extern HCD_HandleTypeDef hhcd_USB_OTG_HS;
 
 /* USER CODE BEGIN PV */
 TX_THREAD                   keyboard_app_thread;
@@ -60,12 +61,12 @@ UX_HOST_CLASS_STORAGE       *storage;
 UX_HOST_CLASS_STORAGE_MEDIA *storage_media;
 FX_MEDIA                    *media;
 TX_EVENT_FLAGS_GROUP        ux_app_EventFlag;
+
 TX_QUEUE ux_app_MsgQueue_UCPD;
 #if defined ( __ICCARM__ ) /* IAR Compiler */
   #pragma data_alignment=4
 #endif /* defined ( __ICCARM__ ) */
 __ALIGN_BEGIN USB_MODE_STATE USB_Host_State_Msg __ALIGN_END;
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -73,7 +74,7 @@ static VOID app_ux_host_thread_entry(ULONG thread_input);
 static UINT ux_host_event_callback(ULONG event, UX_HOST_CLASS *current_class, VOID *current_instance);
 static VOID ux_host_error_callback(UINT system_level, UINT system_context, UINT error_code);
 /* USER CODE BEGIN PFP */
-extern HCD_HandleTypeDef hhcd_USB_OTG_HS;
+
 /* USER CODE END PFP */
 
 /**
@@ -90,53 +91,6 @@ UINT MX_USBX_Host_Init(VOID *memory_ptr)
   /* USER CODE BEGIN MX_USBX_Host_Init0 */
 
   /* USER CODE END MX_USBX_Host_Init0 */
-
-  /* Install the host portion of USBX */
-  if (ux_host_stack_initialize(ux_host_event_callback) != UX_SUCCESS)
-  {
-    /* USER CODE BEGIN USBX_HOST_INITIALIZE_ERROR */
-    return UX_ERROR;
-    /* USER CODE END USBX_HOST_INITIALIZE_ERROR */
-  }
-
-  /* Register a callback error function */
-  ux_utility_error_callback_register(&ux_host_error_callback);
-
-  /* Initialize the host hid class */
-  if (ux_host_stack_class_register(_ux_system_host_class_hid_name,
-                                   ux_host_class_hid_entry) != UX_SUCCESS)
-  {
-    /* USER CODE BEGIN USBX_HSOT_HID_REGISTER_ERROR */
-    return UX_ERROR;
-    /* USER CODE END USBX_HSOT_HID_REGISTER_ERROR */
-  }
-
-  /* Initialize the host hid mouse client */
-  if (ux_host_class_hid_client_register(_ux_system_host_class_hid_client_mouse_name,
-                                        ux_host_class_hid_mouse_entry) != UX_SUCCESS)
-  {
-    /* USER CODE BEGIN USBX_HOST_HID_MOUSE_REGISTER_ERROR */
-    return UX_ERROR;
-    /* USER CODE END USBX_HOST_HID_MOUSE_REGISTER_ERROR */
-  }
-
-  /* Initialize the host hid keyboard client */
-  if (ux_host_class_hid_client_register(_ux_system_host_class_hid_client_keyboard_name,
-                                        ux_host_class_hid_keyboard_entry) != UX_SUCCESS)
-  {
-    /* USER CODE BEGIN USBX_HOST_HID_KEYBOARD_REGISTER_ERROR */
-    return UX_ERROR;
-    /* USER CODE END USBX_HOST_HID_KEYBOARD_REGISTER_ERROR */
-  }
-
-  /* Initialize the host storage class */
-  if (ux_host_stack_class_register(_ux_system_host_class_storage_name,
-                                   ux_host_class_storage_entry) != UX_SUCCESS)
-  {
-    /* USER CODE BEGIN USBX_HOST_STORAGE_REGISTER_ERROR */
-    return UX_ERROR;
-    /* USER CODE END USBX_HOST_STORAGE_REGISTER_ERROR */
-  }
 
   /* Allocate the stack for host application main thread */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer, UX_HOST_APP_THREAD_STACK_SIZE,
@@ -229,6 +183,126 @@ UINT MX_USBX_Host_Init(VOID *memory_ptr)
 }
 
 /**
+  * @brief MX_USBX_Host_Stack_Init
+  *        Initialization of USB host stack.
+  *        Init USB Host stack, add register the host class stack
+  * @param  None
+  * @retval ret
+  */
+UINT MX_USBX_Host_Stack_Init(void)
+{
+  UINT ret = UX_SUCCESS;
+
+  /* USER CODE BEGIN MX_USBX_Host_Stack_Init_PreTreatment */
+
+  /* USER CODE END MX_USBX_Host_Stack_Init_PreTreatment */
+
+  /* Install the host portion of USBX */
+  if (ux_host_stack_initialize(ux_host_event_callback) != UX_SUCCESS)
+  {
+    /* USER CODE BEGIN USBX_HOST_INITIALIZE_ERROR */
+    return UX_ERROR;
+    /* USER CODE END USBX_HOST_INITIALIZE_ERROR */
+  }
+
+  /* Register a callback error function */
+  ux_utility_error_callback_register(&ux_host_error_callback);
+
+  /* Initialize the host hid class */
+  if (ux_host_stack_class_register(_ux_system_host_class_hid_name,
+                                   ux_host_class_hid_entry) != UX_SUCCESS)
+  {
+    /* USER CODE BEGIN USBX_HSOT_HID_REGISTER_ERROR */
+    return UX_ERROR;
+    /* USER CODE END USBX_HSOT_HID_REGISTER_ERROR */
+  }
+
+  /* Initialize the host hid mouse client */
+  if (ux_host_class_hid_client_register(_ux_system_host_class_hid_client_mouse_name,
+                                        ux_host_class_hid_mouse_entry) != UX_SUCCESS)
+  {
+    /* USER CODE BEGIN USBX_HOST_HID_MOUSE_REGISTER_ERROR */
+    return UX_ERROR;
+    /* USER CODE END USBX_HOST_HID_MOUSE_REGISTER_ERROR */
+  }
+
+  /* Initialize the host hid keyboard client */
+  if (ux_host_class_hid_client_register(_ux_system_host_class_hid_client_keyboard_name,
+                                        ux_host_class_hid_keyboard_entry) != UX_SUCCESS)
+  {
+    /* USER CODE BEGIN USBX_HOST_HID_KEYBOARD_REGISTER_ERROR */
+    return UX_ERROR;
+    /* USER CODE END USBX_HOST_HID_KEYBOARD_REGISTER_ERROR */
+  }
+
+  /* Initialize the host storage class */
+  if (ux_host_stack_class_register(_ux_system_host_class_storage_name,
+                                   ux_host_class_storage_entry) != UX_SUCCESS)
+  {
+    /* USER CODE BEGIN USBX_HOST_STORAGE_REGISTER_ERROR */
+    return UX_ERROR;
+    /* USER CODE END USBX_HOST_STORAGE_REGISTER_ERROR */
+  }
+
+  /* Initialize the host controller driver */
+  ux_host_stack_hcd_register(_ux_system_host_hcd_stm32_name,
+                             _ux_hcd_stm32_initialize, USB_OTG_HS_PERIPH_BASE,
+                             (ULONG)&hhcd_USB_OTG_HS);
+
+  /* USER CODE BEGIN MX_USBX_Host_Stack_Init_PostTreatment */
+
+  /* USER CODE END MX_USBX_Host_Stack_Init_PostTreatment */
+
+  return ret ;
+}
+
+/**
+  * @brief  MX_USBX_Host_Stack_DeInit
+  *         Uninitialize of USB Host stack.
+  *         Uninitialize the host stack, unregister of host class stack and
+  *         unregister of the usb host controllers
+  * @param  None
+  * @retval ret
+  */
+UINT MX_USBX_Host_Stack_DeInit(void)
+{
+  UINT ret = UX_SUCCESS;
+
+  /* USER CODE BEGIN MX_USBX_Host_Stack_DeInit_PreTreatment */
+
+  /* USER CODE END MX_USBX_Host_Stack_DeInit_PreTreatment */
+
+  /* Unregister all the USB host controllers available in this system. */
+  ux_host_stack_hcd_unregister(_ux_system_host_hcd_stm32_name,
+                               USB_OTG_HS_PERIPH_BASE,
+                               (ULONG)&hhcd_USB_OTG_HS);
+
+  /* Unregister the host hid class */
+  if (ux_host_stack_class_unregister(ux_host_class_hid_entry) != UX_SUCCESS)
+  {
+    return UX_ERROR;
+  }
+
+  /* Unregister the host storage class */
+  if (ux_host_stack_class_unregister(ux_host_class_storage_entry) != UX_SUCCESS)
+  {
+    return UX_ERROR;
+  }
+
+  /* The code below is required for uninstalling the host portion of USBX.  */
+  if (ux_host_stack_uninitialize() != UX_SUCCESS)
+  {
+    return UX_ERROR;
+  }
+
+  /* USER CODE BEGIN MX_USBX_Host_Stack_DeInit_PostTreatment */
+
+  /* USER CODE END MX_USBX_Host_Stack_DeInit_PostTreatment */
+
+  return ret;
+}
+
+/**
   * @brief  Function implementing app_ux_host_thread_entry.
   * @param  thread_input: User thread input parameter.
   * @retval none
@@ -237,8 +311,13 @@ static VOID app_ux_host_thread_entry(ULONG thread_input)
 {
   /* USER CODE BEGIN app_ux_host_thread_entry */
 
-  /* Initialization of USB host */
-  USBX_APP_Host_Init();
+  /* Start Application Message */
+  USBH_UsrLog(" **** USB USB_OTG HS Dual_Class Host **** \n");
+  USBH_UsrLog("USB Host library started.\n");
+
+  /* Wait for Device to be attached */
+  USBH_UsrLog("Starting Application");
+  USBH_UsrLog("Connect your HID or MSC Device");
 
   while (1)
   {
@@ -250,14 +329,37 @@ static VOID app_ux_host_thread_entry(ULONG thread_input)
     /* Check if received message equal to START_USB_HOST */
     if (USB_Host_State_Msg == START_USB_HOST)
     {
-      /* Start USB Host */
+
+      /* Initialize the LL driver */
+      MX_USB_OTG_HS_HCD_Init();
+
+      /* Initialize the Stack Host USB*/
+      if (MX_USBX_Host_Stack_Init() != UX_SUCCESS)
+      {
+        /* USER CODE BEGIN MAIN_INITIALIZE_STACK_ERROR */
+        Error_Handler();
+        /* USER CODE END MAIN_INITIALIZE_STACK_ERROR */
+      }
+
+      /* Start the USB Host */
       HAL_HCD_Start(&hhcd_USB_OTG_HS);
     }
     /* Check if received message equal to STOP_USB_HOST */
     else if (USB_Host_State_Msg == STOP_USB_HOST)
     {
-      /* Stop USB Host */
+      /* Stop the USB Host */
       HAL_HCD_Stop(&hhcd_USB_OTG_HS);
+
+      /* Deinitialize the Stack Host USB*/
+      if (MX_USBX_Host_Stack_DeInit() != UX_SUCCESS)
+      {
+        /* USER CODE BEGIN MAIN_DEINITIALIZE_STACK_ERROR */
+        Error_Handler();
+        /* USER CODE END MAIN_DEINITIALIZE_STACK_ERROR */
+      }
+
+      /* Deinitialize the LL driver */
+      HAL_HCD_DeInit(&hhcd_USB_OTG_HS);
     }
     /* Else Error */
     else
@@ -538,37 +640,6 @@ VOID ux_host_error_callback(UINT system_level, UINT system_context, UINT error_c
 }
 
 /* USER CODE BEGIN 2 */
-/**
-  * @brief  USBX_APP_Host_Init
-  *         Initialization of USB Host.
-  * @param  None
-  * @retval None
-  */
-VOID USBX_APP_Host_Init(VOID)
-{
-  /* USER CODE BEGIN USB_Host_Init_PreTreatment_0 */
 
-  /* USER CODE END USB_Host_Init_PreTreatment_0 */
-
-  /* Initialize the LL driver */
-  MX_USB_OTG_HS_HCD_Init();
-
-  /* Initialize the host controller driver */
-  ux_host_stack_hcd_register(_ux_system_host_hcd_stm32_name,
-                             _ux_hcd_stm32_initialize, USB_OTG_HS_PERIPH_BASE,
-                             (ULONG)&hhcd_USB_OTG_HS);
-
-  /* USER CODE BEGIN USB_Host_Init_PreTreatment1 */
-
-  /* Start Application Message */
-  USBH_UsrLog(" **** USB OTG HS Dual_Class Host **** \n");
-  USBH_UsrLog("USB Host library started.\n");
-
-  /* Wait for Device to be attached */
-  USBH_UsrLog("Starting Application");
-  USBH_UsrLog("Connect your HID or MSC Device");
-
-  /* USER CODE END USB_Host_Init_PreTreatment1 */
-}
 
 /* USER CODE END 2 */

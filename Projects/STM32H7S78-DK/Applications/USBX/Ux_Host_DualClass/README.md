@@ -122,7 +122,7 @@ Connectivity, USBXHost, USBPD, FileX, ThreadX, HID, Mouse, Keyboard, MSC, Mass S
   - STM32H7S78-DK Set-up
     - Plug the USB device (mouse, keyboard, flash disk) into the STM32H7S78-DK board through 'USB micro Type C-Male
       to A-Female' cable to the connector:
-      - CN18 : to use USB High Speed OTG IP in full speed (HS)
+      - CN18 : to use USB High Speed OTG IP in full speed (HS).
     - Connect ST-Link cable to the PC USB port to display data on the HyperTerminal.
 
   - A virtual COM port will then appear in the HyperTerminal:
@@ -135,7 +135,7 @@ Connectivity, USBXHost, USBPD, FileX, ThreadX, HID, Mouse, Keyboard, MSC, Mass S
 
 ### <b>How to use it ?</b>
 
- To configure STM32CubeIDE Debug Configuration, you must do the following :
+To configure STM32CubeIDE Debug/Release settings, you must do the following :
 
     1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration
     2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option

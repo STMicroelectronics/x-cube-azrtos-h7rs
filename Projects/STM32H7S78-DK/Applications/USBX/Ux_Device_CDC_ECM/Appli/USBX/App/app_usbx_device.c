@@ -23,7 +23,7 @@
 /* USER CODE END 1 */
 
 /* Includes ------------------------------------------------------------------*/
-#include "app_usbx_device.h"
+#include "app_usbx.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -37,7 +37,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -53,22 +52,20 @@ static UCHAR cdc_ecm_local_nodeid[UX_DEVICE_CLASS_CDC_ECM_NODE_ID_LENGTH];
 static UCHAR cdc_ecm_remote_nodeid[UX_DEVICE_CLASS_CDC_ECM_NODE_ID_LENGTH];
 static UX_SLAVE_CLASS_CDC_ECM_PARAMETER cdc_ecm_parameter;
 static TX_THREAD ux_device_app_thread;
+extern PCD_HandleTypeDef hpcd_USB_OTG_HS;
 
 /* USER CODE BEGIN PV */
 /* ux app msg queue */
 TX_QUEUE     ux_app_MsgQueue;
-extern PCD_HandleTypeDef hpcd_USB_OTG_HS;
 #if defined ( __ICCARM__ ) /* IAR Compiler */
   #pragma data_alignment=4
 #endif /* defined ( __ICCARM__ ) */
 __ALIGN_BEGIN USB_MODE_STATE                  USB_Device_State_Msg   __ALIGN_END;
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 static VOID app_ux_device_thread_entry(ULONG thread_input);
 /* USER CODE BEGIN PFP */
-
 /* USER CODE END PFP */
 
 /**
@@ -79,6 +76,69 @@ static VOID app_ux_device_thread_entry(ULONG thread_input);
 UINT MX_USBX_Device_Init(VOID *memory_ptr)
 {
   UINT ret = UX_SUCCESS;
+  UCHAR *pointer;
+  TX_BYTE_POOL *byte_pool = (TX_BYTE_POOL*)memory_ptr;
+
+  /* USER CODE BEGIN MX_USBX_Device_Init0 */
+
+  /* USER CODE END MX_USBX_Device_Init0 */
+
+  /* Perform the initialization of the network driver. This will initialize the
+     USBX network layer */
+
+  ux_network_driver_init();
+
+  /* Allocate the stack for device application main thread */
+  if (tx_byte_allocate(byte_pool, (VOID **) &pointer, UX_DEVICE_APP_THREAD_STACK_SIZE,
+                       TX_NO_WAIT) != TX_SUCCESS)
+  {
+    /* USER CODE BEGIN MAIN_THREAD_ALLOCATE_STACK_ERROR */
+    return TX_POOL_ERROR;
+    /* USER CODE END MAIN_THREAD_ALLOCATE_STACK_ERROR */
+  }
+
+  /* Create the device application main thread */
+  if (tx_thread_create(&ux_device_app_thread, UX_DEVICE_APP_THREAD_NAME, app_ux_device_thread_entry,
+                       0, pointer, UX_DEVICE_APP_THREAD_STACK_SIZE, UX_DEVICE_APP_THREAD_PRIO,
+                       UX_DEVICE_APP_THREAD_PREEMPTION_THRESHOLD, UX_DEVICE_APP_THREAD_TIME_SLICE,
+                       UX_DEVICE_APP_THREAD_START_OPTION) != TX_SUCCESS)
+  {
+    /* USER CODE BEGIN MAIN_THREAD_CREATE_ERROR */
+    return TX_THREAD_ERROR;
+    /* USER CODE END MAIN_THREAD_CREATE_ERROR */
+  }
+
+  /* USER CODE BEGIN MX_USBX_Device_Init1 */
+
+  /* Allocate Memory for the Queue */
+  if (tx_byte_allocate(byte_pool, (VOID **) &pointer,
+                       APP_QUEUE_SIZE*sizeof(ULONG),
+                       TX_NO_WAIT) != TX_SUCCESS)
+  {
+    return TX_POOL_ERROR;
+  }
+
+  /* Create the MsgQueue */
+  if (tx_queue_create(&ux_app_MsgQueue, "Message Queue app",
+                      TX_1_ULONG, pointer,
+                      APP_QUEUE_SIZE*sizeof(ULONG)) != TX_SUCCESS)
+  {
+    return TX_QUEUE_ERROR;
+  }
+
+  /* USER CODE END MX_USBX_Device_Init1 */
+
+  return ret;
+}
+
+/**
+  * @brief  Application USBX Device Initialization.
+  * @param  None
+  * @retval ret
+  */
+UINT MX_USBX_Device_Stack_Init(void)
+{
+  UINT ret = UX_SUCCESS;
   UCHAR *device_framework_high_speed;
   UCHAR *device_framework_full_speed;
   ULONG device_framework_hs_length;
@@ -87,12 +147,10 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
   ULONG language_id_framework_length;
   UCHAR *string_framework;
   UCHAR *language_id_framework;
-  UCHAR *pointer;
-  TX_BYTE_POOL *byte_pool = (TX_BYTE_POOL*)memory_ptr;
 
-  /* USER CODE BEGIN MX_USBX_Device_Init0 */
+  /* USER CODE BEGIN MX_USBX_Device_Stack_Init_PreTreatment */
 
-  /* USER CODE END MX_USBX_Device_Init0 */
+  /* USER CODE END MX_USBX_Device_Stack_Init_PreTreatment */
 
   /* Get Device Framework High Speed and get the length */
   device_framework_high_speed = USBD_Get_Device_Framework_Speed(USBD_HIGH_SPEED,
@@ -172,50 +230,52 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
     /* USER CODE END USBX_DEVICE_CDC_ECM_REGISTER_ERROR */
   }
 
-  /* Perform the initialization of the network driver. This will initialize the
-     USBX network layer */
+  /* Initialize and link controller HAL driver */
+  ux_dcd_stm32_initialize((ULONG)USB_OTG_HS, (ULONG)&hpcd_USB_OTG_HS);
 
-  ux_network_driver_init();
+  /* USER CODE BEGIN MX_USBX_Device_Stack_Init_PostTreatment */
 
-  /* Allocate the stack for device application main thread */
-  if (tx_byte_allocate(byte_pool, (VOID **) &pointer, UX_DEVICE_APP_THREAD_STACK_SIZE,
-                       TX_NO_WAIT) != TX_SUCCESS)
+  /* USER CODE END MX_USBX_Device_Stack_Init_PostTreatment */
+
+return ret;
+
+}
+
+/**
+  * @brief MX_USBX_Device_Stack_DeInit
+  *        Uninitialization of USB Device.
+  * uninitialize the device stack, unregister of device class stack
+  * unregister of the usb device controller
+  * @param  None
+  * @retval ret
+  */
+UINT MX_USBX_Device_Stack_DeInit(void)
+{
+  UINT ret = UX_SUCCESS;
+
+  /* USER CODE BEGIN MX_USBX_Device_Stack_DeInit_PreTreatment */
+
+  /* USER CODE END MX_USBX_Device_Stack_DeInit_PreTreatment */
+
+  /* Uninitialize and unlink controller HAL driver */
+  ux_dcd_stm32_uninitialize((ULONG)USB_OTG_HS, (ULONG)&hpcd_USB_OTG_HS);
+
+  /* Unregister CDC ECM class. */
+  if (ux_device_stack_class_unregister(_ux_system_slave_class_cdc_ecm_name,
+                                     ux_device_class_cdc_ecm_entry) != UX_SUCCESS)
   {
-    /* USER CODE BEGIN MAIN_THREAD_ALLOCATE_STACK_ERROR */
-    return TX_POOL_ERROR;
-    /* USER CODE END MAIN_THREAD_ALLOCATE_STACK_ERROR */
+    return UX_ERROR;
   }
 
-  /* Create the device application main thread */
-  if (tx_thread_create(&ux_device_app_thread, UX_DEVICE_APP_THREAD_NAME, app_ux_device_thread_entry,
-                       0, pointer, UX_DEVICE_APP_THREAD_STACK_SIZE, UX_DEVICE_APP_THREAD_PRIO,
-                       UX_DEVICE_APP_THREAD_PREEMPTION_THRESHOLD, UX_DEVICE_APP_THREAD_TIME_SLICE,
-                       UX_DEVICE_APP_THREAD_START_OPTION) != TX_SUCCESS)
+  /* The code below is required for uninstalling the device portion of USBX.  */
+  if (ux_device_stack_uninitialize() != UX_SUCCESS)
   {
-    /* USER CODE BEGIN MAIN_THREAD_CREATE_ERROR */
-    return TX_THREAD_ERROR;
-    /* USER CODE END MAIN_THREAD_CREATE_ERROR */
+    return UX_ERROR;
   }
 
-  /* USER CODE BEGIN MX_USBX_Device_Init1 */
+  /* USER CODE BEGIN MX_USBX_Device_Stack_DeInit_PostTreatment */
 
-  /* Allocate Memory for the Queue */
-  if (tx_byte_allocate(byte_pool, (VOID **) &pointer,
-                       APP_QUEUE_SIZE*sizeof(ULONG),
-                       TX_NO_WAIT) != TX_SUCCESS)
-  {
-    return TX_POOL_ERROR;
-  }
-
-  /* Create the MsgQueue */
-  if (tx_queue_create(&ux_app_MsgQueue, "Message Queue app",
-                      TX_1_ULONG, pointer,
-                      APP_QUEUE_SIZE*sizeof(ULONG)) != TX_SUCCESS)
-  {
-    return TX_QUEUE_ERROR;
-  }
-
-  /* USER CODE END MX_USBX_Device_Init1 */
+  /* USER CODE END MX_USBX_Device_Stack_DeInit_PostTreatment */
 
   return ret;
 }
@@ -228,9 +288,6 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
 static VOID app_ux_device_thread_entry(ULONG thread_input)
 {
   /* USER CODE BEGIN app_ux_device_thread_entry */
-
-  /* Initialization of USB device */
-  USBX_APP_Device_Init();
 
   /* Wait for message queue to start/stop the device */
   while(1)
@@ -245,14 +302,39 @@ static VOID app_ux_device_thread_entry(ULONG thread_input)
     /* Check if received message equal to USB_PCD_START */
     if (USB_Device_State_Msg == START_USB_DEVICE)
     {
-      /* Start device USB */
+
+      /* USB_OTG_HS init function */
+      MX_USB_OTG_HS_PCD_Init();
+
+      if (MX_USBX_Device_Stack_Init() != UX_SUCCESS)
+      {
+        /* USER CODE BEGIN MAIN_INITIALIZE_STACK_ERROR */
+        Error_Handler();
+        /* USER CODE END MAIN_INITIALIZE_STACK_ERROR */
+      }
+
+      /* Start the USB device */
       HAL_PCD_Start(&hpcd_USB_OTG_HS);
     }
     /* Check if received message equal to USB_PCD_STOP */
     else if (USB_Device_State_Msg == STOP_USB_DEVICE)
     {
-      /* Stop device USB */
+      /* Disconnect USBX stack driver,  */
+      ux_device_stack_disconnect();
+
+      /* Stop the device USB */
       HAL_PCD_Stop(&hpcd_USB_OTG_HS);
+
+      /* Deinitialize the Stack USB Device*/
+      if (MX_USBX_Device_Stack_DeInit() != UX_SUCCESS)
+      {
+        /* USER CODE BEGIN MAIN_UNINITIALIZE_STACK_ERROR */
+        Error_Handler();
+        /* USER CODE END MAIN_UNINITIALIZE_STACK_ERROR */
+      }
+
+      /* USB_OTG_HS deinit function */
+      HAL_PCD_DeInit(&hpcd_USB_OTG_HS);
     }
     /* Else Error */
     else
@@ -261,45 +343,11 @@ static VOID app_ux_device_thread_entry(ULONG thread_input)
       Error_Handler();
     }
   }
+
   /* USER CODE END app_ux_device_thread_entry */
 }
 
 /* USER CODE BEGIN 2 */
 
-/**
-  * @brief  USBX_APP_Device_Init
-  *         Initialization of USB device.
-  * @param  none
-  * @retval none
-  */
-VOID USBX_APP_Device_Init(VOID)
-{
-  /* USER CODE BEGIN USB_Device_Init_PreTreatment_0 */
-
-  /* USER CODE END USB_Device_Init_PreTreatment_0 */
-
-  /* USB_OTG_HS init function */
-  MX_USB_OTG_HS_PCD_Init();
-
-  /* USER CODE BEGIN USB_Device_Init_PreTreatment_1 */
-
-  /* Set Rx FIFO */
-  HAL_PCDEx_SetRxFiFo(&hpcd_USB_OTG_HS, 0x200);
-  /* Set Tx FIFO 0 */
-  HAL_PCDEx_SetTxFiFo(&hpcd_USB_OTG_HS, 0, 0x10);
-  /* Set Tx FIFO 1 */
-  HAL_PCDEx_SetTxFiFo(&hpcd_USB_OTG_HS, 1, 0x80);
-  /* Set Tx FIFO 2 */
-  HAL_PCDEx_SetTxFiFo(&hpcd_USB_OTG_HS, 2, 0x20);
-
-  /* USER CODE END USB_Device_Init_PreTreatment_1 */
-
-  /* Initialize and link controller HAL driver */
-  ux_dcd_stm32_initialize((ULONG)USB_OTG_HS, (ULONG)&hpcd_USB_OTG_HS);
-
-  /* USER CODE BEGIN USB_Device_Init_PostTreatment */
-
-  /* USER CODE END USB_Device_Init_PostTreatment */
-}
 
 /* USER CODE END 2 */

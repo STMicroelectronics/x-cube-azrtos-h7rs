@@ -2,7 +2,7 @@
 /*-Editor annotation file-*/
 /* IcfEditorFile="$TOOLKIT_DIR$\config\ide\IcfEditor\cortex_v1_0.xml" */
 /*-Specials-*/
-define symbol __ICFEDIT_intvec_start__ = 0x70000000;  
+define symbol __ICFEDIT_intvec_start__ = 0x70000000;
 /*-Memory Regions-*/
 define symbol __ICFEDIT_region_ROM_start__ = 0x70020000;
 define symbol __ICFEDIT_region_ROM_end__   = 0x7003FFFF;
@@ -46,11 +46,11 @@ do not initialize  { section .noinit };
 
 place at address mem:__ICFEDIT_intvec_start__ { readonly section .intvec };
 
-define movable block ROPI with alignment = 4, fixed order 
-{ 
+define movable block ROPI with alignment = 4, fixed order
+{
   ro object txm_module_preamble.o,
-  ro, 
-  ro data 
+  ro,
+  ro data
 };
 
 define movable block RWPI with alignment = 8, fixed order, static base

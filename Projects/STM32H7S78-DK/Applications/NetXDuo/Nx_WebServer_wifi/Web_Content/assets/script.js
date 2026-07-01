@@ -37,21 +37,21 @@ var options1 = {
 var options3 = {
     animationEnabled: true,
     title: {
-        text: "Thread's Run Count",                
+        text: "Thread's Run Count",
         fontColor: "Navy"
-    },  
+    },
     axisY: {
         tickThickness: 0,
         lineThickness: 0,
         valueFormatString: " ",
         includeZero: true,
-        gridThickness: 0                    
+        gridThickness: 0
     },
     axisX: {
         tickThickness: 0,
         lineThickness: 0,
         labelFontSize: 18,
-        labelFontColor: "Peru"              
+        labelFontColor: "Peru"
     },
     data: [{
         indexLabelFontSize: 18,
@@ -100,7 +100,7 @@ function addData1(data1) {
     jQuery.get(getpacket_url, function (num1, status) {
             dataPoints1.push({ x: xValue1, y: parseInt(num1)+1});
             xValue1++;
-        })   
+        })
 };
 
 function updateChart() {
@@ -116,7 +116,7 @@ function updateChart() {
         dps[2].label = array1[5];
 
     options3.data[0].dataPoints = dps;
-});    
+});
     $("#threadcountchart").CanvasJSChart().render();
 }
 

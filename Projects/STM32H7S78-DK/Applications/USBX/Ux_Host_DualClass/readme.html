@@ -67,15 +67,9 @@ ID of the attached device. After enumeration phase, a message will
 indicate that the device is ready for use. The host must be able to
 properly decode HID reports sent by the corresponding device and display
 those information on the HyperTerminal.</p>
-<p>The received HID reports are used by host to identify:</p> 
-<ul>
-<li>In case of a mouse: 
-<ul>
-<li>(x,y) mouse position </li>
-<li>Wheel position </li>
-<li>Pressed mouse buttons</li>
-</ul></li>
-</ul>
+<p>The received HID reports are used by host to identify: - In case of a
+mouse: - (x,y) mouse position - Wheel position - Pressed mouse
+buttons</p>
 <ul>
 <li>In case of a keyboard:
 <ul>
@@ -190,7 +184,7 @@ tailored to any other supported device and development board.</p></li>
 STM32H7S78-DK board through ‘USB micro Type C-Male to A-Female’ cable to
 the connector:
 <ul>
-<li>CN18 : to use USB High Speed OTG IP in full speed (HS)</li>
+<li>CN18 : to use USB High Speed OTG IP in full speed (HS).</li>
 </ul></li>
 <li>Connect ST-Link cable to the PC USB port to display data on the
 HyperTerminal.</li>
@@ -208,10 +202,10 @@ HyperTerminal.</li>
 </ul></li>
 </ul>
 <h3 id="how-to-use-it"><b>How to use it ?</b></h3>
-<p>To configure STM32CubeIDE Debug Configuration, you must do the
+<p>To configure STM32CubeIDE Debug/Release settings, you must do the
 following :</p>
 <pre><code>1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project-&gt;Debugger Configuration
-2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the "Load Symbols" option
+2. Add in the startup the Boot_XIP.elf file in Project-&gt;Debugger Configuration and uncheck the &quot;Load Symbols&quot; option
 3. Move up the application in the startup</code></pre>
 <p>In order to make the program work, you must do the following :</p>
 <ul>
@@ -224,8 +218,7 @@ messages.</li>
 <p><b>Note</b></p>
 <p>The user has to check the list of the COM ports in Device Manager to
 find out the number of the COM ports that have been assigned (by OS) to
-the Stlink VCP.</p>
-<p>The application uses the external HSE clock as USB
+the Stlink VCP. The application uses the external HSE clock as USB
 source clock.</p>
 </section>
 </div>

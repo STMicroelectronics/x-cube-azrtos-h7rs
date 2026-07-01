@@ -57,7 +57,7 @@ Hotplug is not implemented for this example, that is, the SD card is expected to
 
 ### <b>Notes</b>
 
- 1.  This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed). 
+ 1.  This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed).
      Note that the boot part is automatically downloaded from the IDE environment via the board boot binary under Binary/Boot_XIP.hex file.
 
  2.  It is recommended to enable the cache and maintain its coherence:
@@ -191,7 +191,7 @@ RTOS, ThreadX, Network, NetxDuo, Web HTTP Server, FileX, File ,SDMMC, UART
 
 ### <b>How to use it ?</b>
 
-To configure STM32CubeIDE Debug Configuration, you must do the following :
+To configure STM32CubeIDE Debug/Release settings, you must do the following :
     1. Add the adequate external loader (MX66UW1G45G_STM32H7S78-DK.stldr file) in Project->Debugger Configuration and uncheck the "Load Symbols" option
     2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration
     3. Move up the application in the startup

@@ -32,7 +32,7 @@ The **AppUDPThread**, once started:
 #### <b>Expected success behavior</b>
 
  + The board IP address is printed on the HyperTerminal
- + The response messages sent by the server are printed on the HyerTerminal
+ + The response messages sent by the server are printed on the HyperTerminal
  + If the [echotool](https://github.com/PavelBansky/EchoTool/releases/tag/v1.5.0.0) utility is used the message sent by the client are displayed on the PC console.
  + A summary message similar to the following is printed on the HyperTerminal and the green LED is toggling.
  ```
@@ -41,7 +41,7 @@ The **AppUDPThread**, once started:
 
 #### <b>Error behaviors</b>
 
-+ The red LED is toggling to indicate any error that have occurred while the LED_GREEN switch off.
++ The red LED is toggling to indicate any error that have occurred while the green LED switch off.
 + In case the message exchange is not completed a failure message is printed on the HyperTerminal showing the actual sent message compared to the expected ones.
 
 #### <b>Assumptions if any</b>
@@ -191,7 +191,7 @@ RTOS, Network, ThreadX, NetXDuo, UDP, UART
 
 ###  <b>How to use it ?</b>
 
-To configure STM32CubeIDE Debug Configuration, you must do the following :
+To configure STM32CubeIDE Debug/Release settings, you must do the following :
 
     1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project->Debugger Configuration
     2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option

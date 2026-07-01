@@ -74,7 +74,7 @@ void MX_ETH_Init(void)
 
 ### <b>Notes</b>
 
- 1.  This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed). 
+ 1.  This application runs from the external flash memory. It is launched from a first boot stage and inherits from this boot project configuration (caches, MPU regions [region 0 and 1], system clock at 600 MHz and external memory interface at the highest speed).
      Note that the boot part is automatically downloaded from the IDE environment via the board boot binary under Binary/Boot_XIP.hex file.
 
  2.  It is recommended to enable the cache and maintain its coherence:
@@ -126,7 +126,7 @@ void MX_ETH_Init(void)
 
 - The ETH TX And RX descriptors are accessed by the CPU and the ETH DMA IP, thus they should not be allocated into the DTCM RAM "0x20000000".
 - Make sure to allocate them into a "Non-Cacheable" memory region to always ensure data coherency between the CPU and ETH DMA.
-- Depending on the application scenario, the total TX and RX descriptors may need to be increased by updating respectively  the "ETH_TX_DESC_CNT" and "ETH_RX_DESC_CNT" in the "stm32h7rsxx_hal_conf.h", to guarantee the application correct behaviour, but this will cost extra memory to allocate.
+- Depending on the application scenario, the total TX and RX descriptors may need to be increased by updating respectively  the "ETH_TX_DESC_CNT" and "ETH_RX_DESC_CNT" in the "stm32h7rsxx_hal_conf.h", to guarantee the application's correct behavior, but this will cost extra memory to allocate.
 - The NetXDuo application needs to allocate the <b> <i> NX_PACKET </i> </b> pool in a dedicated section that is configured as "Cacheable Write-through". Below is an example of the declaration section for different IDEs.
    + For EWARM ".icf" file
    ```
@@ -198,7 +198,7 @@ RTOS, Network, ThreadX, NetXDuo, Iperf, UART
 
 ### <b>How to use it ?</b>
 
-To configure STM32CubeIDE Debug Configuration, you must do the following :
+To configure STM32CubeIDE Debug/Release settings, you must do the following :
 
     1. Add the adequate external loader (MX25UW25645G_NUCLEO-H7S3L8.stldr file) in Project->Debugger Configuration
     2. Add in the startup the Boot_XIP.elf file in Project->Debugger Configuration and uncheck the "Load Symbols" option
@@ -209,4 +209,4 @@ In order to make the program work, you must do the following :
  - Open your preferred toolchain
  - Rebuild all files and load your image into target memory
  - Run the application
- - Run the [iperf tool] by following steps described in this link https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/netx-duo/netx-duo-iperf/chapter3.md.
+ - Run the [iperf tool] by following steps described in this [link](https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/netx-duo/netx-duo-iperf/chapter3.md) .
